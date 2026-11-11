@@ -11,6 +11,7 @@ on:
       - 'android/**'
       - 'package.json'
       - 'capacitor.config.json'
+      - '.github/workflows/android-build.yml'
 
 jobs:
   build:
@@ -23,11 +24,11 @@ jobs:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
 
-      - name: ☕ Setup Java 17
+      - name: ☕ Setup Java 21
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '21'
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
@@ -44,24 +45,11 @@ jobs:
       - name: 🔄 Sync Capacitor Android project
         run: npx cap sync android
 
-      - name: 🔑 Generate & Configure Release Keystore
+      - name: 🔑 Configure Release Keystore
         run: |
           mkdir -p android/app/keystores
-          if [ -n "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" ]; then
-            echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystores/fidelipass-upload-key.jks
-            echo "Loaded keystore from secrets."
-          else
-            keytool -genkeypair -v \
-              -keystore android/app/keystores/fidelipass-upload-key.jks \
-              -alias fidelipass \
-              -keyalg RSA \
-              -keysize 2048 \
-              -validity 10000 \
-              -storepass fidelipass2026 \
-              -keypass fidelipass2026 \
-              -dname "CN=Williams Joel Navarrete Merino, OU=FideliPass, O=FideliPass, L=Guayaquil, ST=Guayas, C=EC"
-            echo "Generated new release keystore."
-          fi
+          echo "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" | base64 --decode > android/app/keystores/fidelipass-upload-key.jks
+          echo "Keystore successfully configured."
 
       - name: 🛠️ Set executable permissions for gradlew
         run: chmod +x android/gradlew

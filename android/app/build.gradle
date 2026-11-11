@@ -18,19 +18,15 @@ android {
     }
     signingConfigs {
         release {
-            if (file('keystores/fidelipass-upload-key.jks').exists()) {
-                storeFile file('keystores/fidelipass-upload-key.jks')
-                storePassword 'fidelipass2026'
-                keyAlias 'fidelipass'
-                keyPassword 'fidelipass2026'
-            }
+            storeFile file('keystores/fidelipass-upload-key.jks')
+            storePassword 'fidelipass2026'
+            keyAlias 'fidelipass'
+            keyPassword 'fidelipass2026'
         }
     }
     buildTypes {
         release {
-            if (file('keystores/fidelipass-upload-key.jks').exists()) {
-                signingConfig signingConfigs.release
-            }
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
