@@ -66,6 +66,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>NSCameraUsageDescription</key>
 	<string>FideliPass necesita acceso a la cámara para escanear el código QR de las tarjetas de fidelidad de tus clientes y otorgar sellos o canjear premios.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
