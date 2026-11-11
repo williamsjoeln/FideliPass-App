@@ -1,0 +1,14 @@
+{
+  "appId": "com.fidelipassapp.business",
+  "appName": "FideliPass",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "ios": {
+    "contentInset": "always",
+    "allowsLinkPreview": false,
+    "scrollEnabled": true,
+    "scheme": "App"
+  }
+}

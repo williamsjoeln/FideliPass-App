@@ -1,0 +1,101 @@
+// scripts/generatePureSoulBanner.js
+import fs from 'fs';
+import path from 'path';
+import sharp from 'sharp';
+
+async function generateBanner() {
+  const width = 1125;
+  const height = 432;
+
+  const svg = `
+  <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="spaBg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#4A3B4E" />
+        <stop offset="50%" stop-color="#3B2E40" />
+        <stop offset="100%" stop-color="#281F2C" />
+      </linearGradient>
+
+      <linearGradient id="goldGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#E2C99D" />
+        <stop offset="50%" stop-color="#F5E4C3" />
+        <stop offset="100%" stop-color="#D4AF7A" />
+      </linearGradient>
+
+      <linearGradient id="cardPill" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.12" />
+        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.04" />
+      </linearGradient>
+    </defs>
+
+    <!-- Background -->
+    <rect width="${width}" height="${height}" fill="url(#spaBg)"/>
+
+    <!-- Subtle luxury decorative aura circles -->
+    <circle cx="150" cy="80" r="220" fill="#BA68C8" opacity="0.08" filter="blur(40px)"/>
+    <circle cx="980" cy="350" r="260" fill="#E2C99D" opacity="0.09" filter="blur(50px)"/>
+    <circle cx="562" cy="216" r="180" fill="#E2C99D" opacity="0.05" filter="blur(60px)"/>
+
+    <!-- Geometric fine lines framing -->
+    <rect x="36" y="32" width="1053" height="368" rx="20" fill="none" stroke="#E2C99D" stroke-width="1.5" opacity="0.35"/>
+    <rect x="44" y="40" width="1037" height="352" rx="16" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.12"/>
+
+    <!-- Botanical leaf silhouettes left and right -->
+    <g opacity="0.25" stroke="#E2C99D" stroke-width="2" fill="none">
+      <!-- Left side branch -->
+      <path d="M70,280 Q110,210 130,140 Q150,200 190,230" />
+      <path d="M100,245 Q70,225 80,205 Q105,215 100,245" fill="#E2C99D" fill-opacity="0.15" />
+      <path d="M120,185 Q150,165 155,145 Q130,160 120,185" fill="#E2C99D" fill-opacity="0.15" />
+      <path d="M130,140 Q110,110 130,90 Q145,115 130,140" fill="#E2C99D" fill-opacity="0.15" />
+
+      <!-- Right side branch -->
+      <path d="M1055,280 Q1015,210 995,140 Q975,200 935,230" />
+      <path d="M1025,245 Q1055,225 1045,205 Q1020,215 1025,245" fill="#E2C99D" fill-opacity="0.15" />
+      <path d="M1005,185 Q975,165 970,145 Q995,160 1005,185" fill="#E2C99D" fill-opacity="0.15" />
+      <path d="M995,140 Q1015,110 995,90 Q980,115 995,140" fill="#E2C99D" fill-opacity="0.15" />
+    </g>
+
+    <!-- Center Badge Pill -->
+    <rect x="362" y="70" width="400" height="42" rx="21" fill="url(#cardPill)" stroke="#E2C99D" stroke-width="1.2" opacity="0.85"/>
+    <text x="562" y="97" font-family="'Cinzel', 'Playfair Display', 'Didot', 'Georgia', serif" font-size="16" font-weight="700" fill="#F5E4C3" text-anchor="middle" letter-spacing="4">
+      ✦ SPA FACIAL &amp; CORPORAL ✦
+    </text>
+
+    <!-- Main Title -->
+    <text x="562" y="210" font-family="'Cinzel', 'Playfair Display', 'Didot', 'Georgia', serif" font-size="78" font-weight="700" fill="url(#goldGlow)" text-anchor="middle" letter-spacing="9">
+      PURE SOUL
+    </text>
+
+    <!-- Subtitle -->
+    <text x="562" y="260" font-family="'Montserrat', 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="300" fill="#FFFFFF" text-anchor="middle" letter-spacing="12" opacity="0.9">
+      C U M B A Y Á
+    </text>
+
+    <!-- Golden Divider Line with Diamond -->
+    <line x1="380" y1="295" x2="530" y2="295" stroke="#E2C99D" stroke-width="1.5" opacity="0.6"/>
+    <polygon points="562,289 568,295 562,301 556,295" fill="#F5E4C3"/>
+    <line x1="594" y1="295" x2="744" y2="295" stroke="#E2C99D" stroke-width="1.5" opacity="0.6"/>
+
+    <!-- Reward Teaser Pill -->
+    <rect x="290" y="325" width="545" height="46" rx="23" fill="#BA68C8" fill-opacity="0.22" stroke="#BA68C8" stroke-width="1.5"/>
+    <text x="562" y="354" font-family="'Montserrat', 'Helvetica Neue', Arial, sans-serif" font-size="17" font-weight="600" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">
+      ✨ 6 Sellos = 1 Limpieza Facial Profunda Gratis ✨
+    </text>
+  </svg>
+  `;
+
+  const pubPath = path.resolve('D:/MisProyectos/TarjetaDeFidelidad/public/puresoul-banner.png');
+  const funcPath = path.resolve('D:/MisProyectos/TarjetaDeFidelidad/functions/assets/puresoul-banner.png');
+
+  await sharp(Buffer.from(svg))
+    .png()
+    .toFile(pubPath);
+
+  if (fs.existsSync('D:/MisProyectos/TarjetaDeFidelidad/functions/assets')) {
+    fs.copyFileSync(pubPath, funcPath);
+  }
+
+  console.log('✅ Pure Soul Banner generated at:', pubPath);
+}
+
+generateBanner().catch(console.error);

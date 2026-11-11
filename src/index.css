@@ -1,0 +1,359 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --color-fidelipass-cream: #FFFFFF;
+  --color-fidelipass-dark: #0F172A;
+  --color-fidelipass-green: #1D4E3E;
+  --color-fidelipass-lightgreen: #E8F1EC;
+  --color-fidelipass-orange: #FF5E36;
+  --color-fidelipass-orange-hover: #E84C24;
+  --color-fidelipass-card: #FFFFFF;
+  --color-fidelipass-border: #E2E8F0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #F0F4F8;
+  color: #0F172A;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+}
+
+.font-heading {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+}
+
+/* ================= CLAYMORFISM 3D DESIGN SYSTEM ================= */
+
+/* Clay Base Card - Soft 3D inflated clay effect */
+.clay-card {
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 
+    10px 14px 28px rgba(160, 175, 195, 0.28),
+    -8px -8px 20px rgba(255, 255, 255, 0.95),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 6px rgba(160, 175, 195, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    12px 18px 32px rgba(160, 175, 195, 0.35),
+    -10px -10px 24px rgba(255, 255, 255, 1),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.95),
+    inset -2px -2px 6px rgba(160, 175, 195, 0.12);
+}
+
+/* Clay Card Dark / Brand (for Customer Card & MC Rolls Pass) */
+.clay-card-dark {
+  border-radius: 32px;
+  box-shadow: 
+    14px 20px 36px rgba(15, 30, 40, 0.35),
+    -6px -6px 20px rgba(255, 255, 255, 0.1),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.3),
+    inset -3px -3px 8px rgba(0, 0, 0, 0.35);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Clay Inset / Sunken Well (For cavity inputs, stamp slots) */
+.clay-inset {
+  box-shadow: 
+    inset 3px 3px 6px rgba(160, 175, 195, 0.35),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+}
+
+.clay-inset-dark {
+  box-shadow: 
+    inset 3px 3px 7px rgba(0, 0, 0, 0.45),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+}
+
+/* Clay Buttons - Squishy, tactile 3D */
+.clay-btn {
+  border-radius: 20px;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clay-btn:active {
+  transform: scale(0.96) translateY(2px);
+}
+
+.clay-btn-primary {
+  background: linear-gradient(145deg, #24634f, #173e31);
+  color: #ffffff;
+  box-shadow: 
+    0 8px 18px -2px rgba(29, 78, 62, 0.4),
+    inset 0 2px 3px rgba(255, 255, 255, 0.45),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.clay-btn-primary:hover {
+  background: linear-gradient(145deg, #2b775f, #1a4738);
+  box-shadow: 
+    0 10px 22px -2px rgba(29, 78, 62, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.55),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.25);
+}
+
+.clay-btn-orange {
+  background: linear-gradient(145deg, #ff7452, #f04e24);
+  color: #ffffff;
+  box-shadow: 
+    0 8px 20px -2px rgba(255, 94, 54, 0.45),
+    inset 0 2px 4px rgba(255, 255, 255, 0.55),
+    inset 0 -3px 6px rgba(180, 40, 10, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.clay-btn-orange:hover {
+  background: linear-gradient(145deg, #ff8466, #ff5e36);
+  box-shadow: 
+    0 12px 24px -2px rgba(255, 94, 54, 0.55),
+    inset 0 2px 5px rgba(255, 255, 255, 0.65),
+    inset 0 -3px 6px rgba(180, 40, 10, 0.3);
+}
+
+.clay-btn-light {
+  background: linear-gradient(145deg, #ffffff, #f0f4f8);
+  color: #1e293b;
+  box-shadow: 
+    6px 6px 14px rgba(160, 175, 195, 0.3),
+    -4px -4px 10px rgba(255, 255, 255, 0.95),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.9),
+    inset -1px -1px 3px rgba(160, 175, 195, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+}
+
+.clay-btn-light:hover {
+  background: linear-gradient(145deg, #ffffff, #f5f8fb);
+  box-shadow: 
+    8px 8px 18px rgba(160, 175, 195, 0.38),
+    -5px -5px 12px rgba(255, 255, 255, 1);
+}
+
+.clay-btn-dark {
+  background: linear-gradient(145deg, #23272e, #14171a);
+  color: #ffffff;
+  box-shadow: 
+    0 8px 18px -2px rgba(0, 0, 0, 0.35),
+    inset 0 2px 3px rgba(255, 255, 255, 0.3),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Clay Inputs */
+.clay-input {
+  background: #f4f7fb;
+  border-radius: 18px;
+  box-shadow: 
+    inset 3px 3px 6px rgba(160, 175, 195, 0.3),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.95);
+  border: 1.5px solid rgba(210, 220, 235, 0.6);
+  transition: all 0.2s ease;
+}
+
+.clay-input:focus {
+  background: #ffffff;
+  box-shadow: 
+    inset 2px 2px 4px rgba(160, 175, 195, 0.2),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.9),
+    0 0 0 3px rgba(29, 78, 62, 0.2);
+  border-color: #1D4E3E;
+  outline: none;
+}
+
+/* Clay Stamps */
+.clay-stamp-slot {
+  border-radius: 22px;
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: 
+    inset 3px 3px 7px rgba(0, 0, 0, 0.4),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-stamp-active {
+  border-radius: 22px;
+  background: linear-gradient(145deg, #ffffff, #edf4f2);
+  box-shadow: 
+    0 10px 20px -2px rgba(0, 0, 0, 0.32),
+    inset 0 2px 5px rgba(255, 255, 255, 0.95),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  transform: scale(1);
+}
+
+/* Clay Pills & Badges */
+.clay-badge {
+  border-radius: 9999px;
+  box-shadow: 
+    3px 4px 8px rgba(160, 175, 195, 0.25),
+    -2px -2px 6px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.clay-badge-dark {
+  border-radius: 9999px;
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Stamp pop animation */
+@keyframes stampIn {
+  0% {
+    transform: scale(2.4) rotate(-18deg);
+    opacity: 0;
+  }
+  65% {
+    transform: scale(0.9) rotate(4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-stamp {
+  animation: stampIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Ripple effect */
+@keyframes rippleWave {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 94, 54, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(255, 94, 54, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 94, 54, 0);
+  }
+}
+
+.animate-ripple {
+  animation: rippleWave 2s infinite;
+}
+
+/* Scanner Laser Sweep */
+@keyframes scanline {
+  0% {
+    top: 8%;
+    opacity: 0.8;
+  }
+  50% {
+    top: 88%;
+    opacity: 1;
+  }
+  100% {
+    top: 8%;
+    opacity: 0.8;
+  }
+}
+
+.animate-scanline {
+  animation: scanline 2s ease-in-out infinite;
+}
+
+/* Print Optimization for Posters & Counter Signs */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  body {
+    background-color: white !important;
+    color: black !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .print\:hidden,
+  header,
+  main,
+  nav,
+  aside,
+  footer {
+    display: none !important;
+  }
+  
+  .fixed.inset-0 {
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+  
+  #printable-poster-container {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  #printable-poster-sheet {
+    box-shadow: none !important;
+    border: 3px solid #1D4E3E !important;
+    margin: 0 auto !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    width: 100% !important;
+    max-width: 460px !important;
+    background-color: #FAF7F2 !important;
+  }
+}
+
+/* Custom Smooth Clay Scrollbar for Cashier Panels */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.7);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.55);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.85);
+}
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.55) rgba(241, 245, 249, 0.7);
+  -webkit-overflow-scrolling: touch;
+}

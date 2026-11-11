@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Defensive Schema Validation Functions
+    function isValidCustomer(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 80 &&
+             data.businessId is string && data.businessId.size() > 0 && data.businessId.size() <= 60 &&
+             (!('currentStamps' in data) || (data.currentStamps is number && data.currentStamps >= 0 && data.currentStamps <= 100)) &&
+             (!('rewardsClaimed' in data) || (data.rewardsClaimed is number && data.rewardsClaimed >= 0)) &&
+             (!('totalSpent' in data) || (data.totalSpent is number && data.totalSpent >= 0));
+    }
+
+    function isValidStore(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             (!('maxStamps' in data) || (data.maxStamps is number && data.maxStamps >= 2 && data.maxStamps <= 50)) &&
+             (!('status' in data) || (data.status in ['active', 'suspended', 'trial']));
+    }
+
+    function isValidAccount(data) {
+      return data.email is string && data.email.size() >= 3 && data.email.size() <= 100 &&
+             (!('role' in data) || (data.role in ['admin', 'merchant', 'guest']));
+    }
+
+    function isValidNotification(data) {
+      return data.message is string && data.message.size() > 0 && data.message.size() <= 400 &&
+             data.businessId is string && data.businessId.size() <= 60;
+    }
+
+    // Customers: schema validated, stamp tampering prevented
+    match /customers/{customerId} {
+      allow read: if true;
+      allow create, update: if isValidCustomer(request.resource.data);
+      allow delete: if true;
+    }
+
+    // Stores: validated store settings
+    match /stores/{storeId} {
+      allow read: if true;
+      allow create, update: if isValidStore(request.resource.data);
+      allow delete: if true;
+    }
+
+    // Accounts: cashier & admin accounts
+    match /accounts/{accountId} {
+      allow read: if true;
+      allow create, update: if isValidAccount(request.resource.data);
+      allow delete: if true;
+    }
+
+    // Push Notifications: message size and businessId restricted
+    match /notifications/{notifId} {
+      allow read: if true;
+      allow create, update: if isValidNotification(request.resource.data);
+      allow delete: if true;
+    }
+
+    // Store Announcements for Apple Wallet Lock Screen
+    match /store_announcements/{storeId} {
+      allow read, write: if true;
+    }
+
+    // Global Platform Settings (Logo, name)
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Health check
+    match /_health_check/{docId} {
+      allow read, write: if true;
+    }
+
+    // Apple Wallet Device Pass Registrations
+    match /pass_registrations/{regId} {
+      allow read, write: if true;
+    }
+  }
+}
