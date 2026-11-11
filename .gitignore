@@ -31,6 +31,9 @@ google-wallet-key.json
 *.csr
 *.p12
 *.p8
+*.jks
+*.keystore
+android/app/keystores/
 apple-certs/
 functions/certs/
 
