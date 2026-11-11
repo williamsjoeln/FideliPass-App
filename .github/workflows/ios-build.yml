@@ -123,7 +123,7 @@ jobs:
           echo "✅ FideliPass.ipa packaged successfully!"
 
       - name: 🚀 Upload directly to App Store Connect / TestFlight
-        if: ${{ github.event.inputs.upload_to_testflight == 'true' }}
+        if: ${{ github.event_name == 'push' || github.event.inputs.upload_to_testflight != 'false' }}
         env:
           KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
