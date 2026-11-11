@@ -1573,8 +1573,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F0F4F8] text-slate-900 flex flex-col font-sans selection:bg-[#E8F1EC] selection:text-[#1D4E3E] overflow-x-hidden">
-      {/* Top Global Control Bar - Claymorphic Header */}
-      {viewMode !== 'customer' && (
+      {/* Top Global Control Bar - Claymorphic Header (hidden in native mobile apps to avoid duplicate header) */}
+      {!isNativeMobileApp() && viewMode !== 'customer' && (
         <header className="bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 lg:px-10 py-3.5 lg:py-4 sticky top-0 z-40 shadow-sm print:hidden">
           <div className="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-3">
             {/* Logo & Store Title */}
@@ -1850,8 +1850,8 @@ export default function App() {
         </header>
       )}
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-[1440px] w-full mx-auto p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col justify-center print:hidden">
+      {/* Main Container - Edge to edge on mobile, padded on desktop */}
+      <main className="flex-1 max-w-[1440px] w-full mx-auto p-0 sm:p-4 lg:p-8 flex flex-col justify-center print:hidden">
         {/* ================= DUAL MODE: SIDE BY SIDE ================= */}
         {viewMode === 'dual' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

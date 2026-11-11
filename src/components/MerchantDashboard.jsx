@@ -478,9 +478,9 @@ export function MerchantDashboard({
   }
 
   return (
-    <div className="w-full max-w-md lg:max-w-4xl xl:max-w-5xl mx-auto clay-card bg-slate-50 min-h-[750px] lg:min-h-[820px] flex flex-col overflow-hidden relative text-left transition-all">
-      {/* Top App Header */}
-      <header className="px-5 py-3.5 lg:px-8 lg:py-4 bg-white border-b border-slate-100 flex items-center justify-between sticky top-0 z-20 shadow-xs">
+    <div className="w-full min-h-screen sm:min-h-[750px] sm:max-w-md lg:max-w-4xl xl:max-w-5xl mx-auto bg-slate-50 sm:clay-card sm:rounded-[32px] flex flex-col overflow-x-hidden relative text-left transition-all">
+      {/* Top App Header with safe area for iPhone Dynamic Island / Android status bar */}
+      <header className="px-4 py-3 sm:px-6 lg:px-8 lg:py-4 pt-[max(env(safe-area-inset-top),0.85rem)] bg-white border-b border-slate-100 flex items-center justify-between sticky top-0 z-20 shadow-xs">
         <div className="flex items-center gap-2.5 sm:gap-3">
           <div className="w-9 h-9 lg:w-11 lg:h-11 rounded-2xl bg-white text-gray-900 flex items-center justify-center font-black text-sm lg:text-base shadow-xs border border-gray-100 overflow-hidden p-1">
             {platformLogo ? (
@@ -2053,7 +2053,7 @@ export function MerchantDashboard({
       </div>
 
       {/* ================= BOTTOM NAVIGATION BAR (Claymorphic Navigation) ================= */}
-      <nav className="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200/90 px-4 py-2.5 lg:py-3.5 flex items-center justify-around z-30 shadow-lg">
+      <nav className="fixed sm:absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200/90 px-4 py-2 sm:py-2.5 pb-[max(env(safe-area-inset-bottom),0.75rem)] flex items-center justify-around z-30 shadow-lg">
         {/* Tab 1: Hoy */}
         <button
           onClick={() => {

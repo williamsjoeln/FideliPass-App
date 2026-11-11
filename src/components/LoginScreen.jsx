@@ -104,12 +104,20 @@ export function LoginScreen({
   const [error, setError] = useState('');
   const [showForgotModal, setShowForgotModal] = useState(false);
   
-  // Only available on localhost during development - NEVER on public production
-  const isLocalDev = typeof window !== 'undefined' && (
-    window.location.hostname === 'localhost' || 
+  // Native mobile app detection
+  const isNative = typeof window !== 'undefined' && Boolean(
+    window.Capacitor?.isNativePlatform?.() ||
+    window.location.protocol === 'capacitor:' ||
+    window.location.protocol === 'ionic:' ||
+    (window.location.hostname === 'localhost' && window.Capacitor)
+  );
+
+  // Only available on desktop localhost during development - NEVER on mobile or public production
+  const isLocalDev = !isNative && typeof window !== 'undefined' && (
+    (window.location.hostname === 'localhost' && window.location.port !== '') || 
     window.location.hostname === '127.0.0.1' ||
     window.location.hostname.startsWith('192.168.')
-  );
+  ) && window.location.protocol !== 'capacitor:' && window.location.protocol !== 'ionic:';
   const [showDevAccounts, setShowDevAccounts] = useState(false);
   const [failedAttempts, setFailedAttempts] = useState(() => {
     try {
@@ -221,22 +229,22 @@ export function LoginScreen({
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F4F8] flex flex-col justify-center items-center p-4 selection:bg-[#E8F1EC] selection:text-[#1D4E3E]">
-      <div className="w-full max-w-md clay-card bg-white overflow-hidden animate-fade-in text-left shadow-2xl">
-        {/* Header - Claymorphic Brand Header */}
-        <div className="p-7 bg-gradient-to-br from-[#1D4E3E] to-[#153B2F] text-white text-center relative border-b border-white/10 rounded-t-[28px]">
-          {onBackToLanding && (
+    <div className="min-h-screen w-full bg-[#153B2F] sm:bg-[#F0F4F8] flex flex-col justify-between sm:justify-center items-center selection:bg-[#E8F1EC] selection:text-[#1D4E3E]">
+      <div className="w-full min-h-screen sm:min-h-0 sm:max-w-md sm:rounded-[32px] sm:clay-card bg-white overflow-y-auto flex flex-col justify-between sm:shadow-2xl">
+        {/* Header - Edge-to-edge on mobile with safe area */}
+        <div className="w-full pt-[max(env(safe-area-inset-top),2rem)] pb-7 px-6 bg-gradient-to-br from-[#1D4E3E] to-[#153B2F] text-white text-center relative border-b border-white/10 sm:rounded-t-[32px]">
+          {!isNative && onBackToLanding && (
             <button
               type="button"
               onClick={onBackToLanding}
-              className="absolute top-4 left-4 text-xs font-bold text-white/80 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
+              className="absolute top-[max(env(safe-area-inset-top),1rem)] left-4 text-xs font-bold text-white/80 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
             >
               <span>{t.back}</span>
             </button>
           )}
 
           {/* Language Switcher ES / EN on top right */}
-          <div className="absolute top-4 right-4 flex items-center bg-black/25 backdrop-blur-md p-0.5 rounded-xl border border-white/20 text-[10px] font-black">
+          <div className="absolute top-[max(env(safe-area-inset-top),1rem)] right-4 flex items-center bg-black/25 backdrop-blur-md p-0.5 rounded-xl border border-white/20 text-[10px] font-black">
             <button
               type="button"
               onClick={() => toggleLang('es')}
@@ -273,8 +281,8 @@ export function LoginScreen({
           </div>
         </div>
 
-        {/* Form Body */}
-        <div className="p-6 sm:p-7">
+        {/* Form Body - Full mobile width */}
+        <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
           <div className="text-center mb-5">
             <h3 className="font-heading font-black text-lg text-gray-900">{t.title}</h3>
             <p className="text-xs text-gray-500 font-semibold mt-0.5">{t.subtitle}</p>
@@ -408,7 +416,7 @@ export function LoginScreen({
         </div>
 
         {/* Security badge */}
-        <div className="p-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-center gap-2 text-[11px] text-gray-500 font-semibold rounded-b-[28px]">
+        <div className="p-4 sm:p-3.5 pb-[max(env(safe-area-inset-bottom),1.5rem)] sm:pb-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-center gap-2 text-[11px] text-gray-500 font-semibold sm:rounded-b-[32px]">
           <ShieldCheck size={15} className="text-[#1D4E3E]" />
           <span>{t.securityBadge}</span>
         </div>
