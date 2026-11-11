@@ -49,8 +49,25 @@ export function MerchantDashboard({
         if (saved === 'en' || saved === 'es') return saved;
       } catch {}
     }
-    return business?.language === 'en' ? 'en' : 'es';
+    return appLang || (business?.language === 'en' ? 'en' : 'es');
   });
+
+  // Keep in sync with appLang and localStorage
+  useEffect(() => {
+    if (appLang && (appLang === 'en' || appLang === 'es') && appLang !== localLang) {
+      setLocalLang(appLang);
+    }
+  }, [appLang]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('fidelipass_lang');
+      if (saved && (saved === 'en' || saved === 'es')) {
+        setLocalLang(saved);
+        if (setAppLang) setAppLang(saved);
+      }
+    } catch {}
+  }, []);
 
   const lang = appLang || localLang;
 

@@ -848,6 +848,13 @@ export default function App() {
 
   // Handle Login
   const handleLogin = (account, rememberMe = true) => {
+    // Synchronize language selected at login screen
+    try {
+      const savedLang = localStorage.getItem('fidelipass_lang');
+      if (savedLang === 'en' || savedLang === 'es') {
+        setAppLang(savedLang);
+      }
+    } catch {}
     setCurrentUser(account);
     try {
       localStorage.setItem('fidelipass_remember_me', String(rememberMe));
@@ -1505,6 +1512,8 @@ export default function App() {
           accounts={accounts}
           onLogin={handleLogin}
           onBackToLanding={isNative ? null : () => setShowLoginModal(false)}
+          currentLang={appLang}
+          onToggleLang={toggleAppLang}
         />
       );
     }

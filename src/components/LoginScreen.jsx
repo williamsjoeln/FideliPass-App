@@ -60,9 +60,12 @@ export function LoginScreen({
   onBackToLanding,
   platformName = "FideliPass", 
   platformLogo = '/logos/fidelipass-logo.png',
-  accounts = INITIAL_ACCOUNTS 
+  accounts = INITIAL_ACCOUNTS,
+  currentLang,
+  onToggleLang 
 }) {
   const [lang, setLang] = useState(() => {
+    if (currentLang === 'en' || currentLang === 'es') return currentLang;
     if (typeof window !== 'undefined') {
       try {
         const urlParams = new URLSearchParams(window.location.search);
@@ -76,8 +79,18 @@ export function LoginScreen({
     return 'es';
   });
 
+  // Sync state if parent language changes
+  React.useEffect(() => {
+    if (currentLang && (currentLang === 'en' || currentLang === 'es') && currentLang !== lang) {
+      setLang(currentLang);
+    }
+  }, [currentLang]);
+
   const toggleLang = (newLang) => {
     setLang(newLang);
+    if (onToggleLang) {
+      onToggleLang(newLang);
+    }
     try {
       localStorage.setItem('fidelipass_lang', newLang);
     } catch {}
@@ -200,6 +213,10 @@ export function LoginScreen({
 
     // Success! Reset attempts and enter ONLY their assigned store
     try {
+      localStorage.setItem('fidelipass_lang', lang);
+      if (onToggleLang) {
+        onToggleLang(lang);
+      }
       localStorage.setItem('fidelipass_remember_me', String(rememberMe));
       if (rememberMe) {
         localStorage.setItem('fidelipass_remembered_email', trimmedEmail);
