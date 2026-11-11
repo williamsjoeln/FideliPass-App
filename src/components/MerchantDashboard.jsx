@@ -458,7 +458,7 @@ export function MerchantDashboard({
           <div className="w-full max-w-md pt-2 flex flex-col sm:flex-row gap-2.5">
             <button
               onClick={handleContactAdmin}
-              className="flex-1 clay-btn bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-4 text-xs font-black flex items-center justify-center gap-2 cursor-pointer shadow-md"
+              className="flex-1 clay-btn bg-[#007AFF] hover:bg-[#0062E0] text-white py-3 px-4 text-xs font-black flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
               <span>📲 Contactar para Reactivar</span>
             </button>
@@ -490,7 +490,7 @@ export function MerchantDashboard({
             )}
           </div>
           <div>
-            <h1 className="font-heading font-black text-base lg:text-xl text-[#1D4E3E] leading-tight">{platformName}</h1>
+            <h1 className="font-heading font-black text-base lg:text-xl text-[#007AFF] leading-tight">{platformName}</h1>
             <p className="text-[10px] lg:text-xs text-gray-500 font-bold">{isEn ? 'cashier terminal' : 'terminal de caja'} • {business.name}</p>
           </div>
         </div>
@@ -502,7 +502,7 @@ export function MerchantDashboard({
               type="button"
               onClick={() => toggleLang('es')}
               className={`px-1.5 py-0.5 rounded-lg transition-all cursor-pointer ${
-                lang === 'es' ? 'bg-[#1D4E3E] text-white shadow-xs' : 'text-gray-500 hover:text-gray-800'
+                lang === 'es' ? 'bg-[#007AFF] text-white shadow-xs' : 'text-gray-500 hover:text-gray-800'
               }`}
             >
               ES
@@ -511,7 +511,7 @@ export function MerchantDashboard({
               type="button"
               onClick={() => toggleLang('en')}
               className={`px-1.5 py-0.5 rounded-lg transition-all cursor-pointer ${
-                lang === 'en' ? 'bg-[#1D4E3E] text-white shadow-xs' : 'text-gray-500 hover:text-gray-800'
+                lang === 'en' ? 'bg-[#007AFF] text-white shadow-xs' : 'text-gray-500 hover:text-gray-800'
               }`}
             >
               EN
@@ -550,7 +550,7 @@ export function MerchantDashboard({
             <div className="p-4 lg:p-6 clay-card bg-white flex items-start gap-3.5 lg:gap-4.5">
               <div 
                 onClick={() => setActiveTab('mas')}
-                className="w-12 h-12 lg:w-16 lg:h-16 rounded-2xl bg-slate-50 border border-slate-200 text-[#1D4E3E] flex items-center justify-center shrink-0 overflow-hidden cursor-pointer p-1 relative group shadow-sm"
+                className="w-12 h-12 lg:w-16 lg:h-16 rounded-2xl bg-slate-50 border border-slate-200 text-[#007AFF] flex items-center justify-center shrink-0 overflow-hidden cursor-pointer p-1 relative group shadow-sm"
                 title={isEn ? "Configure store logo" : "Configurar logo del negocio"}
               >
                 {business.logo ? (
@@ -568,11 +568,11 @@ export function MerchantDashboard({
                 </h3>
                 <p className="text-[11px] lg:text-sm text-gray-500 font-medium mt-0.5 leading-snug">
                   {isEn ? 'Rule: Every ' : 'Regla: Cada '}
-                  <span className="font-extrabold text-[#1D4E3E]">
+                  <span className="font-extrabold text-[#007AFF]">
                     {business.maxStamps} {isEn ? 'stamps' : 'sellos'}
                   </span>
                   {isEn ? ' unlocks ' : ' se premia con '}
-                  <span className="font-extrabold text-[#1D4E3E]">{business.rewardTitle}</span>.
+                  <span className="font-extrabold text-[#007AFF]">{business.rewardTitle}</span>.
                 </p>
                 <div className="mt-3 flex gap-2">
                   <button
@@ -600,10 +600,10 @@ export function MerchantDashboard({
                           : `✅ ¡Enlace copiado al portapapeles!\n\n${link}\n\nPégalo en tu bio de TikTok, Instagram, tu web o pásalo por WhatsApp para que tus clientes se registren y descarguen su tarjeta.`
                       );
                     }}
-                    className="clay-btn clay-btn-light px-3 py-1.5 lg:px-4 lg:py-2 text-emerald-800 text-[11px] lg:text-xs font-black cursor-pointer flex items-center gap-1 shadow-xs hover:bg-emerald-50 border border-emerald-200"
+                    className="clay-btn clay-btn-light px-3 py-1.5 lg:px-4 lg:py-2 text-sky-800 text-[11px] lg:text-xs font-black cursor-pointer flex items-center gap-1 shadow-xs hover:bg-sky-50 border border-sky-200"
                     title={isEn ? "Copy registration link" : "Copiar enlace para bio de TikTok, Instagram o WhatsApp"}
                   >
-                    <Share2 size={13} className="text-emerald-600" />
+                    <Share2 size={13} className="text-[#007AFF]" />
                     <span>{isEn ? '🔗 Registration Link' : '🔗 Enlace de Registro'}</span>
                   </button>
                 </div>
@@ -619,7 +619,7 @@ export function MerchantDashboard({
                 <div className="text-2xl lg:text-4xl font-black font-heading text-gray-900 mt-1 lg:mt-2">
                   ${todayRevenue.toFixed(2)}
                 </div>
-                <div className="text-[10px] lg:text-xs text-emerald-600 font-extrabold mt-1 flex items-center gap-1">
+                <div className="text-[10px] lg:text-xs text-[#007AFF] font-extrabold mt-1 flex items-center gap-1">
                   <TrendingUp size={13} /> {isEn ? "Today's sales" : "Ventas de hoy"}
                 </div>
               </div>
@@ -628,7 +628,7 @@ export function MerchantDashboard({
                 <div className="text-[11px] lg:text-xs uppercase font-black text-gray-400 tracking-wider">
                   {isEn ? "Stamps Today" : "Sellos hoy"}
                 </div>
-                <div className="text-2xl lg:text-4xl font-black font-heading text-[#1D4E3E] mt-1 lg:mt-2">
+                <div className="text-2xl lg:text-4xl font-black font-heading text-[#007AFF] mt-1 lg:mt-2">
                   {todayStampsCount}
                 </div>
                 <div className="text-[10px] lg:text-xs text-gray-500 font-bold mt-1">
@@ -668,7 +668,7 @@ export function MerchantDashboard({
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2.5">
                             <div className={`w-9 h-9 rounded-2xl flex items-center justify-center font-black text-xs shadow-xs ${
-                              isReward ? 'bg-amber-100 text-amber-900' : 'bg-[#E8F1EC] text-[#1D4E3E]'
+                              isReward ? 'bg-amber-100 text-amber-900' : 'bg-[#F0F7FF] text-[#007AFF]'
                             }`}>
                               {initials}
                             </div>
@@ -684,7 +684,7 @@ export function MerchantDashboard({
                             </div>
                           </div>
                           <span className={`clay-badge px-2.5 py-0.5 text-[10px] font-black ${
-                            isReward ? 'bg-amber-100 text-amber-900' : 'bg-emerald-50 text-emerald-800'
+                            isReward ? 'bg-amber-100 text-amber-900' : 'bg-sky-50 text-sky-800'
                           }`}>
                             {isReward ? (isEn ? 'Reward ready' : 'Premio listo') : (isEn ? '+1 Stamp' : '+1 Sello')}
                           </span>
@@ -701,7 +701,7 @@ export function MerchantDashboard({
                           <button
                             onClick={() => handleSelectCustomer(c.id)}
                             className={`clay-btn text-xs font-black flex items-center gap-1 cursor-pointer px-2 py-1 ${
-                              isReward ? 'text-[#FF5E36]' : 'text-[#1D4E3E]'
+                              isReward ? 'text-[#FF5E36]' : 'text-[#007AFF]'
                             }`}
                           >
                             <span>{isReward ? (isEn ? 'Redeem reward' : 'Canjear premio') : (isEn ? 'View pass' : 'Ver tarjeta')}</span>
@@ -713,7 +713,7 @@ export function MerchantDashboard({
                   })
                 ) : (
                   <div className="p-6 clay-card bg-white text-center">
-                    <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-[#1D4E3E] mx-auto flex items-center justify-center font-black text-base mb-2 shadow-xs">
+                    <div className="w-11 h-11 rounded-2xl bg-sky-50 text-[#007AFF] mx-auto flex items-center justify-center font-black text-base mb-2 shadow-xs">
                       🌱
                     </div>
                     <h4 className="text-xs font-black text-gray-800">
@@ -730,7 +730,7 @@ export function MerchantDashboard({
             </div>
 
             {/* Micro SaaS Pitch reminder */}
-            <div className="p-3.5 clay-card bg-emerald-50/90 text-[11px] text-emerald-900 font-medium">
+            <div className="p-3.5 clay-card bg-sky-50/90 text-[11px] text-slate-900 font-medium">
               ✨ <span className="font-black">{isEn ? `Official Terminal for ${business.name}:` : `Terminal Oficial para ${business.name}:`}</span> {isEn ? 'Includes digital passes for Apple Wallet and Google Wallet with real-time stamps and push notifications.' : 'Incluye tarjetas digitales para Apple Wallet y Google Wallet con sellos y notificaciones en vivo.'}
             </div>
           </div>
@@ -810,7 +810,7 @@ export function MerchantDashboard({
                   className="p-4 clay-card bg-white cursor-pointer flex items-center justify-between"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-2xl bg-[#1D4E3E] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-sm">
+                    <div className="w-10 h-10 rounded-2xl bg-[#007AFF] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-sm">
                       {cust.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
                     </div>
                     <div className="min-w-0">
@@ -829,7 +829,7 @@ export function MerchantDashboard({
 
                   <div className="text-right shrink-0 pl-2 flex items-center gap-2">
                     <div>
-                      <div className="text-xs font-black text-[#1D4E3E]">
+                      <div className="text-xs font-black text-[#007AFF]">
                         ${cust.totalSpent ? cust.totalSpent.toFixed(2) : '0.00'}
                       </div>
                       <ChevronRight size={16} className="text-gray-400 ml-auto mt-0.5" />
@@ -842,7 +842,7 @@ export function MerchantDashboard({
                         setEditCustEmail(cust.email || '');
                         setEditCustPhone(cust.phone || '');
                       }}
-                      className="p-2 rounded-xl bg-slate-100 hover:bg-emerald-50 text-gray-500 hover:text-emerald-700 transition-colors shadow-2xs cursor-pointer"
+                      className="p-2 rounded-xl bg-slate-100 hover:bg-sky-50 text-gray-500 hover:text-sky-700 transition-colors shadow-2xs cursor-pointer"
                       title="Editar datos del cliente"
                     >
                       <Edit3 size={14} />
@@ -884,13 +884,13 @@ export function MerchantDashboard({
             <div className="p-4.5 clay-card bg-white">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-[#1D4E3E] text-white flex items-center justify-center font-black text-base shadow-sm">
+                  <div className="w-12 h-12 rounded-2xl bg-[#007AFF] text-white flex items-center justify-center font-black text-base shadow-sm">
                     {selectedCustomer.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="text-sm font-black text-gray-900">{selectedCustomer.name}</h3>
-                      <span className="clay-badge px-2 py-0.5 text-[10px] font-black bg-emerald-100 text-emerald-900">
+                      <span className="clay-badge px-2 py-0.5 text-[10px] font-black bg-sky-100 text-slate-900">
                         {selectedCustomer.status}
                       </span>
                     </div>
@@ -927,10 +927,10 @@ export function MerchantDashboard({
                       setEditCustEmail(selectedCustomer.email || '');
                       setEditCustPhone(selectedCustomer.phone || '');
                     }}
-                    className="clay-btn clay-btn-light px-3 py-1.5 text-emerald-900 text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
+                    className="clay-btn clay-btn-light px-3 py-1.5 text-slate-900 text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
                     title={isEn ? "Edit profile" : "Editar datos"}
                   >
-                    <Edit3 size={14} className="text-emerald-700" />
+                    <Edit3 size={14} className="text-sky-700" />
                     <span>{isEn ? '✏️ Edit' : '✏️ Editar'}</span>
                   </button>
 
@@ -973,14 +973,14 @@ export function MerchantDashboard({
                 {/* Wallet Pass Item */}
                 <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-2xl bg-[#1D4E3E] text-white flex items-center justify-center text-lg shadow-sm">
+                    <div className="w-9 h-9 rounded-2xl bg-[#007AFF] text-white flex items-center justify-center text-lg shadow-sm">
                       {storeIcon}
                     </div>
                     <div>
                       <div className="text-xs font-black text-gray-900">
                         {isEn ? `${business.name} Stamp Card` : `Tarjeta de sellos ${business.name}`}
                       </div>
-                      <div className="text-[10px] text-emerald-700 font-bold">
+                      <div className="text-[10px] text-sky-700 font-bold">
                         ● {isEn ? `On ${selectedCustomer.device}` : `En ${selectedCustomer.device}`}
                       </div>
                     </div>
@@ -998,7 +998,7 @@ export function MerchantDashboard({
                     </span>
                     <span className="text-gray-500 font-bold">
                       {Math.max(0, business.maxStamps - selectedCustomer.currentStamps) === 0 ? (
-                        <span className="text-emerald-600 font-black">{isEn ? 'Reward ready!' : '¡Premio listo!'}</span>
+                        <span className="text-[#007AFF] font-black">{isEn ? 'Reward ready!' : '¡Premio listo!'}</span>
                       ) : (
                         isEn ? `${business.maxStamps - selectedCustomer.currentStamps} stamps left` : `Faltan ${business.maxStamps - selectedCustomer.currentStamps} sellos`
                       )}
@@ -1098,7 +1098,7 @@ export function MerchantDashboard({
                         );
                         window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${msg}`, '_blank');
                       }}
-                      className="clay-btn bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-3 text-xs font-black flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
+                      className="clay-btn bg-[#007AFF] hover:bg-[#0062E0] text-white py-2.5 px-3 text-xs font-black flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
                     >
                       <span>💬 WhatsApp</span>
                     </button>
@@ -1142,13 +1142,13 @@ export function MerchantDashboard({
             </div>
 
             {pushSentSuccess && (
-              <div className="p-3.5 clay-card bg-emerald-50 text-xs font-black text-emerald-900 flex items-start gap-2.5 animate-fade-in shadow-sm">
-                <Check size={18} className="text-emerald-600 shrink-0 mt-0.5" />
+              <div className="p-3.5 clay-card bg-sky-50 text-xs font-black text-slate-900 flex items-start gap-2.5 animate-fade-in shadow-sm">
+                <Check size={18} className="text-[#007AFF] shrink-0 mt-0.5" />
                 <div>
                   <strong className="block font-black">
                     {isEn ? 'Push notification sent in real-time!' : '¡Notificación Push enviada en tiempo real!'}
                   </strong>
-                  <span className="text-[11px] text-emerald-700 font-medium">
+                  <span className="text-[11px] text-sky-700 font-medium">
                     {isEn 
                       ? 'Broadcasted via Firebase. All members with their pass saved will receive the alert with sound and vibration.' 
                       : 'Se transmitió a Firebase. Todos los clientes con su tarjeta abierta o guardada recibirán la alerta con sonido y vibración.'}
@@ -1184,14 +1184,14 @@ export function MerchantDashboard({
               </div>
 
               {pushTarget === 'individual' && (
-                <div className="p-3.5 bg-emerald-50/80 rounded-2xl border border-emerald-200/80 space-y-2 animate-fade-in shadow-inner">
-                  <label className="block text-[11px] font-black text-emerald-950">
+                <div className="p-3.5 bg-sky-50/80 rounded-2xl border border-sky-200/80 space-y-2 animate-fade-in shadow-inner">
+                  <label className="block text-[11px] font-black text-slate-950">
                     {isEn ? 'Select member:' : 'Selecciona al cliente:'}
                   </label>
                   <select
                     value={selectedIndividualCustomerId}
                     onChange={(e) => setSelectedIndividualCustomerId(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-xs bg-white rounded-xl border border-emerald-300 font-bold text-gray-800 shadow-2xs"
+                    className="w-full px-3.5 py-2.5 text-xs bg-white rounded-xl border border-sky-300 font-bold text-gray-800 shadow-2xs"
                   >
                     {customers.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -1307,7 +1307,7 @@ export function MerchantDashboard({
                     <div key={n.id} className="p-4 clay-card bg-white text-xs shadow-md">
                       <div className="flex justify-between items-center text-gray-400 text-[10px] mb-1.5">
                         <span className="font-bold text-gray-500">{n.sentAt || n.time || (isEn ? 'Recent' : 'Reciente')}</span>
-                        <span className="font-black text-emerald-800 bg-emerald-50 px-2.5 py-0.5 clay-badge border border-emerald-200">
+                        <span className="font-black text-sky-800 bg-sky-50 px-2.5 py-0.5 clay-badge border border-sky-200">
                           {isEn 
                             ? `Delivered to ${n.recipientsCount || n.reach || customers.length || 1}` 
                             : `Entregado a ${n.recipientsCount || n.reach || customers.length || 1}`}
@@ -1341,8 +1341,8 @@ export function MerchantDashboard({
             </div>
 
             {configSaved && (
-              <div className="p-3.5 clay-card bg-emerald-50 text-xs font-black text-emerald-900 flex items-center gap-2 shadow-sm animate-fade-in">
-                <Check size={18} className="text-emerald-600" />
+              <div className="p-3.5 clay-card bg-sky-50 text-xs font-black text-slate-900 flex items-center gap-2 shadow-sm animate-fade-in">
+                <Check size={18} className="text-[#007AFF]" />
                 <span>{isEn ? 'Settings saved successfully!' : '¡Configuración guardada correctamente!'}</span>
               </div>
             )}
@@ -1420,7 +1420,7 @@ export function MerchantDashboard({
                       </span>
                     )}
                   </label>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-100 text-sky-800">
                     Apple & Google
                   </span>
                 </div>
@@ -1452,8 +1452,8 @@ export function MerchantDashboard({
 
                 {isSuperAdmin ? (
                   <div className="space-y-2">
-                    <div className="mb-2 p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] font-bold flex items-center gap-1.5">
-                      <ShieldCheck size={14} className="text-emerald-700" />
+                    <div className="mb-2 p-2 rounded-lg bg-sky-50 border border-sky-200 text-slate-900 text-[11px] font-bold flex items-center gap-1.5">
+                      <ShieldCheck size={14} className="text-sky-700" />
                       <span>{isEn ? 'SuperAdmin Mode: Banner editing unlocked' : 'Modo SuperAdmin: Edición de banner habilitada'}</span>
                     </div>
                     <input
@@ -1519,7 +1519,7 @@ export function MerchantDashboard({
                           const msg = encodeURIComponent(`Hola Williams / FideliPass, soy de *${business?.name || 'mi local'}*. Deseo solicitar la actualización del banner panorámico de mi tarjeta digital.`);
                           window.open(`https://api.whatsapp.com/send?phone=593992407645&text=${msg}`, '_blank');
                         }}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black shadow-xs cursor-pointer transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#007AFF] hover:bg-[#0062E0] text-white text-[11px] font-black shadow-xs cursor-pointer transition-colors"
                       >
                         <ExternalLink size={13} />
                         <span>{isEn ? 'Request Banner Change via WhatsApp' : 'Solicitar cambio de Banner por WhatsApp'}</span>
@@ -1557,8 +1557,8 @@ export function MerchantDashboard({
 
                 {isSuperAdmin ? (
                   <>
-                    <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] font-bold flex items-center gap-1.5">
-                      <ShieldCheck size={14} className="text-emerald-700" />
+                    <div className="p-2 rounded-lg bg-sky-50 border border-sky-200 text-slate-900 text-[11px] font-bold flex items-center gap-1.5">
+                      <ShieldCheck size={14} className="text-sky-700" />
                       <span>{isEn ? 'SuperAdmin Mode: Card color editing unlocked' : 'Modo SuperAdmin: Edición de color habilitada'}</span>
                     </div>
 
@@ -1587,7 +1587,7 @@ export function MerchantDashboard({
                     {/* Custom Color Input */}
                     <div className="flex items-center gap-2 pt-1">
                       <label className="clay-btn clay-btn-light px-3 py-1.5 text-xs font-bold text-gray-700 flex items-center gap-1.5 cursor-pointer shadow-2xs">
-                        <Palette size={13} className="text-[#1D4E3E]" />
+                        <Palette size={13} className="text-[#007AFF]" />
                         <span>{isEn ? 'Pick another color:' : 'Elegir otro color:'}</span>
                         <input
                           type="color"
@@ -1647,13 +1647,13 @@ export function MerchantDashboard({
                     onClick={() => setEditStampType('logo')}
                     className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                       editStampType === 'logo'
-                        ? 'bg-white border-[#1D4E3E] ring-2 ring-[#1D4E3E]/20 shadow-xs'
+                        ? 'bg-white border-[#007AFF] ring-2 ring-[#007AFF]/20 shadow-xs'
                         : 'bg-white/60 border-slate-200 hover:bg-white text-gray-600'
                     }`}
                   >
                     <div className="flex items-center gap-2 font-black text-xs text-gray-900">
                       <span>{isEn ? '🖼️ Store Logo' : '🖼️ Logo de tu Negocio'}</span>
-                      {editStampType === 'logo' && <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded-full font-bold">{isEn ? 'Active' : 'Activo'}</span>}
+                      {editStampType === 'logo' && <span className="text-[10px] bg-sky-100 text-sky-800 px-1.5 py-0.2 rounded-full font-bold">{isEn ? 'Active' : 'Activo'}</span>}
                     </div>
                     <p className="text-[10px] text-gray-500 mt-1 leading-snug">
                       {isEn 
@@ -1667,13 +1667,13 @@ export function MerchantDashboard({
                     onClick={() => setEditStampType('icon')}
                     className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                       editStampType === 'icon'
-                        ? 'bg-white border-[#1D4E3E] ring-2 ring-[#1D4E3E]/20 shadow-xs'
+                        ? 'bg-white border-[#007AFF] ring-2 ring-[#007AFF]/20 shadow-xs'
                         : 'bg-white/60 border-slate-200 hover:bg-white text-gray-600'
                     }`}
                   >
                     <div className="flex items-center gap-2 font-black text-xs text-gray-900">
                       <span>{isEn ? '✨ Icon / Emoji' : '✨ Ícono / Emoji'}</span>
-                      {editStampType === 'icon' && <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded-full font-bold">{isEn ? 'Active' : 'Activo'}</span>}
+                      {editStampType === 'icon' && <span className="text-[10px] bg-sky-100 text-sky-800 px-1.5 py-0.2 rounded-full font-bold">{isEn ? 'Active' : 'Activo'}</span>}
                     </div>
                     <p className="text-[10px] text-gray-500 mt-1 leading-snug">
                       {isEn 
@@ -1758,7 +1758,7 @@ export function MerchantDashboard({
                       const val = parseInt(e.target.value, 10);
                       setEditMaxStamps(isNaN(val) ? '' : val);
                     }}
-                    className="flex-1 text-center py-2.5 clay-input text-base font-black text-[#1D4E3E]"
+                    className="flex-1 text-center py-2.5 clay-input text-base font-black text-[#007AFF]"
                   />
                   <button
                     type="button"
@@ -1823,7 +1823,7 @@ export function MerchantDashboard({
                       }}
                       className="p-2.5 text-center clay-card bg-slate-50 hover:bg-white text-gray-800 cursor-pointer shadow-xs group"
                     >
-                      <div className="font-black text-xs group-hover:text-[#1D4E3E]">{s.label}</div>
+                      <div className="font-black text-xs group-hover:text-[#007AFF]">{s.label}</div>
                       <div className="text-[9px] text-gray-400 font-semibold mt-0.5">{s.desc}</div>
                     </button>
                   ))}
@@ -1834,7 +1834,7 @@ export function MerchantDashboard({
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-emerald-100 text-[#1D4E3E] flex items-center justify-center font-black shadow-2xs shrink-0">
+                    <div className="w-8 h-8 rounded-xl bg-sky-100 text-[#007AFF] flex items-center justify-center font-black shadow-2xs shrink-0">
                       <MapPin size={16} />
                     </div>
                     <div>
@@ -1855,15 +1855,15 @@ export function MerchantDashboard({
                       onChange={(e) => setEditEnableGeofence(e.target.checked)}
                       className="sr-only peer"
                     />
-                    <div className="w-10 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1D4E3E]"></div>
+                    <div className="w-10 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007AFF]"></div>
                   </label>
                 </div>
 
                 {editEnableGeofence && (
                   <div className="space-y-3 pt-2 border-t border-slate-200/80 animate-fade-in">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-emerald-50/80 p-3 rounded-xl border border-emerald-200">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-sky-50/80 p-3 rounded-xl border border-sky-200">
                       <div className="text-left">
-                        <p className="text-[11px] font-black text-[#1D4E3E]">
+                        <p className="text-[11px] font-black text-[#007AFF]">
                           {isEn ? 'Are you currently at the store?' : '¿Estás ahora mismo en el local?'}
                         </p>
                         <p className="text-[10px] text-slate-600">
@@ -1886,7 +1886,7 @@ export function MerchantDashboard({
                     </div>
 
                     {locationSuccessNotice && (
-                      <p className="text-xs text-emerald-800 font-bold animate-fade-in bg-white p-2 rounded-lg border border-emerald-300">
+                      <p className="text-xs text-sky-800 font-bold animate-fade-in bg-white p-2 rounded-lg border border-sky-300">
                         {locationSuccessNotice}
                       </p>
                     )}
@@ -1958,7 +1958,7 @@ export function MerchantDashboard({
             {/* Change Password Card */}
             <div className="p-5 clay-card bg-white space-y-3.5 shadow-xl">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-emerald-100 text-[#1D4E3E] flex items-center justify-center font-black text-sm shadow-2xs">
+                <div className="w-8 h-8 rounded-xl bg-sky-100 text-[#007AFF] flex items-center justify-center font-black text-sm shadow-2xs">
                   🔒
                 </div>
                 <div>
@@ -1972,8 +1972,8 @@ export function MerchantDashboard({
               </div>
 
               {passwordSuccess && (
-                <div className="p-3 clay-card bg-emerald-50 text-xs text-emerald-900 font-bold flex items-center gap-2">
-                  <Check size={16} className="text-emerald-600" />
+                <div className="p-3 clay-card bg-sky-50 text-xs text-slate-900 font-bold flex items-center gap-2">
+                  <Check size={16} className="text-[#007AFF]" />
                   <span>{isEn ? 'Password updated successfully!' : '¡Contraseña actualizada con éxito!'}</span>
                 </div>
               )}
@@ -2090,10 +2090,10 @@ export function MerchantDashboard({
             handleSelectCustomer(null);
             setActiveTab('hoy');
           }}
-          className={`flex flex-col items-center py-1 px-2.5 lg:px-5 lg:py-2 rounded-2xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center py-1.5 px-3 lg:px-5 lg:py-2 rounded-2xl transition-all cursor-pointer ${
             activeTab === 'hoy' && !selectedCustomer 
-              ? 'clay-btn-light text-[#1D4E3E] font-black' 
-              : 'text-gray-400 hover:text-gray-700'
+              ? 'bg-sky-50 text-[#007AFF] font-black' 
+              : 'text-slate-400 hover:text-slate-700'
           }`}
         >
           <Home size={20} />
@@ -2106,21 +2106,21 @@ export function MerchantDashboard({
             handleSelectCustomer(null);
             setActiveTab('clientes');
           }}
-          className={`flex flex-col items-center py-1 px-2.5 lg:px-5 lg:py-2 rounded-2xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center py-1.5 px-3 lg:px-5 lg:py-2 rounded-2xl transition-all cursor-pointer ${
             activeTab === 'clientes' || selectedCustomer 
-              ? 'clay-btn-light text-[#1D4E3E] font-black' 
-              : 'text-gray-400 hover:text-gray-700'
+              ? 'bg-sky-50 text-[#007AFF] font-black' 
+              : 'text-slate-400 hover:text-slate-700'
           }`}
         >
           <Users size={20} />
           <span className="text-[10px] lg:text-xs font-bold mt-0.5">{isEn ? 'Members' : 'Clientes'}</span>
         </button>
 
-        {/* Tab 3: Central Round Orange Button - ESCANEAR (Tactile 3D Clay Button) */}
+        {/* Tab 3: Central Round Orange Button - ESCANEAR */}
         <div className="relative -top-4 lg:-top-5">
           <button
             onClick={onOpenScanner}
-            className="w-16 h-16 lg:w-20 lg:h-20 rounded-full clay-btn clay-btn-orange text-white flex flex-col items-center justify-center shadow-xl cursor-pointer animate-ripple"
+            className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-tr from-[#FF5E36] to-[#FF8466] text-white flex flex-col items-center justify-center shadow-lg shadow-orange-500/30 cursor-pointer active:scale-95 transition-all"
           >
             <QrCode size={26} />
             <span className="text-[9px] lg:text-[10px] font-black uppercase tracking-tighter mt-0.5">{isEn ? 'Scan' : 'Escanear'}</span>
@@ -2133,10 +2133,10 @@ export function MerchantDashboard({
             handleSelectCustomer(null);
             setActiveTab('push');
           }}
-          className={`flex flex-col items-center py-1 px-2.5 lg:px-5 lg:py-2 rounded-2xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center py-1.5 px-3 lg:px-5 lg:py-2 rounded-2xl transition-all cursor-pointer ${
             activeTab === 'push' 
-              ? 'clay-btn-light text-[#1D4E3E] font-black' 
-              : 'text-gray-400 hover:text-gray-700'
+              ? 'bg-sky-50 text-[#007AFF] font-black' 
+              : 'text-slate-400 hover:text-slate-700'
           }`}
         >
           <Bell size={20} />
@@ -2149,10 +2149,10 @@ export function MerchantDashboard({
             handleSelectCustomer(null);
             setActiveTab('mas');
           }}
-          className={`flex flex-col items-center py-1 px-2.5 lg:px-5 lg:py-2 rounded-2xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center py-1.5 px-3 lg:px-5 lg:py-2 rounded-2xl transition-all cursor-pointer ${
             activeTab === 'mas' 
-              ? 'clay-btn-light text-[#1D4E3E] font-black' 
-              : 'text-gray-400 hover:text-gray-700'
+              ? 'bg-sky-50 text-[#007AFF] font-black' 
+              : 'text-slate-400 hover:text-slate-700'
           }`}
         >
           <MoreHorizontal size={20} />
@@ -2166,7 +2166,7 @@ export function MerchantDashboard({
           <div className="w-full max-w-sm clay-card bg-white p-6 shadow-2xl animate-fade-in">
             <div className="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#1D4E3E] flex items-center justify-center shadow-2xs">
+                <div className="w-8 h-8 rounded-xl bg-sky-50 text-[#007AFF] flex items-center justify-center shadow-2xs">
                   <Edit3 size={15} />
                 </div>
                 <h3 className="font-heading font-black text-gray-900 text-sm">
