@@ -41,17 +41,44 @@ import {
 } from './services/firestoreSync';
 import { sendGoogleWalletPushNotification } from './services/googleWalletService';
 import { sendAppleWalletPushNotification } from './services/appleWalletService';
+import { Capacitor } from '@capacitor/core';
+
+export function isNativeMobileApp() {
+  try {
+    if (typeof window === 'undefined') return false;
+    if (Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) {
+      return true;
+    }
+    if (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) {
+      return true;
+    }
+    if (window.location.protocol === 'capacitor:' || window.location.protocol === 'ionic:') {
+      return true;
+    }
+    if (window.location.hostname === 'localhost' && window.Capacitor) {
+      return true;
+    }
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('app') === 'true' || params.get('caja') === 'true' || params.get('native') === 'true') {
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
 
 export function parseFideliPassRoute() {
   if (typeof window === 'undefined') {
     return { storeParam: null, custParam: null, nameParam: null, isLogin: false, forceRegister: false };
   }
   try {
+    const isNative = isNativeMobileApp();
     const params = new URLSearchParams(window.location.search);
     const pathParts = window.location.pathname.split('/').filter(Boolean);
 
     let pathStoreId = null;
-    let isLogin = params.get('login') === 'true' || params.get('caja') === 'true';
+    let isLogin = isNative || params.get('login') === 'true' || params.get('caja') === 'true' || params.get('app') === 'true';
     let forceRegister = params.get('registro') === 'true' || params.get('register') === 'true' || params.get('nuevo') === 'true';
     let forceCard = params.get('demo') === 'true' || params.get('tarjeta') === 'true';
 
@@ -82,9 +109,14 @@ export function parseFideliPassRoute() {
     const custParam = params.get('c') || params.get('cust');
     const nameParam = params.get('n') || params.get('name');
 
+    // On native mobile app, if there is no session, ALWAYS stay in login mode
+    if (isNative && !sessionStorage.getItem('fidelipass_session') && !localStorage.getItem('fidelipass_session')) {
+      return { storeParam: null, custParam: null, nameParam: null, isLogin: true, forceRegister: false, forceCard: false, isAdmin: false };
+    }
+
     return { storeParam, custParam, nameParam, isLogin, forceRegister, forceCard, isAdmin: false };
   } catch {
-    return { storeParam: null, custParam: null, nameParam: null, isLogin: false, forceRegister: false };
+    return { storeParam: null, custParam: null, nameParam: null, isLogin: isNativeMobileApp(), forceRegister: false };
   }
 }
 
@@ -181,6 +213,9 @@ export default function App() {
           return parsed;
         }
       }
+      if (isNativeMobileApp()) {
+        return null;
+      }
       const route = parseFideliPassRoute();
       if (route.storeParam || route.custParam) {
         return { role: 'guest', name: 'Cliente Invitado' };
@@ -211,6 +246,7 @@ export default function App() {
 
   const [showLoginModal, setShowLoginModal] = useState(() => {
     try {
+      if (isNativeMobileApp()) return true;
       const route = parseFideliPassRoute();
       return route.isLogin;
     } catch {
@@ -868,6 +904,7 @@ export default function App() {
     setCurrentUser(null);
     setShowAdminMasterView(false);
     setViewMode('merchant');
+    setShowLoginModal(true);
     try {
       localStorage.removeItem('fidelipass_session');
       localStorage.removeItem('fidelipass_show_admin_master');
@@ -879,7 +916,7 @@ export default function App() {
       sessionStorage.removeItem('fidelipass_view_mode');
     } catch {}
 
-    if (typeof window !== 'undefined') {
+    if (!isNativeMobileApp() && typeof window !== 'undefined') {
       try {
         window.history.replaceState(null, '', '/');
       } catch {}
@@ -1454,19 +1491,20 @@ export default function App() {
     }));
   }, []);
 
-  // If not logged in: show Landing Page as the default root experience
+  // If not logged in: show Login Screen directly on Native Mobile Apps (iOS & Android) or Landing Page on Web
   if (!currentUser) {
+    const isNative = isNativeMobileApp();
     const route = parseFideliPassRoute();
-    const isDirectLoginRequested = route.isLogin;
+    const isDirectLoginRequested = route.isLogin || isNative;
 
-    if (showLoginModal || isDirectLoginRequested) {
+    if (isNative || showLoginModal || isDirectLoginRequested) {
       return (
         <LoginScreen
           platformName={platformName}
           platformLogo={platformLogo}
           accounts={accounts}
           onLogin={handleLogin}
-          onBackToLanding={() => setShowLoginModal(false)}
+          onBackToLanding={isNative ? null : () => setShowLoginModal(false)}
         />
       );
     }
