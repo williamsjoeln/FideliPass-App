@@ -7,7 +7,7 @@ on:
         description: 'Upload directly to App Store Connect / TestFlight'
         required: false
         type: boolean
-        default: false
+        default: true
 
 jobs:
   build:
@@ -35,12 +35,36 @@ jobs:
       - name: 🔄 Sync Capacitor iOS project
         run: npx cap sync ios
 
-      - name: 🛠️ Setup Ruby & Fastlane (optional for TestFlight upload)
-        if: ${{ github.event.inputs.upload_to_testflight == 'true' }}
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
+      - name: 🔐 Install Apple Certificate & Provisioning Profile
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.APPLE_PROVISIONING_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD || 'build123' }}
+        run: |
+          if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
+            echo "Installing Apple Certificate..."
+            CERT_PATH=$RUNNER_TEMP/build_certificate.p12
+            PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+            KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+            echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERT_PATH
+            echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+
+            security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+            security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+            security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+            security import $CERT_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+            security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+            security list-keychain -d user -s $KEYCHAIN_PATH
+
+            mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+            cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/
+            echo "✅ Certificate and Provisioning Profile installed successfully!"
+          else
+            echo "⚠️ No signing certificate found in secrets, continuing in ad-hoc mode."
+          fi
 
       - name: 🔨 Build iOS Archive (.xcarchive)
         run: |
@@ -49,35 +73,51 @@ jobs:
           else
             TARGET_FLAG="-project ios/App/App.xcodeproj"
           fi
-          xcodebuild archive \
-            $TARGET_FLAG \
-            -scheme App \
-            -destination "generic/platform=iOS" \
-            -configuration Release \
-            -archivePath build/App.xcarchive \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO
+
+          if [ -n "${{ secrets.APPLE_CERTIFICATE_BASE64 }}" ]; then
+            echo "Building with Apple Code Signing..."
+            xcodebuild archive \
+              $TARGET_FLAG \
+              -scheme App \
+              -destination "generic/platform=iOS" \
+              -configuration Release \
+              -archivePath build/App.xcarchive
+          else
+            echo "Building ad-hoc unsigned..."
+            xcodebuild archive \
+              $TARGET_FLAG \
+              -scheme App \
+              -destination "generic/platform=iOS" \
+              -configuration Release \
+              -archivePath build/App.xcarchive \
+              CODE_SIGNING_ALLOWED=NO \
+              CODE_SIGNING_REQUIRED=NO
+          fi
 
       - name: 📦 Package .ipa file
         run: |
           mkdir -p build/Payload
           cp -r build/App.xcarchive/Products/Applications/App.app build/Payload/
           cd build && zip -r -9 FideliPass.ipa Payload
-          echo "✅ FideliPass.ipa built successfully!"
+          echo "✅ FideliPass.ipa packaged successfully!"
 
-      - name: 🚀 Upload directly to TestFlight via Fastlane
-        if: ${{ github.event.inputs.upload_to_testflight == 'true' && env.APP_STORE_CONNECT_KEY_ID != '' }}
+      - name: 🚀 Upload directly to App Store Connect / TestFlight
+        if: ${{ github.event.inputs.upload_to_testflight == 'true' && secrets.APP_STORE_CONNECT_KEY_CONTENT != '' }}
         env:
-          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          APP_STORE_CONNECT_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_KEY_CONTENT }}
-          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_PROVISIONING_PROFILE_BASE64: ${{ secrets.APPLE_PROVISIONING_PROFILE_BASE64 }}
+          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_KEY_CONTENT }}
         run: |
-          echo "Uploading to App Store Connect..."
-          # If Fastlane credentials are configured in GitHub Secrets, fastlane pilot uploads it
-          # xcrun altool or xcrun notarytool / transporter upload
+          echo "🔑 Setting up App Store Connect API Key..."
+          mkdir -p ~/.appstoreconnect/private_keys
+          echo "$KEY_CONTENT" > ~/.appstoreconnect/private_keys/AuthKey_${KEY_ID}.p8
+
+          echo "🔍 Validating IPA with Apple..."
+          xcrun altool --validate-app -f build/FideliPass.ipa -t ios --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID"
+
+          echo "🚀 Uploading IPA to Apple App Store Connect..."
+          xcrun altool --upload-app -f build/FideliPass.ipa -t ios --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID"
+          echo "🎉 Successfully uploaded FideliPass to App Store Connect / TestFlight!"
 
       - name: 💾 Save IPA as Downloadable Artifact
         uses: actions/upload-artifact@v4
@@ -94,7 +134,7 @@ jobs:
           name: FideliPass iOS v1.0 (Build ${{ github.run_number }})
           body: |
             ### 📱 FideliPass iOS Build ${{ github.run_number }}
-            Archivo de instalación compilado para iOS:
+            Archivo de instalación oficial para iOS:
             - **Archivo**: `FideliPass.ipa`
             - **Bundle ID**: `com.fidelipassapp.business`
             - **Plataforma**: iOS (Apple App Store / TestFlight)
