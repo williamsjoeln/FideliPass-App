@@ -518,10 +518,18 @@ export function MerchantDashboard({
             </button>
           </div>
 
-          <span className="clay-badge inline-flex items-center gap-1.5 px-3 py-1 lg:px-3.5 lg:py-1.5 text-[10px] lg:text-xs font-black bg-emerald-50 text-emerald-800">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-            {isEn ? 'Online' : 'En línea'}
-          </span>
+          {/* Logout Button directly in Header */}
+          {onLogout && (
+            <button
+              type="button"
+              onClick={onLogout}
+              className="clay-btn bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 px-2.5 py-1 rounded-xl text-[10px] font-extrabold flex items-center gap-1 cursor-pointer transition-all shadow-2xs active:scale-95"
+              title={isEn ? "Log Out" : "Cerrar Sesión"}
+            >
+              <LogOut size={13} />
+              <span>{isEn ? "Salir" : "Salir"}</span>
+            </button>
+          )}
         </div>
       </header>
 
@@ -2048,6 +2056,28 @@ export function MerchantDashboard({
                 <span>{isEn ? 'View Poster' : 'Ver Cartel'}</span>
               </button>
             </div>
+
+            {/* Logout Option */}
+            {onLogout && (
+              <div className="p-5 clay-card bg-red-50/50 border border-red-200/60 flex items-center justify-between shadow-xl">
+                <div>
+                  <h4 className="text-xs font-black text-red-950">
+                    {isEn ? 'Close Cashier Session' : 'Cerrar Sesión de Caja'}
+                  </h4>
+                  <p className="text-[11px] text-red-700/80 font-semibold">
+                    {isEn ? `Log out of ${business.name}` : `Salir de la cuenta de ${business.name}`}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="clay-btn bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-xs font-black cursor-pointer flex items-center gap-1.5 shadow-md active:scale-95 transition-all"
+                >
+                  <LogOut size={14} />
+                  <span>{isEn ? 'Log Out' : 'Cerrar Sesión'}</span>
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
