@@ -6,16 +6,16 @@ import { sounds } from '../utils/audio';
 const LOGIN_TRANSLATIONS = {
   es: {
     back: '← Volver',
-    tagline: 'Tarjetas de Fidelidad Digitales para tu Celular',
-    badge: 'Portal Seguro de Comercios',
+    tagline: 'Tarjetas de Fidelidad Digitales para Celulares',
+    badge: 'Portal Oficial de Comercios',
     title: 'Iniciar Sesión en tu Negocio',
-    subtitle: 'Ingresa tu usuario y contraseña de comerciante',
+    subtitle: 'Ingresa con tu correo de comerciante o cajero',
     emailLabel: 'Correo electrónico',
     passwordLabel: 'Contraseña',
-    rememberMe: 'Recordar sesión',
+    rememberMe: 'Recordar sesión en este celular',
     forgotPassword: '¿Olvidaste tu contraseña?',
     submitBtn: 'Acceder a mi Terminal de Caja',
-    securityBadge: 'Alojado en Google Firebase con encriptación SSL',
+    securityBadge: 'Conexión Segura SSL • Google Firebase Cloud',
     errEmail: 'Por favor ingresa tu correo electrónico.',
     errPass: 'Por favor ingresa tu contraseña.',
     errLockout: (sec) => `🔒 Demasiados intentos fallidos. Por seguridad, espera ${sec} segundos antes de volver a intentar.`,
@@ -30,16 +30,16 @@ const LOGIN_TRANSLATIONS = {
   },
   en: {
     back: '← Back',
-    tagline: 'Digital Loyalty Passes for Smartphone',
-    badge: 'Secure Merchant Portal',
+    tagline: 'Digital Loyalty Passes for Smartphones',
+    badge: 'Official Merchant Portal',
     title: 'Sign In to Your Business',
-    subtitle: 'Enter your merchant email and password',
+    subtitle: 'Enter your merchant or cashier credentials',
     emailLabel: 'Email address',
     passwordLabel: 'Password',
-    rememberMe: 'Remember me',
+    rememberMe: 'Remember session on this device',
     forgotPassword: 'Forgot your password?',
     submitBtn: 'Sign In to Cashier Terminal',
-    securityBadge: 'Hosted on Google Firebase with SSL encryption',
+    securityBadge: 'Secure SSL Connection • Google Firebase Cloud',
     errEmail: 'Please enter your email address.',
     errPass: 'Please enter your password.',
     errLockout: (sec) => `🔒 Too many failed attempts. For security, please wait ${sec} seconds before trying again.`,
@@ -229,27 +229,32 @@ export function LoginScreen({
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#153B2F] sm:bg-[#F0F4F8] flex flex-col justify-between sm:justify-center items-center selection:bg-[#E8F1EC] selection:text-[#1D4E3E]">
-      <div className="w-full min-h-screen sm:min-h-0 sm:max-w-md sm:rounded-[32px] sm:clay-card bg-white overflow-y-auto flex flex-col justify-between sm:shadow-2xl">
-        {/* Header - Edge-to-edge on mobile with safe area */}
-        <div className="w-full pt-[max(env(safe-area-inset-top),2rem)] pb-7 px-6 bg-gradient-to-br from-[#1D4E3E] to-[#153B2F] text-white text-center relative border-b border-white/10 sm:rounded-t-[32px]">
+    <div className="min-h-screen w-full bg-[#0C4A6E] sm:bg-[#F0F7FF] flex flex-col justify-center items-center selection:bg-sky-100 selection:text-sky-900">
+      <div className="w-full min-h-screen sm:min-h-0 sm:max-w-md sm:rounded-[36px] bg-white overflow-hidden flex flex-col justify-between sm:shadow-[0_25px_60px_-15px_rgba(2,132,199,0.3)] border-0 sm:border sm:border-sky-100">
+        
+        {/* Top Header - Premium FideliPass Celestial & Royal Blue Gradient */}
+        <div className="w-full pt-[max(env(safe-area-inset-top),2.2rem)] pb-8 px-6 bg-gradient-to-br from-[#0284C7] via-[#0284C7] to-[#1D4ED8] text-white text-center relative overflow-hidden sm:rounded-t-[36px]">
+          {/* Subtle background glow circle */}
+          <div className="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+          <div className="absolute -bottom-10 -left-10 w-36 h-36 rounded-full bg-cyan-300/20 blur-xl pointer-events-none"></div>
+
           {!isNative && onBackToLanding && (
             <button
               type="button"
               onClick={onBackToLanding}
-              className="absolute top-[max(env(safe-area-inset-top),1rem)] left-4 text-xs font-bold text-white/80 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
+              className="absolute top-[max(env(safe-area-inset-top),1rem)] left-4 text-xs font-bold text-white/80 hover:text-white flex items-center gap-1 cursor-pointer transition-colors z-10"
             >
               <span>{t.back}</span>
             </button>
           )}
 
           {/* Language Switcher ES / EN on top right */}
-          <div className="absolute top-[max(env(safe-area-inset-top),1rem)] right-4 flex items-center bg-black/25 backdrop-blur-md p-0.5 rounded-xl border border-white/20 text-[10px] font-black">
+          <div className="absolute top-[max(env(safe-area-inset-top),1rem)] right-4 flex items-center bg-black/20 backdrop-blur-md p-0.5 rounded-xl border border-white/25 text-[10px] font-black z-10">
             <button
               type="button"
               onClick={() => toggleLang('es')}
               className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
-                lang === 'es' ? 'bg-white text-[#1D4E3E] shadow-xs' : 'text-white/70 hover:text-white'
+                lang === 'es' ? 'bg-white text-sky-700 shadow-sm' : 'text-white/80 hover:text-white'
               }`}
             >
               ES
@@ -258,86 +263,92 @@ export function LoginScreen({
               type="button"
               onClick={() => toggleLang('en')}
               className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
-                lang === 'en' ? 'bg-white text-[#1D4E3E] shadow-xs' : 'text-white/70 hover:text-white'
+                lang === 'en' ? 'bg-white text-sky-700 shadow-sm' : 'text-white/80 hover:text-white'
               }`}
             >
               EN
             </button>
           </div>
 
-          <div className="w-16 h-16 mx-auto mb-3.5 rounded-2xl bg-white text-[#1D4E3E] flex items-center justify-center text-3xl font-bold shadow-lg overflow-hidden p-1.5 ring-4 ring-white/20">
-            {platformLogo ? (
-              <img src={platformLogo} alt={platformName} className="w-full h-full object-contain" />
-            ) : (
-              <span>🌱</span>
-            )}
-          </div>
-          <h2 className="font-heading text-2xl font-black tracking-tight drop-shadow-xs">{platformName}</h2>
-          <p className="text-xs text-white/80 font-medium mt-1">{t.tagline}</p>
+          {/* Grand FideliPass Emblem */}
+          <div className="relative z-10">
+            <div className="w-20 h-20 mx-auto mb-3 rounded-3xl bg-white flex items-center justify-center shadow-[0_12px_28px_rgba(0,0,0,0.18)] p-2.5 ring-4 ring-white/30 backdrop-blur-md">
+              {platformLogo ? (
+                <img src={platformLogo} alt={platformName} className="w-full h-full object-contain" />
+              ) : (
+                <span className="text-3xl">💳</span>
+              )}
+            </div>
+            
+            <h2 className="font-heading text-3xl font-black tracking-tight text-white drop-shadow-sm">{platformName}</h2>
+            <p className="text-xs text-sky-100 font-semibold mt-1 max-w-xs mx-auto leading-relaxed">{t.tagline}</p>
 
-          <div className="mt-3.5 inline-flex items-center gap-1.5 px-3 py-1 clay-badge-dark text-[11px] font-bold text-emerald-200">
-            <ShieldCheck size={14} className="text-emerald-400" />
-            <span>{t.badge}</span>
+            <div className="mt-3.5 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-[11px] font-bold text-white shadow-xs">
+              <ShieldCheck size={14} className="text-cyan-300" />
+              <span>{t.badge}</span>
+            </div>
           </div>
         </div>
 
-        {/* Form Body - Full mobile width */}
-        <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
-          <div className="text-center mb-5">
-            <h3 className="font-heading font-black text-lg text-gray-900">{t.title}</h3>
-            <p className="text-xs text-gray-500 font-semibold mt-0.5">{t.subtitle}</p>
+        {/* Form Body - Perfectly Balanced, No Empty Voids! */}
+        <div className="p-6 sm:p-8 flex-1 flex flex-col justify-center max-w-sm sm:max-w-none mx-auto w-full">
+          <div className="text-center mb-6">
+            <h3 className="font-heading font-black text-xl text-slate-900">{t.title}</h3>
+            <p className="text-xs text-slate-500 font-semibold mt-1">{t.subtitle}</p>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-2xl text-xs text-red-700 font-bold shadow-2xs">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-2xl text-xs text-red-700 font-bold shadow-xs animate-shake">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-extrabold text-gray-700 mb-1.5">{t.emailLabel}</label>
+              <label className="block text-xs font-black text-slate-700 mb-1.5">{t.emailLabel}</label>
               <div className="relative">
-                <Mail size={16} className="absolute left-3.5 top-3.5 text-gray-400" />
+                <Mail size={17} className="absolute left-3.5 top-3.5 text-sky-600" />
                 <input
                   type="email"
                   required
+                  placeholder="ejemplo@negocio.com"
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
                     setError('');
                   }}
-                  className="w-full pl-10 pr-4 py-3 text-xs clay-input bg-white text-gray-800 font-semibold"
+                  className="w-full pl-10 pr-4 py-3.5 text-xs rounded-2xl bg-slate-50 border border-slate-200 text-slate-800 font-semibold focus:bg-white focus:border-sky-500 focus:ring-4 focus:ring-sky-100 transition-all shadow-inner outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-extrabold text-gray-700 mb-1.5">{t.passwordLabel}</label>
+              <label className="block text-xs font-black text-slate-700 mb-1.5">{t.passwordLabel}</label>
               <div className="relative">
-                <Lock size={16} className="absolute left-3.5 top-3.5 text-gray-400" />
+                <Lock size={17} className="absolute left-3.5 top-3.5 text-sky-600" />
                 <input
                   type="password"
                   required
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 text-xs clay-input bg-white text-gray-800 font-semibold"
+                  className="w-full pl-10 pr-4 py-3.5 text-xs rounded-2xl bg-slate-50 border border-slate-200 text-slate-800 font-semibold focus:bg-white focus:border-sky-500 focus:ring-4 focus:ring-sky-100 transition-all shadow-inner outline-none"
                 />
               </div>
-              <div className="flex items-center justify-between mt-2.5 pt-0.5">
+              <div className="flex items-center justify-between mt-3 pt-0.5">
                 <label className="flex items-center gap-2 cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded border-gray-300 text-[#1D4E3E] focus:ring-[#1D4E3E] accent-[#1D4E3E] cursor-pointer"
+                    className="w-4 h-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500 accent-sky-600 cursor-pointer"
                   />
-                  <span className="text-xs font-bold text-gray-700">{t.rememberMe}</span>
+                  <span className="text-xs font-bold text-slate-700">{t.rememberMe}</span>
                 </label>
                 <button
                   type="button"
                   onClick={() => setShowForgotModal(true)}
-                  className="text-[11px] text-[#1D4E3E] hover:underline font-bold cursor-pointer"
+                  className="text-[11px] text-sky-600 hover:text-sky-700 hover:underline font-extrabold cursor-pointer transition-colors"
                 >
                   {t.forgotPassword}
                 </button>
@@ -346,7 +357,7 @@ export function LoginScreen({
 
             <button
               type="submit"
-              className="w-full mt-2 py-3.5 clay-btn clay-btn-primary text-white text-xs font-black shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full mt-3 py-4 rounded-2xl bg-gradient-to-r from-[#0284C7] via-[#2563EB] to-[#1D4ED8] hover:from-[#0369A1] hover:to-[#1E40AF] text-white text-xs font-black shadow-lg shadow-sky-500/25 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] transition-all"
             >
               <span>{t.submitBtn}</span>
               <ArrowRight size={16} />
@@ -401,7 +412,7 @@ export function LoginScreen({
                         <button
                           type="button"
                           onClick={() => handleQuickLogin(acc)}
-                          className="px-2 py-1 rounded-lg text-[10px] font-bold bg-[#1D4E3E] text-white hover:bg-[#153B2F] cursor-pointer"
+                          className="px-2 py-1 rounded-lg text-[10px] font-bold bg-sky-600 text-white hover:bg-sky-700 cursor-pointer"
                         >
                           Login
                         </button>
@@ -412,38 +423,37 @@ export function LoginScreen({
               )}
             </div>
           )}
-
         </div>
 
-        {/* Security badge */}
-        <div className="p-4 sm:p-3.5 pb-[max(env(safe-area-inset-bottom),1.5rem)] sm:pb-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-center gap-2 text-[11px] text-gray-500 font-semibold sm:rounded-b-[32px]">
-          <ShieldCheck size={15} className="text-[#1D4E3E]" />
+        {/* Security badge at bottom with safe-area padding */}
+        <div className="p-4 sm:p-3.5 pb-[max(env(safe-area-inset-bottom),1.6rem)] sm:pb-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-center gap-2 text-[11px] text-slate-500 font-semibold sm:rounded-b-[36px]">
+          <ShieldCheck size={15} className="text-sky-600" />
           <span>{t.securityBadge}</span>
         </div>
       </div>
 
-      {/* Forgot Password Modal (Claymorphic) */}
+      {/* Forgot Password Modal (Sky Blue Modern) */}
       {showForgotModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-sm clay-card bg-white p-6 shadow-2xl space-y-4 text-center animate-fade-in">
-            <div className="w-13 h-13 rounded-2xl bg-amber-100 text-amber-800 mx-auto flex items-center justify-center text-2xl font-bold shadow-sm">
+          <div className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl space-y-4 text-center animate-fade-in border border-sky-100">
+            <div className="w-14 h-14 rounded-2xl bg-sky-100 text-sky-800 mx-auto flex items-center justify-center text-2xl font-bold shadow-xs">
               🔑
             </div>
             <div>
-              <h3 className="font-heading font-black text-base text-gray-900">{t.forgotTitle}</h3>
-              <p className="text-xs text-gray-500 font-medium mt-1 leading-relaxed">
+              <h3 className="font-heading font-black text-lg text-slate-900">{t.forgotTitle}</h3>
+              <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
                 {t.forgotDesc(platformName)}
               </p>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-left text-xs text-gray-700 space-y-2 shadow-inner">
-              <div className="font-black text-[#1D4E3E] flex items-center gap-1.5">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-left text-xs text-slate-700 space-y-2">
+              <div className="font-black text-sky-700 flex items-center gap-1.5">
                 <span>⚡ {lang === 'en' ? 'How to recover immediately?' : '¿Cómo recuperarla de inmediato?'}</span>
               </div>
-              <p className="text-[11px] text-gray-600 font-medium">
+              <p className="text-[11px] text-slate-600 font-medium">
                 {t.forgotStep1}
               </p>
-              <p className="text-[11px] text-gray-600 font-medium">
+              <p className="text-[11px] text-slate-600 font-medium">
                 {t.forgotStep2}
               </p>
             </div>
@@ -458,7 +468,7 @@ export function LoginScreen({
                 );
                 window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
               }}
-              className="w-full py-3 px-4 clay-btn clay-btn-primary text-white text-xs font-black shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-black shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all"
             >
               <span>{t.forgotBtn}</span>
             </button>
@@ -466,7 +476,7 @@ export function LoginScreen({
             <button
               type="button"
               onClick={() => setShowForgotModal(false)}
-              className="w-full py-2.5 clay-btn clay-btn-light text-gray-700 text-xs font-bold cursor-pointer"
+              className="w-full py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 text-xs font-bold cursor-pointer transition-colors"
             >
               {t.forgotClose}
             </button>
