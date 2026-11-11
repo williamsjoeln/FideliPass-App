@@ -24,8 +24,59 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
 
   const scannerRef = useRef(null);
   const videoTrackRef = useRef(null);
+  const isStoppingRef = useRef(false);
 
-  // Auto-start camera when modal opens
+  // Safe stop helper that cleans up tracks, flashlight and Html5Qrcode gracefully without crashing
+  const safeStopScanner = async () => {
+    if (isStoppingRef.current) return;
+    isStoppingRef.current = true;
+
+    try {
+      if (videoTrackRef.current && typeof videoTrackRef.current.applyConstraints === 'function') {
+        await videoTrackRef.current.applyConstraints({ advanced: [{ torch: false }] }).catch(() => {});
+      }
+    } catch {}
+
+    try {
+      if (videoTrackRef.current) {
+        videoTrackRef.current.stop();
+        videoTrackRef.current = null;
+      }
+      const videoEl = document.querySelector('#qr-reader-viewport video');
+      if (videoEl?.srcObject) {
+        const stream = videoEl.srcObject;
+        stream.getTracks().forEach(t => {
+          try { t.stop(); } catch {}
+        });
+        videoEl.srcObject = null;
+      }
+    } catch (e) {
+      console.warn("Camera track stop note:", e);
+    }
+
+    try {
+      const scanner = scannerRef.current;
+      if (scanner) {
+        if (scanner.isScanning) {
+          await scanner.stop().catch(() => {});
+        }
+        await scanner.clear().catch(() => {});
+      }
+    } catch (e) {
+      console.warn("Scanner stop note:", e);
+    } finally {
+      scannerRef.current = null;
+      isStoppingRef.current = false;
+    }
+  };
+
+  const handleSafeClose = async () => {
+    setCameraActive(false);
+    await safeStopScanner();
+    onClose();
+  };
+
+  // Auto-start or auto-clean camera when modal opens/closes
   useEffect(() => {
     if (isOpen) {
       setScannedResult(null);
@@ -36,133 +87,113 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
       setCameraActive(true);
     } else {
       setCameraActive(false);
-      if (scannerRef.current && scannerRef.current.isScanning) {
-        scannerRef.current.stop().catch(() => {});
-      }
-      videoTrackRef.current = null;
+      safeStopScanner();
     }
   }, [isOpen]);
 
   useEffect(() => {
-    let html5QrCode = null;
+    if (!isOpen || !cameraActive) return;
 
-    if (isOpen && cameraActive) {
-      const qrRegionId = "qr-reader-viewport";
-      
-      const startScanner = async () => {
+    let isMounted = true;
+    const qrRegionId = "qr-reader-viewport";
+    
+    const startScanner = async () => {
+      await safeStopScanner();
+      if (!isMounted) return;
+
+      try {
+        const html5QrCode = new Html5Qrcode(qrRegionId, false);
+        scannerRef.current = html5QrCode;
+
+        let cameraIdOrConfig = { facingMode: "environment" };
         try {
-          // Initialize Html5Qrcode standard instance
-          html5QrCode = new Html5Qrcode(qrRegionId, false);
-          scannerRef.current = html5QrCode;
-
-          // Enumerate cameras to find the environment (rear) camera
-          let cameraIdOrConfig = { facingMode: "environment" };
-          try {
-            const devices = await Html5Qrcode.getCameras();
-            if (devices && devices.length > 0) {
-              const backCam = devices.find(d => /back|rear|environment|trasera|posterior/i.test(d.label));
-              if (backCam) {
-                cameraIdOrConfig = backCam.id;
-              }
+          const devices = await Html5Qrcode.getCameras();
+          if (devices && devices.length > 0) {
+            const backCam = devices.find(d => /back|rear|environment|trasera|posterior/i.test(d.label));
+            if (backCam) {
+              cameraIdOrConfig = backCam.id;
             }
-          } catch (camErr) {
-            console.warn("Camera enumeration note:", camErr);
           }
+        } catch (camErr) {
+          console.warn("Camera enumeration note:", camErr);
+        }
 
-          // Full-frame scanning without qrbox crop restriction for maximum instant detection
-          const config = {
-            fps: 15,
-            disableFlip: false
-          };
+        const config = {
+          fps: 15,
+          disableFlip: false
+        };
 
-          await html5QrCode.start(
-            cameraIdOrConfig,
-            config,
-            (decodedText) => {
-              handleProcessQR(decodedText);
-              html5QrCode.stop().catch(() => {});
-              setCameraActive(false);
-            },
-            () => {} // silent parse error during frame search
-          );
+        await html5QrCode.start(
+          cameraIdOrConfig,
+          config,
+          async (decodedText) => {
+            if (!isMounted) return;
+            await handleProcessQR(decodedText);
+          },
+          () => {} // silent search frame
+        );
 
-          // Detect Zoom and Torch capabilities from the active video track
-          setTimeout(() => {
-            try {
-              const video = document.querySelector('#qr-reader-viewport video');
-              const stream = video?.srcObject;
-              const track = stream?.getVideoTracks?.()[0];
-              if (track) {
-                videoTrackRef.current = track;
-                if (typeof track.getCapabilities === 'function') {
-                  const caps = track.getCapabilities();
-                  if (caps.zoom) {
-                    setHasHardwareZoom(true);
-                    setMaxHardwareZoom(Math.min(caps.zoom.max || 5, 4));
-                  }
-                  if (caps.torch) {
-                    setHasTorch(true);
-                  }
+        if (!isMounted) {
+          await safeStopScanner();
+          return;
+        }
+
+        setTimeout(() => {
+          if (!isMounted) return;
+          try {
+            const video = document.querySelector('#qr-reader-viewport video');
+            const stream = video?.srcObject;
+            const track = stream?.getVideoTracks?.()[0];
+            if (track) {
+              videoTrackRef.current = track;
+              if (typeof track.getCapabilities === 'function') {
+                const caps = track.getCapabilities();
+                if (caps.zoom) {
+                  setHasHardwareZoom(true);
+                  setMaxHardwareZoom(Math.min(caps.zoom.max || 5, 4));
+                }
+                if (caps.torch) {
+                  setHasTorch(true);
                 }
               }
-            } catch (trackErr) {
-              console.warn("Track capabilities inspection note:", trackErr);
             }
-          }, 400);
-
-        } catch (err) {
-          console.warn("Camera start fallback attempt:", err);
-          // Fallback with standard environment constraint
-          try {
-            if (html5QrCode) {
-              await html5QrCode.start(
-                { facingMode: "environment" },
-                { fps: 15, disableFlip: false },
-                (decodedText) => {
-                  handleProcessQR(decodedText);
-                  html5QrCode.stop().catch(() => {});
-                  setCameraActive(false);
-                },
-                () => {}
-              );
-              return;
-            }
-          } catch (fallbackErr) {
-            console.warn("Secondary camera fallback failed:", fallbackErr);
-            // Final fallback: any camera
-            try {
-              if (html5QrCode) {
-                await html5QrCode.start(
-                  { facingMode: "user" },
-                  { fps: 15, disableFlip: false },
-                  (decodedText) => {
-                    handleProcessQR(decodedText);
-                    html5QrCode.stop().catch(() => {});
-                    setCameraActive(false);
-                  },
-                  () => {}
-                );
-                return;
-              }
-            } catch (finalErr) {}
+          } catch (trackErr) {
+            console.warn("Track capabilities inspection note:", trackErr);
           }
+        }, 400);
+
+      } catch (err) {
+        console.warn("Camera start fallback attempt:", err);
+        try {
+          if (isMounted) {
+            const fallbackScanner = new Html5Qrcode(qrRegionId, false);
+            scannerRef.current = fallbackScanner;
+            await fallbackScanner.start(
+              { facingMode: "environment" },
+              { fps: 15, disableFlip: false },
+              async (decodedText) => {
+                if (!isMounted) return;
+                await handleProcessQR(decodedText);
+              },
+              () => {}
+            );
+            return;
+          }
+        } catch (fallbackErr) {
+          console.warn("Secondary camera fallback failed:", fallbackErr);
+        }
+        if (isMounted) {
           setCameraError("No se pudo iniciar el video de la cámara. Puedes ingresar el código o ID abajo manualmente.");
           setCameraActive(false);
         }
-      };
+      }
+    };
 
-      startScanner();
-    }
+    startScanner();
 
     return () => {
-      if (scannerRef.current) {
-        try {
-          if (scannerRef.current.isScanning) {
-            scannerRef.current.stop().catch(() => {});
-          }
-        } catch {}
-      }
-      videoTrackRef.current = null;
+      isMounted = false;
+      safeStopScanner();
     };
   }, [isOpen, cameraActive]);
 
@@ -320,6 +351,7 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
     });
 
     setScannedResult(matched);
+    safeStopScanner();
     onScanSuccess(matched);
     setCameraError(null);
   };
@@ -338,13 +370,17 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
       origin: { y: 0.6 }
     });
     setScannedResult(cust);
+    safeStopScanner();
     onScanSuccess(cust);
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md animate-fade-in text-left">
+    <div 
+      className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md animate-fade-in text-left ${
+        isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+      }`}
+      style={{ display: isOpen ? 'flex' : 'none' }}
+    >
       <div className="w-full max-w-lg clay-card bg-white overflow-hidden flex flex-col max-h-[95vh] shadow-2xl">
         
         {/* Modal Header */}
@@ -363,7 +399,8 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
             </div>
           </div>
           <button
-            onClick={onClose}
+            type="button"
+            onClick={handleSafeClose}
             className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-gray-600 flex items-center justify-center transition-colors cursor-pointer shadow-2xs font-bold"
             title={isEn ? "Close" : "Cerrar"}
           >
@@ -594,7 +631,8 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
             {scannedResult ? `${isEn ? 'Last:' : 'Último:'} ${scannedResult.name}` : (isEn ? 'Align QR or tap 2x' : 'Alinea el QR o haz clic en 2x')}
           </span>
           <button
-            onClick={onClose}
+            type="button"
+            onClick={handleSafeClose}
             className="px-5 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold cursor-pointer transition-colors"
           >
             {isEn ? 'Close Scanner' : 'Cerrar Escáner'}
