@@ -283,27 +283,27 @@ export function LoginScreen({
       <div className="w-full max-w-[440px] flex flex-col items-center z-10 my-auto py-2">
         {/* Floating Brand Header - Big, Bold & Iconic */}
         <div className="flex flex-col items-center text-center mb-5 sm:mb-6">
-          <div className="w-24 h-24 sm:w-28 sm:h-28 mb-3 flex items-center justify-center">
+          <div className="w-32 h-32 sm:w-36 sm:h-36 mb-3 flex items-center justify-center">
             {platformLogo ? (
               <img
                 src={platformLogo}
                 alt={platformName}
-                className="w-full h-full object-contain filter drop-shadow-[0_12px_24px_rgba(2,132,199,0.22)]"
+                className="w-full h-full object-contain filter drop-shadow-[0_14px_28px_rgba(2,132,199,0.25)]"
               />
             ) : (
-              <span className="text-5xl">💳</span>
+              <span className="text-6xl">💳</span>
             )}
           </div>
 
-          <h1 className="font-heading text-3xl sm:text-4xl font-black tracking-tight text-slate-900 leading-none">
+          <h1 className="font-heading text-4xl sm:text-5xl font-black tracking-tight text-slate-900 leading-none">
             Fideli<span className="text-[#007AFF]">Pass</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1.5 max-w-xs leading-snug">
+          <p className="text-sm sm:text-base text-slate-500 font-medium mt-2 max-w-xs leading-snug">
             {t.tagline}
           </p>
 
-          <div className="mt-3 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-sky-50/90 border border-sky-200/80 text-xs font-semibold text-sky-700 shadow-xs">
-            <ShieldCheck size={14} className="text-sky-500" />
+          <div className="mt-3.5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50/90 border border-sky-200/80 text-xs sm:text-sm font-semibold text-sky-700 shadow-xs">
+            <ShieldCheck size={16} className="text-sky-500" />
             <span>{t.badge}</span>
           </div>
         </div>
