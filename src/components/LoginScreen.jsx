@@ -336,13 +336,13 @@ export function LoginScreen({
                 <input
                   type="email"
                   required
-                  placeholder="mcrolls@fidelipass.com"
+                  placeholder=""
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
                     setError('');
                   }}
-                  className="w-full pl-12 pr-4 py-3.5 sm:py-4 text-xs sm:text-sm rounded-2xl bg-white border border-slate-200 text-slate-800 font-semibold placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100 transition-all shadow-xs outline-none"
+                  className="w-full pl-12 pr-4 py-3.5 sm:py-4 text-xs sm:text-sm rounded-2xl bg-white border border-slate-200 text-slate-800 font-semibold focus:border-sky-500 focus:ring-4 focus:ring-sky-100 transition-all shadow-xs outline-none"
                 />
               </div>
             </div>
