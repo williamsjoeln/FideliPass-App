@@ -13,6 +13,8 @@ jobs:
   build:
     name: Build & Package iOS App
     runs-on: macos-latest
+    permissions:
+      contents: write
 
     steps:
       - name: 📥 Checkout repository
@@ -83,3 +85,21 @@ jobs:
           name: FideliPass-iOS-App
           path: build/FideliPass.ipa
           retention-days: 14
+
+      - name: 🚀 Publish GitHub Release with IPA
+        uses: softprops/action-gh-release@v2
+        if: success()
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: FideliPass iOS v1.0 (Build ${{ github.run_number }})
+          body: |
+            ### 📱 FideliPass iOS Build ${{ github.run_number }}
+            Archivo de instalación compilado para iOS:
+            - **Archivo**: `FideliPass.ipa`
+            - **Bundle ID**: `com.fidelipassapp.business`
+            - **Plataforma**: iOS (Apple App Store / TestFlight)
+          files: build/FideliPass.ipa
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
