@@ -354,13 +354,13 @@ export function LoginScreen({
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
-                  placeholder="••••••••"
+                  placeholder=""
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
                     setError('');
                   }}
-                  className="w-full pl-12 pr-12 py-3.5 sm:py-4 text-xs sm:text-sm rounded-2xl bg-white border border-slate-200 text-slate-800 font-semibold placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100 transition-all shadow-xs outline-none"
+                  className="w-full pl-12 pr-12 py-3.5 sm:py-4 text-xs sm:text-sm rounded-2xl bg-white border border-slate-200 text-slate-800 font-semibold focus:border-sky-500 focus:ring-4 focus:ring-sky-100 transition-all shadow-xs outline-none"
                 />
                 <button
                   type="button"
