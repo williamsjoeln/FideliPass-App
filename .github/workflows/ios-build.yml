@@ -67,6 +67,8 @@ jobs:
           fi
 
       - name: 🔨 Build iOS Archive (.xcarchive)
+        env:
+          HAS_CERT: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
         run: |
           if [ -d "ios/App/App.xcworkspace" ]; then
             TARGET_FLAG="-workspace ios/App/App.xcworkspace"
@@ -74,7 +76,7 @@ jobs:
             TARGET_FLAG="-project ios/App/App.xcodeproj"
           fi
 
-          if [ -n "${{ secrets.APPLE_CERTIFICATE_BASE64 }}" ]; then
+          if [ -n "$HAS_CERT" ]; then
             echo "Building with Apple Code Signing..."
             xcodebuild archive \
               $TARGET_FLAG \
@@ -102,12 +104,17 @@ jobs:
           echo "✅ FideliPass.ipa packaged successfully!"
 
       - name: 🚀 Upload directly to App Store Connect / TestFlight
-        if: ${{ github.event.inputs.upload_to_testflight == 'true' && secrets.APP_STORE_CONNECT_KEY_CONTENT != '' }}
+        if: ${{ github.event.inputs.upload_to_testflight == 'true' }}
         env:
           KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_KEY_CONTENT }}
         run: |
+          if [ -z "$KEY_CONTENT" ]; then
+            echo "⚠️ No App Store Connect API Key found in secrets. Skipping upload."
+            exit 0
+          fi
+
           echo "🔑 Setting up App Store Connect API Key..."
           mkdir -p ~/.appstoreconnect/private_keys
           echo "$KEY_CONTENT" > ~/.appstoreconnect/private_keys/AuthKey_${KEY_ID}.p8
