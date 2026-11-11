@@ -42,6 +42,10 @@ scratch/
 referencias/
 replica/
 
+# Media recordings
+*.mp4
+*.mov
+
 # iOS / Capacitor Build Artifacts
 FideliPass_Android_Release/
 ios/App/Pods/

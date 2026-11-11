@@ -639,20 +639,20 @@ export function MerchantDashboard({
               </div>
             </div>
 
-            {/* "LO QUE ESTÁ PASANDO AHORA" */}
+            {/* "LO QUE ESTÁ PASANDO AHORA" - Natural full page flow */}
             <div>
               <div className="flex items-center justify-between mb-2.5 px-1">
                 <span className="text-[11px] uppercase font-black text-gray-400 tracking-wider">
                   {isEn ? "What's happening now" : "Lo que está pasando ahora"}
                 </span>
-                {customers.length > 4 && (
+                {customers.length > 0 && (
                   <span className="text-[10px] text-gray-400 font-bold bg-slate-100 px-2 py-0.5 rounded-full">
-                    {isEn ? `${customers.length} events • Scroll ↕` : `${customers.length} eventos • Desliza ↕`}
+                    {isEn ? `${customers.length} events` : `${customers.length} novedades`}
                   </span>
                 )}
               </div>
 
-              <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1.5 custom-scrollbar">
+              <div className="space-y-3">
                 {customers.length > 0 ? (
                   customers.map((c) => {
                     const initials = (c.name || (isEn ? 'Member' : 'Cliente'))
@@ -794,15 +794,10 @@ export function MerchantDashboard({
 
             <div className="flex items-center justify-between text-[11px] text-gray-400 font-extrabold px-1">
               <span>{filteredCustomers.length} {filteredCustomers.length === 1 ? (isEn ? 'member' : 'cliente') : (isEn ? 'members' : 'clientes')}</span>
-              {filteredCustomers.length > 5 && (
-                <span className="text-[10px] text-gray-400 font-bold bg-slate-100 px-2 py-0.5 rounded-full">
-                  {isEn ? 'Scroll ↕ to explore' : 'Desliza ↕ para explorar'}
-                </span>
-              )}
             </div>
 
-            {/* Customer List Items (Claymorphic Cards with Fixed Scrollbar for 5+ items) */}
-            <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-1.5 custom-scrollbar">
+            {/* Customer List Items (Natural full page flow) */}
+            <div className="space-y-2.5">
               {filteredCustomers.map((cust) => (
                 <div
                   key={cust.id}
@@ -874,88 +869,90 @@ export function MerchantDashboard({
             {/* Back link */}
             <button
               onClick={() => handleSelectCustomer(null)}
-              className="clay-btn clay-btn-light px-3 py-1.5 text-xs font-black text-gray-700 flex items-center gap-1.5 shadow-xs cursor-pointer"
+              className="clay-btn clay-btn-light px-3 py-1.5 text-xs font-black text-gray-700 flex items-center gap-1.5 shadow-xs cursor-pointer max-w-full"
             >
-              <ArrowLeft size={14} />
-              <span>{isEn ? 'Members' : 'Clientes'} / {selectedCustomer.name}</span>
+              <ArrowLeft size={14} className="shrink-0" />
+              <span className="truncate">{isEn ? 'Members' : 'Clientes'} / {selectedCustomer.name}</span>
             </button>
 
-            {/* Profile Header Card (Claymorphic) */}
-            <div className="p-4.5 clay-card bg-white">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-[#007AFF] text-white flex items-center justify-center font-black text-base shadow-sm">
-                    {selectedCustomer.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-black text-gray-900">{selectedCustomer.name}</h3>
-                      <span className="clay-badge px-2 py-0.5 text-[10px] font-black bg-sky-100 text-slate-900">
-                        {selectedCustomer.status}
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-500 font-medium mt-0.5">{selectedCustomer.email}</p>
-                    <p className="text-xs text-gray-500 font-medium">{selectedCustomer.phone}</p>
-                  </div>
+            {/* Profile Header Card (Claymorphic) - Anti-overlap responsive design */}
+            <div className="p-4 sm:p-5 clay-card bg-white w-full max-w-full overflow-hidden">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-12 h-12 rounded-2xl bg-[#007AFF] text-white flex items-center justify-center font-black text-base shrink-0 shadow-sm">
+                  {selectedCustomer.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
                 </div>
-
-                <div className="flex items-center gap-1.5">
-                  <button
-                    onClick={() => {
-                      setPushTarget('individual');
-                      setSelectedIndividualCustomerId(selectedCustomer.id);
-                      setPushMessage(
-                        isEn
-                          ? `👋 Hello ${selectedCustomer.name.split(' ')[0]}! We look forward to seeing you today at ${business.name} to earn your next stamp.`
-                          : `👋 ¡Hola ${selectedCustomer.name.split(' ')[0]}! Te esperamos hoy en ${business.name} para sumar tu próximo sello.`
-                      );
-                      handleSelectCustomer(null);
-                      setActiveTab('push');
-                    }}
-                    className="clay-btn clay-btn-orange px-3 py-1.5 text-white text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
-                    title={isEn ? "Send personal push notification" : "Enviar notificación push personal"}
-                  >
-                    <Bell size={13} />
-                    <span className="hidden sm:inline">{isEn ? '🔔 Send Push' : '🔔 Enviar Push'}</span>
-                    <span className="sm:hidden">🔔 Push</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setEditingCustomer(selectedCustomer);
-                      setEditCustName(selectedCustomer.name);
-                      setEditCustEmail(selectedCustomer.email || '');
-                      setEditCustPhone(selectedCustomer.phone || '');
-                    }}
-                    className="clay-btn clay-btn-light px-3 py-1.5 text-slate-900 text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
-                    title={isEn ? "Edit profile" : "Editar datos"}
-                  >
-                    <Edit3 size={14} className="text-sky-700" />
-                    <span>{isEn ? '✏️ Edit' : '✏️ Editar'}</span>
-                  </button>
-
-                  {onDeleteCustomer && (
-                    <button
-                      onClick={() => {
-                        const confirmMsg = isEn 
-                          ? `Are you sure you want to delete ${selectedCustomer.name}? This action cannot be undone.`
-                          : `¿Estás seguro de eliminar a ${selectedCustomer.name}? Esta acción no se puede deshacer.`;
-                        if (window.confirm(confirmMsg)) {
-                          onDeleteCustomer(selectedCustomer.id);
-                          handleSelectCustomer(null);
-                        }
-                      }}
-                      className="clay-btn clay-btn-light px-2.5 py-1.5 text-red-600 hover:text-red-800 text-xs font-black flex items-center gap-1 transition-all cursor-pointer shadow-xs border border-red-200"
-                      title={isEn ? "Delete member" : "Eliminar cliente"}
-                    >
-                      <Trash2 size={13} />
-                      <span className="hidden sm:inline">{isEn ? 'Delete' : 'Eliminar'}</span>
-                    </button>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-sm sm:text-base font-black text-gray-900 truncate">{selectedCustomer.name}</h3>
+                    <span className="clay-badge px-2 py-0.5 text-[10px] font-black bg-sky-100 text-slate-900 shrink-0">
+                      {selectedCustomer.status}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500 font-medium truncate mt-0.5">{selectedCustomer.email}</p>
+                  {selectedCustomer.phone && (
+                    <p className="text-xs text-gray-500 font-medium truncate">{selectedCustomer.phone}</p>
                   )}
                 </div>
               </div>
 
-              <div className="mt-3.5 p-3 rounded-2xl bg-slate-50 border border-slate-200/80 text-[11px] text-gray-600 font-medium shadow-inner">
+              {/* Action Buttons Row - Perfectly fitted, never overlaps */}
+              <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPushTarget('individual');
+                    setSelectedIndividualCustomerId(selectedCustomer.id);
+                    setPushMessage(
+                      isEn
+                        ? `👋 Hello ${selectedCustomer.name.split(' ')[0]}! We look forward to seeing you today at ${business.name} to earn your next stamp.`
+                        : `👋 ¡Hola ${selectedCustomer.name.split(' ')[0]}! Te esperamos hoy en ${business.name} para sumar tu próximo sello.`
+                    );
+                    handleSelectCustomer(null);
+                    setActiveTab('push');
+                  }}
+                  className="flex-1 clay-btn clay-btn-orange py-2 px-3 text-white text-xs font-black flex items-center justify-center gap-1.5 shadow-xs cursor-pointer active:scale-95 transition-all"
+                  title={isEn ? "Send personal push notification" : "Enviar notificación push personal"}
+                >
+                  <Bell size={13} className="shrink-0" />
+                  <span>{isEn ? 'Push' : 'Push'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingCustomer(selectedCustomer);
+                    setEditCustName(selectedCustomer.name);
+                    setEditCustEmail(selectedCustomer.email || '');
+                    setEditCustPhone(selectedCustomer.phone || '');
+                  }}
+                  className="flex-1 clay-btn clay-btn-light py-2 px-3 text-slate-800 text-xs font-black flex items-center justify-center gap-1.5 shadow-xs cursor-pointer active:scale-95 transition-all border border-slate-200"
+                  title={isEn ? "Edit profile" : "Editar datos"}
+                >
+                  <Edit3 size={13} className="text-sky-700 shrink-0" />
+                  <span>{isEn ? 'Editar' : 'Editar'}</span>
+                </button>
+
+                {onDeleteCustomer && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const confirmMsg = isEn 
+                        ? `Are you sure you want to delete ${selectedCustomer.name}? This action cannot be undone.`
+                        : `¿Estás seguro de eliminar a ${selectedCustomer.name}? Esta acción no se puede deshacer.`;
+                      if (window.confirm(confirmMsg)) {
+                        onDeleteCustomer(selectedCustomer.id);
+                        handleSelectCustomer(null);
+                      }
+                    }}
+                    className="clay-btn clay-btn-light p-2.5 text-red-600 hover:text-red-800 text-xs font-black flex items-center justify-center shrink-0 shadow-xs border border-red-200 active:scale-95 transition-all"
+                    title={isEn ? "Delete member" : "Eliminar cliente"}
+                  >
+                    <Trash2 size={14} className="shrink-0" />
+                  </button>
+                )}
+              </div>
+
+              <div className="mt-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 text-[11px] text-gray-600 font-medium">
                 {isEn 
                   ? `Member since ${selectedCustomer.joinedDate} • Last visit: `
                   : `Miembro desde el ${selectedCustomer.joinedDate} • Última visita: `}
@@ -1015,11 +1012,11 @@ export function MerchantDashboard({
                 </div>
 
                 {/* Stamp circles preview (Claymorphic) */}
-                <div className="grid grid-cols-8 gap-2 py-1">
+                <div className="grid grid-cols-8 gap-1.5 sm:gap-2 py-1 min-w-0">
                   {Array.from({ length: business.maxStamps }).map((_, i) => (
                     <div
                       key={i}
-                      className={`aspect-square rounded-xl flex items-center justify-center text-xs font-black transition-all ${
+                      className={`aspect-square min-w-0 rounded-xl flex items-center justify-center text-xs font-black transition-all ${
                         i < selectedCustomer.currentStamps
                           ? 'clay-btn-primary text-white shadow-xs'
                           : 'clay-inset bg-slate-100 text-gray-400'
