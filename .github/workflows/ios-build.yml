@@ -57,10 +57,14 @@ jobs:
 
             security import $CERT_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
             security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-            security list-keychain -d user -s $KEYCHAIN_PATH
+            security list-keychain -d user -s $KEYCHAIN_PATH $(security list-keychains -d user | sed -e 's/"//g')
 
+            # Extract UUID and copy profile
+            PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" /dev/stdin <<< $(security cms -D -i $PP_PATH))
+            echo "Provisioning Profile UUID: $PROFILE_UUID"
             mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-            cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/
+            cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/${PROFILE_UUID}.mobileprovision
+            echo "PROFILE_UUID=$PROFILE_UUID" >> $GITHUB_ENV
             echo "✅ Certificate and Provisioning Profile installed successfully!"
           else
             echo "⚠️ No signing certificate found in secrets, continuing in ad-hoc mode."
@@ -77,13 +81,18 @@ jobs:
           fi
 
           if [ -n "$HAS_CERT" ]; then
-            echo "Building with Apple Code Signing..."
+            echo "Building with Apple Code Signing for Team H79W4YK96D..."
             xcodebuild archive \
               $TARGET_FLAG \
               -scheme App \
               -destination "generic/platform=iOS" \
               -configuration Release \
-              -archivePath build/App.xcarchive
+              -archivePath build/App.xcarchive \
+              DEVELOPMENT_TEAM=H79W4YK96D \
+              CODE_SIGN_STYLE=Manual \
+              CODE_SIGN_IDENTITY="Apple Distribution" \
+              PROVISIONING_PROFILE="${{ env.PROFILE_UUID || 'dc1c1ffd-78b7-48fc-97b6-6d9f3e3ebd3e' }}" \
+              PROVISIONING_PROFILE_SPECIFIER="FideliPass AppStore"
           else
             echo "Building ad-hoc unsigned..."
             xcodebuild archive \
@@ -92,14 +101,17 @@ jobs:
               -destination "generic/platform=iOS" \
               -configuration Release \
               -archivePath build/App.xcarchive \
-              CODE_SIGNING_ALLOWED=NO \
-              CODE_SIGNING_REQUIRED=NO
+              CODE_SIGN_ALLOWED=NO \
+              CODE_SIGN_REQUIRED=NO
           fi
 
       - name: 📦 Package .ipa file
         run: |
           mkdir -p build/Payload
           cp -r build/App.xcarchive/Products/Applications/App.app build/Payload/
+          if [ -f "$RUNNER_TEMP/build_pp.mobileprovision" ]; then
+            cp "$RUNNER_TEMP/build_pp.mobileprovision" build/Payload/App.app/embedded.mobileprovision
+          fi
           cd build && zip -r -9 FideliPass.ipa Payload
           echo "✅ FideliPass.ipa packaged successfully!"
 
@@ -119,11 +131,11 @@ jobs:
           mkdir -p ~/.appstoreconnect/private_keys
           echo "$KEY_CONTENT" > ~/.appstoreconnect/private_keys/AuthKey_${KEY_ID}.p8
 
-          echo "🔍 Validating IPA with Apple..."
-          xcrun altool --validate-app -f build/FideliPass.ipa -t ios --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID"
+          echo "🔍 Validating IPA with Apple App Store Connect..."
+          xcrun altool --validate-app -f build/FideliPass.ipa -t ios --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID" --show-progress
 
           echo "🚀 Uploading IPA to Apple App Store Connect..."
-          xcrun altool --upload-app -f build/FideliPass.ipa -t ios --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID"
+          xcrun altool --upload-app -f build/FideliPass.ipa -t ios --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID" --show-progress
           echo "🎉 Successfully uploaded FideliPass to App Store Connect / TestFlight!"
 
       - name: 💾 Save IPA as Downloadable Artifact
