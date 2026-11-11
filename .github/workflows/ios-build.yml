@@ -42,9 +42,15 @@ jobs:
 
       - name: 🔨 Build iOS Archive (.xcarchive)
         run: |
+          if [ -d "ios/App/App.xcworkspace" ]; then
+            TARGET_FLAG="-workspace ios/App/App.xcworkspace"
+          else
+            TARGET_FLAG="-project ios/App/App.xcodeproj"
+          fi
           xcodebuild archive \
-            -workspace ios/App/App.xcworkspace \
+            $TARGET_FLAG \
             -scheme App \
+            -destination "generic/platform=iOS" \
             -configuration Release \
             -archivePath build/App.xcarchive \
             CODE_SIGNING_ALLOWED=NO \
