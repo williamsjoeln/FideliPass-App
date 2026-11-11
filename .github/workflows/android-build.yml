@@ -1,0 +1,119 @@
+name: Build Android App (Google Play & APK)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'android/**'
+      - 'package.json'
+      - 'capacitor.config.json'
+
+jobs:
+  build:
+    name: Build & Package Android App
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Install web dependencies
+        run: npm ci
+
+      - name: ⚡ Build Vite production bundle
+        run: npm run build
+
+      - name: 🔄 Sync Capacitor Android project
+        run: npx cap sync android
+
+      - name: 🔑 Generate & Configure Release Keystore
+        run: |
+          mkdir -p android/app/keystores
+          keytool -genkeypair -v \
+            -keystore android/app/keystores/fidelipass-upload-key.jks \
+            -alias fidelipass \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass fidelipass2026 \
+            -keypass fidelipass2026 \
+            -dname "CN=Williams Joel Navarrete Merino, OU=FideliPass, O=FideliPass, L=Guayaquil, ST=Guayas, C=EC"
+
+      - name: 🛠️ Set executable permissions for gradlew
+        run: chmod +x android/gradlew
+
+      - name: 🤖 Build Android App Bundle (.aab) & APK
+        run: |
+          cd android
+          ./gradlew bundleRelease assembleRelease
+
+      - name: ✍️ Sign Android App Bundle & APK
+        run: |
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+            -keystore android/app/keystores/fidelipass-upload-key.jks \
+            -storepass fidelipass2026 \
+            -keypass fidelipass2026 \
+            android/app/build/outputs/bundle/release/app-release.aab fidelipass
+
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+            -keystore android/app/keystores/fidelipass-upload-key.jks \
+            -storepass fidelipass2026 \
+            -keypass fidelipass2026 \
+            android/app/build/outputs/apk/release/app-release-unsigned.apk fidelipass
+
+          mkdir -p build-android
+          cp android/app/build/outputs/bundle/release/app-release.aab build-android/FideliPass.aab
+          cp android/app/build/outputs/apk/release/app-release-unsigned.apk build-android/FideliPass.apk
+          echo "✅ FideliPass.aab and FideliPass.apk signed and ready!"
+
+      - name: 💾 Save AAB as Downloadable Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FideliPass-Android-AAB
+          path: build-android/FideliPass.aab
+          retention-days: 14
+
+      - name: 💾 Save APK as Downloadable Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FideliPass-Android-APK
+          path: build-android/FideliPass.apk
+          retention-days: 14
+
+      - name: 🚀 Publish Android Release on GitHub
+        uses: softprops/action-gh-release@v2
+        if: success()
+        with:
+          tag_name: android-v1.0.${{ github.run_number }}
+          name: FideliPass Android v1.0 (Build ${{ github.run_number }})
+          body: |
+            ### 🤖 FideliPass Android Build ${{ github.run_number }}
+            Archivos oficiales para Android:
+            - **Paquete Google Play Store**: `FideliPass.aab`
+            - **Instalador directo para celulares**: `FideliPass.apk`
+            - **Package ID**: `com.fidelipassapp.business`
+          files: |
+            build-android/FideliPass.aab
+            build-android/FideliPass.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
