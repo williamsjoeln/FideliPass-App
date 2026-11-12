@@ -4,7 +4,7 @@ import sharp from 'sharp';
 
 const WIDTH = 1179;
 const HEIGHT = 2556;
-const OUT_DIR = path.join(process.env.USERPROFILE, 'Downloads', 'AppStore_Screenshots');
+const OUT_DIR = path.join('D:', 'MisProyectos', 'TarjetaDeFidelidad', 'FideliPass_Android_Release', 'screenshots');
 
 if (!fs.existsSync(OUT_DIR)) {
   fs.mkdirSync(OUT_DIR, { recursive: true });

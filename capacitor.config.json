@@ -2,11 +2,13 @@
   "appId": "com.fidelipassapp.business",
   "appName": "FideliPass",
   "webDir": "dist",
+  "backgroundColor": "#F8FAFC",
   "server": {
     "androidScheme": "https"
   },
   "ios": {
-    "contentInset": "always",
+    "contentInset": "automatic",
+    "backgroundColor": "#F8FAFC",
     "allowsLinkPreview": false,
     "scrollEnabled": true,
     "scheme": "App"
