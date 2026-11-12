@@ -247,20 +247,20 @@ export function LoginScreen({
   };
 
   return (
-    <div className="h-[100dvh] max-h-[100dvh] w-full bg-gradient-to-b from-[#F8FAFC] via-[#F0F7FF] to-[#E0F2FE] relative overflow-y-auto sm:overflow-hidden flex flex-col justify-between items-center selection:bg-sky-100 selection:text-sky-900 px-4 sm:px-6 overscroll-none">
-      {/* Subtle organic cyan/sky background glows matching mockup */}
-      <div className="absolute top-0 right-0 w-96 sm:w-[480px] h-96 sm:h-[480px] bg-sky-200/35 rounded-full blur-3xl pointer-events-none -mr-28 -mt-28"></div>
-      <div className="absolute bottom-0 left-0 w-96 sm:w-[480px] h-96 sm:h-[480px] bg-blue-200/30 rounded-full blur-3xl pointer-events-none -ml-28 -mb-28"></div>
-
-      {/* 3x4 dot matrix accent at bottom left */}
-      <div className="absolute bottom-5 left-5 grid grid-cols-3 gap-2 opacity-50 pointer-events-none z-0">
-        {[...Array(12)].map((_, i) => (
-          <div key={i} className="w-1.5 h-1.5 rounded-full bg-sky-400"></div>
-        ))}
+    <div className="fixed inset-0 w-full h-[100dvh] bg-gradient-to-b from-[#F8FAFC] via-[#F0F7FF] to-[#E0F2FE] overflow-hidden flex flex-col justify-between items-center selection:bg-sky-100 selection:text-sky-900 px-4 sm:px-6 overscroll-none select-none">
+      {/* Subtle organic cyan/sky background glows strictly clipped inside container */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute -top-16 -right-16 w-80 h-80 bg-sky-200/35 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-16 -left-16 w-80 h-80 bg-blue-200/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-5 left-5 grid grid-cols-3 gap-2 opacity-40">
+          {[...Array(12)].map((_, i) => (
+            <div key={i} className="w-1.5 h-1.5 rounded-full bg-sky-400"></div>
+          ))}
+        </div>
       </div>
 
-      {/* Top Bar with Language Toggle & Back Button */}
-      <div className="w-full max-w-[420px] flex items-center justify-between pt-[max(env(safe-area-inset-top),0.75rem)] pb-1 px-1 z-10 shrink-0">
+      {/* Top Bar with Language Toggle & Back Button - Framed directly below the iPhone notch */}
+      <div className="w-full max-w-[400px] flex items-center justify-between pt-[max(env(safe-area-inset-top),2.5rem)] pb-1 px-1 z-10 shrink-0">
         {!isNative && onBackToLanding ? (
           <button
             type="button"
@@ -296,60 +296,60 @@ export function LoginScreen({
         </div>
       </div>
 
-      {/* Main Centered Content - Perfectly Scaled & Screen-Filling */}
-      <div className="w-full max-w-[420px] flex flex-col items-center z-10 my-auto py-1">
-        {/* Floating Brand Header - Big, Bold & Iconic */}
-        <div className="flex flex-col items-center text-center mb-2.5 sm:mb-3.5">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 mb-1.5 flex items-center justify-center">
+      {/* Main Centered Content - Perfectly Scaled & Centered */}
+      <div className="w-full max-w-[400px] flex flex-col items-center z-10 my-auto py-1">
+        {/* Floating Brand Header - Compact & Elegant */}
+        <div className="flex flex-col items-center text-center mb-2.5 sm:mb-3">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 mb-1 flex items-center justify-center">
             {platformLogo ? (
               <img
                 src={platformLogo}
                 alt={platformName}
-                className="w-full h-full object-contain filter drop-shadow-[0_8px_18px_rgba(2,132,199,0.20)]"
+                className="w-full h-full object-contain filter drop-shadow-[0_6px_14px_rgba(2,132,199,0.18)]"
               />
             ) : (
-              <span className="text-5xl">💳</span>
+              <span className="text-4xl">💳</span>
             )}
           </div>
 
-          <h1 className="font-heading text-3xl sm:text-4xl font-black tracking-tight text-slate-900 leading-none">
+          <h1 className="font-heading text-2xl sm:text-3xl font-black tracking-tight text-slate-900 leading-none">
             Fideli<span className="text-[#007AFF]">Pass</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1 max-w-xs leading-snug">
+          <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1 max-w-xs leading-snug">
             {t.tagline}
           </p>
 
-          <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50/90 border border-sky-200/80 text-[11px] sm:text-xs font-semibold text-sky-700 shadow-2xs">
-            <ShieldCheck size={14} className="text-sky-500" />
+          <div className="mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-50/90 border border-sky-200/80 text-[10px] sm:text-[11px] font-semibold text-sky-700 shadow-2xs">
+            <ShieldCheck size={13} className="text-sky-500" />
             <span>{t.badge}</span>
           </div>
         </div>
 
-        {/* Floating White Card - Wide, Beautiful & Edge-to-Edge */}
-        <div className="w-full bg-white rounded-[26px] sm:rounded-[32px] p-4.5 sm:p-6 shadow-[0_16px_36px_rgba(2,132,199,0.08)] border border-sky-100/90">
+        {/* Floating White Card - Clean & Edge-to-Edge */}
+        <div className="w-full bg-white rounded-[24px] sm:rounded-[28px] p-4.5 sm:p-5 shadow-[0_12px_32px_rgba(2,132,199,0.07)] border border-sky-100/90">
           {/* Card Icon Badge */}
-          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-sky-50/90 border border-sky-100 flex items-center justify-center mx-auto mb-2 text-sky-500 shadow-inner">
-            <Lock size={20} className="stroke-[2.2]" />
+          <div className="w-10 h-10 rounded-full bg-sky-50/90 border border-sky-100 flex items-center justify-center mx-auto mb-1.5 text-sky-500 shadow-inner">
+            <Lock size={18} className="stroke-[2.2]" />
           </div>
 
-          <h2 className="font-heading font-black text-lg sm:text-xl text-slate-900 text-center">
+          <h2 className="font-heading font-black text-base sm:text-lg text-slate-900 text-center">
             {t.title}
           </h2>
-          <p className="text-xs text-slate-400 font-medium text-center mt-0.5 mb-3.5 sm:mb-4">
+          <p className="text-[11px] text-slate-400 font-medium text-center mt-0.5 mb-3">
             {t.subtitle}
           </p>
 
           {error && (
-            <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-bold shadow-xs animate-shake">
+            <div className="mb-2.5 p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-bold shadow-xs animate-shake">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-3">
+          <form onSubmit={handleSubmit} className="space-y-2.5">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">{t.emailLabel}</label>
+              <label className="block text-[11px] sm:text-xs font-bold text-slate-700 mb-1">{t.emailLabel}</label>
               <div className="relative">
-                <Mail size={17} className="absolute left-3.5 top-3 text-sky-500 pointer-events-none" />
+                <Mail size={16} className="absolute left-3 top-2.5 text-sky-500 pointer-events-none" />
                 <input
                   type="email"
                   required
@@ -359,15 +359,15 @@ export function LoginScreen({
                     setEmail(e.target.value);
                     setError('');
                   }}
-                  className="w-full pl-10 pr-3.5 py-2.5 sm:py-3 text-xs sm:text-sm rounded-xl sm:rounded-2xl bg-white border border-slate-200 text-slate-800 font-semibold focus:border-sky-500 focus:ring-3 focus:ring-sky-100 transition-all shadow-2xs outline-none"
+                  className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-xl bg-white border border-slate-200 text-slate-800 font-semibold focus:border-sky-500 focus:ring-3 focus:ring-sky-100 transition-all shadow-2xs outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">{t.passwordLabel}</label>
+              <label className="block text-[11px] sm:text-xs font-bold text-slate-700 mb-1">{t.passwordLabel}</label>
               <div className="relative">
-                <Lock size={17} className="absolute left-3.5 top-3 text-sky-500 pointer-events-none" />
+                <Lock size={16} className="absolute left-3 top-2.5 text-sky-500 pointer-events-none" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
@@ -377,19 +377,19 @@ export function LoginScreen({
                     setPassword(e.target.value);
                     setError('');
                   }}
-                  className="w-full pl-10 pr-10 py-2.5 sm:py-3 text-xs sm:text-sm rounded-xl sm:rounded-2xl bg-white border border-slate-200 text-slate-800 font-semibold focus:border-sky-500 focus:ring-3 focus:ring-sky-100 transition-all shadow-2xs outline-none"
+                  className="w-full pl-9 pr-9 py-2 text-xs sm:text-sm rounded-xl bg-white border border-slate-200 text-slate-800 font-semibold focus:border-sky-500 focus:ring-3 focus:ring-sky-100 transition-all shadow-2xs outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-3 text-slate-400 hover:text-sky-600 transition-colors cursor-pointer"
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-sky-600 transition-colors cursor-pointer"
                   title={showPassword ? 'Ocultar' : 'Mostrar'}
                 >
-                  {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
 
-              <div className="flex items-center justify-between mt-2.5">
+              <div className="flex items-center justify-between mt-2">
                 <label className="flex items-center gap-1.5 cursor-pointer select-none">
                   <input
                     type="checkbox"
@@ -397,12 +397,12 @@ export function LoginScreen({
                     onChange={(e) => setRememberMe(e.target.checked)}
                     className="w-3.5 h-3.5 rounded border-slate-300 text-[#007AFF] focus:ring-sky-500 accent-[#007AFF] cursor-pointer"
                   />
-                  <span className="text-xs font-medium text-slate-700">{t.rememberMe}</span>
+                  <span className="text-[11px] font-medium text-slate-700">{t.rememberMe}</span>
                 </label>
                 <button
                   type="button"
                   onClick={() => setShowForgotModal(true)}
-                  className="text-xs text-[#007AFF] hover:underline font-semibold cursor-pointer transition-colors"
+                  className="text-[11px] text-[#007AFF] hover:underline font-semibold cursor-pointer transition-colors"
                 >
                   {t.forgotPassword}
                 </button>
@@ -411,10 +411,10 @@ export function LoginScreen({
 
             <button
               type="submit"
-              className="w-full mt-3 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl bg-[#007AFF] hover:bg-[#0062E0] text-white text-xs sm:text-sm font-bold shadow-md shadow-sky-500/25 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] transition-all"
+              className="w-full mt-2.5 py-2.5 sm:py-3 rounded-xl bg-[#007AFF] hover:bg-[#0062E0] text-white text-xs sm:text-sm font-bold shadow-md shadow-sky-500/25 flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98] transition-all"
             >
               <span>{t.submitBtn}</span>
-              <ArrowRight size={16} />
+              <ArrowRight size={15} />
             </button>
           </form>
 
@@ -481,8 +481,8 @@ export function LoginScreen({
       </div>
 
       {/* Security badge at bottom with safe-area padding */}
-      <div className="w-full max-w-[420px] pt-1 pb-[max(env(safe-area-inset-bottom),0.75rem)] flex items-center justify-center gap-1.5 text-[11px] sm:text-xs text-slate-400 font-medium z-10 text-center shrink-0">
-        <ShieldCheck size={14} className="text-slate-400 shrink-0" />
+      <div className="w-full max-w-[400px] pt-1 pb-[max(env(safe-area-inset-bottom),1rem)] flex items-center justify-center gap-1.5 text-[10px] sm:text-[11px] text-slate-400 font-medium z-10 text-center shrink-0">
+        <ShieldCheck size={13} className="text-slate-400 shrink-0" />
         <span>{t.securityBadge}</span>
       </div>
 
