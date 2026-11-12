@@ -1581,7 +1581,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F0F4F8] text-slate-900 flex flex-col font-sans selection:bg-[#E8F1EC] selection:text-[#1D4E3E] overflow-x-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 overflow-x-hidden">
       {/* Top Global Control Bar - Claymorphic Header (hidden in native mobile apps to avoid duplicate header) */}
       {!isNativeMobileApp() && viewMode !== 'customer' && (
         <header className="bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 lg:px-10 py-3.5 lg:py-4 sticky top-0 z-40 shadow-sm print:hidden">
@@ -1597,15 +1597,15 @@ export default function App() {
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-heading font-black text-xl text-[#1D4E3E] tracking-tight">
+                  <span className="font-heading font-black text-xl text-[#007AFF] tracking-tight">
                     {platformName}
                   </span>
                   <span className="clay-badge-dark px-3 py-0.5 text-xs font-black bg-[#FF5E36] text-white uppercase tracking-wider">
                     {business.name}
                   </span>
                   {currentUser?.role === 'merchant' && (
-                    <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-0.5 clay-badge bg-emerald-50 text-emerald-800 text-[11px] font-bold">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-0.5 clay-badge bg-sky-50 text-sky-800 text-[11px] font-bold">
+                      <span className="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
                       {appLang === 'en' ? 'Cashier Terminal' : 'Terminal de Caja'}
                     </span>
                   )}
@@ -1722,7 +1722,7 @@ export default function App() {
                   type="button"
                   onClick={() => toggleAppLang('es')}
                   className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
-                    appLang === 'es' ? 'bg-[#1D4E3E] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                    appLang === 'es' ? 'bg-[#007AFF] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   ES
@@ -1731,7 +1731,7 @@ export default function App() {
                   type="button"
                   onClick={() => toggleAppLang('en')}
                   className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
-                    appLang === 'en' ? 'bg-[#1D4E3E] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                    appLang === 'en' ? 'bg-[#007AFF] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   EN
@@ -1801,7 +1801,7 @@ export default function App() {
                   type="button"
                   onClick={() => toggleAppLang('es')}
                   className={`px-1.5 py-0.5 rounded-lg transition-all cursor-pointer ${
-                    appLang === 'es' ? 'bg-[#1D4E3E] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                    appLang === 'es' ? 'bg-[#007AFF] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   ES
@@ -1810,7 +1810,7 @@ export default function App() {
                   type="button"
                   onClick={() => toggleAppLang('en')}
                   className={`px-1.5 py-0.5 rounded-lg transition-all cursor-pointer ${
-                    appLang === 'en' ? 'bg-[#1D4E3E] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                    appLang === 'en' ? 'bg-[#007AFF] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   EN

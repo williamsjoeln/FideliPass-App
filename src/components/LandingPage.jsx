@@ -132,12 +132,12 @@ export function LandingPage({
     : "https://api.whatsapp.com/send?phone=593992407645&text=Hola%20FideliPass,%20deseo%20activar%20mi%20tarjeta%20digital%20para%20mi%20negocio";
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] text-[#1D1D1F] font-[-apple-system,BlinkMacSystemFont,'Plus_Jakarta_Sans','SF_Pro_Display','Helvetica_Neue',sans-serif] selection:bg-[#1D4E3E] selection:text-white overflow-x-hidden antialiased relative">
+    <div className="min-h-screen bg-[#F5F5F7] text-[#1D1D1F] font-[-apple-system,BlinkMacSystemFont,'Plus_Jakarta_Sans','SF_Pro_Display','Helvetica_Neue',sans-serif] selection:bg-[#007AFF] selection:text-white overflow-x-hidden antialiased relative">
       
       {/* ================= RED DE MOLÉCULAS INTERACTIVAS FIJA EN TODA LA PÁGINA (STAMPCARD.IO EFFECT) ================= */}
       <InteractiveParticles 
-        color="rgba(29, 78, 62, 0.45)" 
-        accentColor="rgba(16, 185, 129, 0.75)" 
+        color="rgba(0, 122, 255, 0.40)" 
+        accentColor="rgba(14, 165, 233, 0.70)" 
         maxDistance={130} 
         mouseRadius={170} 
       />
@@ -156,7 +156,7 @@ export function LandingPage({
               )}
             </div>
             <span className="font-extrabold text-[#1D1D1F] text-base tracking-tight">{platformName}</span>
-            <span className="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-[#1D4E3E]">
+            <span className="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-100 text-[#007AFF]">
               Pro
             </span>
           </div>
@@ -178,7 +178,7 @@ export function LandingPage({
                 type="button"
                 onClick={() => toggleLang('es')}
                 className={`px-2 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
-                  lang === 'es' ? 'bg-[#1D4E3E] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                  lang === 'es' ? 'bg-[#007AFF] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
                 }`}
                 title="Cambiar a Español"
               >
@@ -188,7 +188,7 @@ export function LandingPage({
                 type="button"
                 onClick={() => toggleLang('en')}
                 className={`px-2 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
-                  lang === 'en' ? 'bg-[#1D4E3E] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+                  lang === 'en' ? 'bg-[#007AFF] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
                 }`}
                 title="Switch to English"
               >
@@ -224,7 +224,7 @@ export function LandingPage({
       <section id="experiencia" className="pt-10 sm:pt-16 pb-16 sm:pb-24 px-4 sm:px-6 relative z-10">
         
         {/* Glow de fondo Apple muy suave */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-gradient-to-tr from-emerald-100/40 via-teal-50/30 to-blue-50/40 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-gradient-to-tr from-sky-100/40 via-blue-50/30 to-sky-50/40 rounded-full blur-3xl pointer-events-none -z-10" />
 
         <div className="max-w-[1140px] mx-auto">
           
@@ -234,7 +234,7 @@ export function LandingPage({
             <div className="lg:col-span-6 text-center lg:text-left space-y-6">
               
               {/* Badge 3D inflado */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md clay-card text-[#1D4E3E] text-xs font-extrabold shadow-sm border border-emerald-100/80">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md clay-card text-[#007AFF] text-xs font-extrabold shadow-sm border border-sky-100/80">
                 <Sparkles size={14} className="text-[#FF5E36] animate-pulse" />
                 <span>{t.hero_badge}</span>
               </div>
@@ -242,7 +242,7 @@ export function LandingPage({
               {/* Título de Impacto Apple */}
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1D1D1F] tracking-[-0.035em] leading-[1.08]">
                 {t.hero_title_1}<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1D4E3E] via-[#24634f] to-[#0071E3]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#007AFF] via-[#0284C7] to-[#0369A1]">
                   {t.hero_title_2}
                 </span>
               </h1>
@@ -256,7 +256,7 @@ export function LandingPage({
               <div className="bg-white/85 backdrop-blur-md clay-card p-4 rounded-2xl border border-gray-200/80 text-left space-y-3 shadow-md">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-black text-gray-800 flex items-center gap-1.5">
-                    <Palette size={14} className="text-[#1D4E3E]" />
+                    <Palette size={14} className="text-[#007AFF]" />
                     <span>{t.hero_customize}</span>
                   </span>
                   <span className="text-[10px] text-gray-400 font-semibold">{t.hero_tap_business}</span>
@@ -272,7 +272,7 @@ export function LandingPage({
                         onClick={() => setSelectedThemeId(theme.id)}
                         className={`p-2 rounded-xl text-left transition-all border flex items-center gap-2 cursor-pointer ${
                           isSelected 
-                            ? 'border-[#1D4E3E] bg-emerald-50/80 shadow-sm ring-1 ring-[#1D4E3E]' 
+                            ? 'border-[#007AFF] bg-sky-50/80 shadow-sm ring-1 ring-[#007AFF]' 
                             : 'border-gray-200 hover:border-gray-300 bg-white/70'
                         }`}
                       >
@@ -301,7 +301,7 @@ export function LandingPage({
                         }}
                         className={`px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer ${
                           maxSlots === count
-                            ? 'bg-[#1D4E3E] text-white shadow-xs'
+                            ? 'bg-[#007AFF] text-white shadow-xs'
                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                         }`}
                       >
@@ -327,7 +327,7 @@ export function LandingPage({
 
                 <button
                   onClick={onOpenLogin}
-                  className="clay-btn clay-btn-white px-6 py-4 text-sm font-extrabold text-[#1D4E3E] w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer border border-gray-200"
+                  className="clay-btn clay-btn-white px-6 py-4 text-sm font-extrabold text-[#007AFF] w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer border border-gray-200"
                 >
                   <Lock size={15} />
                   <span>{t.hero_cta_cashier}</span>
@@ -359,8 +359,8 @@ export function LandingPage({
                   </div>
 
                   {/* Acceso Web Universal */}
-                  <div className="h-10 bg-white/95 backdrop-blur-md text-emerald-900 px-3.5 rounded-full flex items-center gap-1.5 border border-slate-200/80 shadow-sm text-xs font-black select-none">
-                    <CheckCircle2 size={15} className="text-emerald-600 shrink-0" />
+                  <div className="h-10 bg-white/95 backdrop-blur-md text-sky-900 px-3.5 rounded-full flex items-center gap-1.5 border border-slate-200/80 shadow-sm text-xs font-black select-none">
+                    <CheckCircle2 size={15} className="text-[#007AFF] shrink-0" />
                     <span>+ Web PWA</span>
                   </div>
                 </div>
@@ -369,11 +369,11 @@ export function LandingPage({
               {/* Sellos de confianza */}
               <div className="pt-1 flex items-center justify-center lg:justify-start gap-6 text-xs text-[#86868B] font-semibold">
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 size={15} className="text-emerald-600" />
+                  <CheckCircle2 size={15} className="text-[#007AFF]" />
                   <span>{t.hero_trust_1}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 size={15} className="text-emerald-600" />
+                  <CheckCircle2 size={15} className="text-[#007AFF]" />
                   <span>{t.hero_trust_2}</span>
                 </div>
               </div>
@@ -384,13 +384,13 @@ export function LandingPage({
             <div className="lg:col-span-6 flex justify-center relative">
               
               {/* Resplandor decorativo con color dinámico */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-emerald-200/40 via-teal-100/30 to-blue-200/30 rounded-[48px] blur-2xl transform rotate-3 scale-95 -z-10" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-sky-200/40 via-blue-100/30 to-sky-200/30 rounded-[48px] blur-2xl transform rotate-3 scale-95 -z-10" />
 
               {/* Contenedor del Celular */}
               <div className="relative w-full max-w-[340px] sm:max-w-[360px] transition-transform duration-500 hover:scale-[1.02]">
                 
                 {/* Chasis de iPhone Blanco/Plata Estilo Apple */}
-                <div className="bg-[#1C1C1E] p-3 sm:p-3.5 rounded-[46px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.35),0_10px_25px_-5px_rgba(29,78,62,0.2)] border-[3px] border-[#8E8E93]/30 ring-1 ring-white/60">
+                <div className="bg-[#1C1C1E] p-3 sm:p-3.5 rounded-[46px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.35),0_10px_25px_-5px_rgba(0,122,255,0.2)] border-[3px] border-[#8E8E93]/30 ring-1 ring-white/60">
                   
                   {/* Dynamic Island Apple */}
                   <div className="w-24 h-4 bg-black rounded-full mx-auto mb-2.5 flex items-center justify-center shadow-inner">
@@ -433,7 +433,7 @@ export function LandingPage({
                     <div className="bg-white clay-card p-3.5 mb-3 border border-gray-100">
                       <div className="flex items-center justify-between mb-2.5">
                         <span className="text-[11px] font-extrabold text-gray-800">{t.phone_tap_to_stamp}</span>
-                        <span className="text-[10px] text-[#1D4E3E] font-bold bg-[#E8F1EC] px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] text-[#007AFF] font-bold bg-sky-50 px-2 py-0.5 rounded-full">
                           {t.phone_interactive}
                         </span>
                       </div>
@@ -471,7 +471,7 @@ export function LandingPage({
                         <button
                           type="button"
                           onClick={handleAddStamp}
-                          className="font-bold text-[#1D4E3E] hover:underline flex items-center gap-1 cursor-pointer"
+                          className="font-bold text-[#007AFF] hover:underline flex items-center gap-1 cursor-pointer"
                         >
                           <Plus size={11} />
                           <span>{t.phone_add_stamp} (+1)</span>
@@ -519,12 +519,12 @@ export function LandingPage({
 
                 {/* Indicador elegante centrado debajo del celular */}
                 <div className="w-full flex justify-center mt-6">
-                  <div className="inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md clay-card py-2.5 px-5 rounded-full shadow-lg border border-emerald-100/90 text-xs transition-transform hover:scale-105">
-                    <div className="w-6 h-6 rounded-lg bg-emerald-100 text-[#1D4E3E] flex items-center justify-center shrink-0">
+                  <div className="inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md clay-card py-2.5 px-5 rounded-full shadow-lg border border-sky-100/90 text-xs transition-transform hover:scale-105">
+                    <div className="w-6 h-6 rounded-lg bg-sky-100 text-[#007AFF] flex items-center justify-center shrink-0">
                       <QrCode size={14} />
                     </div>
                     <span className="text-[12px] font-bold text-gray-700 whitespace-nowrap">
-                      <strong className="text-[#1D4E3E] font-black">{lang === 'en' ? 'At counter / table:' : 'En mostrador:'}</strong> {lang === 'en' ? 'Scan & register in 5 seconds' : 'Escaneo y registro en 1 segundo'}
+                      <strong className="text-[#007AFF] font-black">{lang === 'en' ? 'At counter / table:' : 'En mostrador:'}</strong> {lang === 'en' ? 'Scan & register in 5 seconds' : 'Escaneo y registro en 1 segundo'}
                     </span>
                   </div>
                 </div>
@@ -544,7 +544,7 @@ export function LandingPage({
         <div className="max-w-[1100px] mx-auto text-center">
           
           <div className="max-w-2xl mx-auto mb-14 space-y-3">
-            <span className="text-xs font-black text-[#1D4E3E] uppercase tracking-widest bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200 shadow-2xs">
+            <span className="text-xs font-black text-[#007AFF] uppercase tracking-widest bg-sky-50 px-3.5 py-1.5 rounded-full border border-sky-200 shadow-2xs">
               {t.how_badge}
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1D1D1F] tracking-tight">
@@ -560,20 +560,20 @@ export function LandingPage({
             {/* Paso 1: Diorama del mostrador */}
             <div className="clay-card bg-white/90 backdrop-blur-md p-7 rounded-[32px] border border-gray-200/90 text-left space-y-4 hover:shadow-2xl transition-all duration-300 relative group">
               <div className="flex items-center justify-between">
-                <span className="w-9 h-9 rounded-full bg-gradient-to-br from-[#1D4E3E] to-[#153B2F] text-white flex items-center justify-center font-black text-sm shadow-md">
+                <span className="w-9 h-9 rounded-full bg-gradient-to-br from-[#007AFF] to-[#005bb5] text-white flex items-center justify-center font-black text-sm shadow-md">
                   1
                 </span>
-                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                <span className="text-[10px] font-black uppercase tracking-wider text-sky-700 bg-sky-50 px-2.5 py-1 rounded-full border border-sky-200">
                   {t.step1_badge}
                 </span>
               </div>
 
               {/* Visual Card Graphic */}
-              <div className="h-36 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100/80 p-4 flex flex-col items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
-                <div className="w-16 h-16 rounded-2xl bg-white clay-card p-2 shadow-md flex items-center justify-center text-[#1D4E3E] ring-4 ring-emerald-100">
+              <div className="h-36 rounded-2xl bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-100/80 p-4 flex flex-col items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
+                <div className="w-16 h-16 rounded-2xl bg-white clay-card p-2 shadow-md flex items-center justify-center text-[#007AFF] ring-4 ring-sky-100">
                   <QrCode size={34} />
                 </div>
-                <div className="mt-2.5 inline-flex items-center gap-1.5 text-[10px] font-extrabold text-[#1D4E3E]">
+                <div className="mt-2.5 inline-flex items-center gap-1.5 text-[10px] font-extrabold text-[#007AFF]">
                   <ScanLine size={12} className="animate-pulse" />
                   <span>{t.step1_hint}</span>
                 </div>
@@ -602,10 +602,10 @@ export function LandingPage({
                   <div className="w-10 h-10 rounded-xl bg-white clay-card flex items-center justify-center text-blue-600 shadow-sm font-black text-xs">
                     +1
                   </div>
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#1D4E3E] to-[#153B2F] text-white flex items-center justify-center shadow-md">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#007AFF] to-[#005bb5] text-white flex items-center justify-center shadow-md">
                     <Award size={24} className="text-amber-300" />
                   </div>
-                  <div className="w-10 h-10 rounded-xl bg-white clay-card flex items-center justify-center text-emerald-600 shadow-sm font-black text-xs">
+                  <div className="w-10 h-10 rounded-xl bg-white clay-card flex items-center justify-center text-sky-600 shadow-sm font-black text-xs">
                     ✓
                   </div>
                 </div>
@@ -659,7 +659,7 @@ export function LandingPage({
         <div className="max-w-[1100px] mx-auto">
           
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-            <span className="text-xs font-black text-[#1D4E3E] uppercase tracking-widest bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200 shadow-2xs">
+            <span className="text-xs font-black text-[#007AFF] uppercase tracking-widest bg-sky-50 px-3.5 py-1.5 rounded-full border border-sky-200 shadow-2xs">
               {t.mc_badge}
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1D1D1F] tracking-tight">
@@ -705,9 +705,9 @@ export function LandingPage({
             </div>
 
             {/* Después: El Presente con FideliPass */}
-            <div className="clay-card bg-emerald-50/50 backdrop-blur-md p-8 rounded-[32px] border border-emerald-300 text-left space-y-5 relative shadow-lg">
+            <div className="clay-card bg-sky-50/50 backdrop-blur-md p-8 rounded-[32px] border border-sky-300 text-left space-y-5 relative shadow-lg">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black text-emerald-700 uppercase tracking-wider bg-emerald-100 px-3 py-1 rounded-full">
+                <span className="text-xs font-black text-sky-700 uppercase tracking-wider bg-sky-100 px-3 py-1 rounded-full">
                   {t.mc_after_badge}
                 </span>
                 <span className="text-2xl">🍦</span>
@@ -716,30 +716,30 @@ export function LandingPage({
 
               <ul className="space-y-3 text-xs sm:text-sm text-gray-800 font-semibold">
                 <li className="flex items-center gap-2.5">
-                  <Check size={16} className="text-emerald-600 shrink-0" />
+                  <Check size={16} className="text-[#007AFF] shrink-0" />
                   <span>{t.mc_after_1}</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <Check size={16} className="text-emerald-600 shrink-0" />
+                  <Check size={16} className="text-[#007AFF] shrink-0" />
                   <span>{t.mc_after_2}</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <Check size={16} className="text-emerald-600 shrink-0" />
+                  <Check size={16} className="text-[#007AFF] shrink-0" />
                   <span>{t.mc_after_3}</span>
                 </li>
               </ul>
 
-              <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#173E31] to-[#153B2F] text-white text-xs font-bold flex items-center justify-between shadow-md">
+              <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#005bb5] to-[#007AFF] text-white text-xs font-bold flex items-center justify-between shadow-md">
                 <span>{t.mc_after_res_label}</span>
-                <span className="font-black text-sm text-emerald-300">{t.mc_after_res}</span>
+                <span className="font-black text-sm text-sky-200">{t.mc_after_res}</span>
               </div>
             </div>
 
           </div>
 
           {/* Testimonial Banner Limpio */}
-          <div className="p-7 sm:p-9 rounded-[32px] bg-white/90 backdrop-blur-md clay-card border border-emerald-200 flex flex-col sm:flex-row items-center gap-7 text-left shadow-lg">
-            <div className="w-20 h-20 rounded-3xl bg-white clay-card p-2.5 shadow-md shrink-0 flex items-center justify-center ring-4 ring-emerald-50">
+          <div className="p-7 sm:p-9 rounded-[32px] bg-white/90 backdrop-blur-md clay-card border border-sky-200 flex flex-col sm:flex-row items-center gap-7 text-left shadow-lg">
+            <div className="w-20 h-20 rounded-3xl bg-white clay-card p-2.5 shadow-md shrink-0 flex items-center justify-center ring-4 ring-sky-50">
               <img src="/logos/mcrolls.png" alt="MC Rolls" className="w-full h-full object-contain" />
             </div>
             <div className="flex-1 space-y-2">
@@ -752,7 +752,7 @@ export function LandingPage({
               <p className="text-sm sm:text-base font-bold text-[#1D1D1F] italic leading-relaxed">
                 {t.mc_quote}
               </p>
-              <p className="text-xs text-[#1D4E3E] font-black uppercase tracking-wider">
+              <p className="text-xs text-[#007AFF] font-black uppercase tracking-wider">
                 {t.mc_author}
               </p>
             </div>
@@ -785,8 +785,8 @@ export function LandingPage({
                     <th className="p-4 sm:p-5">{t.th_feature}</th>
                     <th className="p-4 sm:p-5 text-gray-400">{t.th_paper}</th>
                     <th className="p-4 sm:p-5 text-gray-500">{t.th_apps}</th>
-                    <th className="p-4 sm:p-5 text-[#1D4E3E] bg-emerald-50/80 font-black flex items-center gap-1.5">
-                      <Sparkles size={14} className="text-emerald-600" />
+                    <th className="p-4 sm:p-5 text-[#007AFF] bg-sky-50/80 font-black flex items-center gap-1.5">
+                      <Sparkles size={14} className="text-[#007AFF]" />
                       <span>{t.th_fidelipass}</span>
                     </th>
                   </tr>
@@ -795,21 +795,21 @@ export function LandingPage({
                   <tr className="hover:bg-gray-50/50 transition-colors">
                     <td className="p-4 sm:p-5 font-bold text-gray-800">{t.row1_title}</td>
                     <td className="p-4 sm:p-5 text-red-500 font-semibold">{t.row1_paper}</td>
-                    <td className="p-4 sm:p-5 text-emerald-600 font-semibold">{t.row1_apps}</td>
-                    <td className="p-4 sm:p-5 bg-emerald-50/40 text-emerald-700 font-black">{t.row1_fidelipass}</td>
+                    <td className="p-4 sm:p-5 text-sky-600 font-semibold">{t.row1_apps}</td>
+                    <td className="p-4 sm:p-5 bg-sky-50/50 text-[#007AFF] font-black">{t.row1_fidelipass}</td>
                   </tr>
                   <tr className="hover:bg-gray-50/50 transition-colors">
                     <td className="p-4 sm:p-5 font-bold text-gray-800">{t.row2_title}</td>
                     <td className="p-4 sm:p-5 text-gray-400">{t.row2_paper}</td>
                     <td className="p-4 sm:p-5 text-amber-600 font-semibold">{t.row2_apps}</td>
-                    <td className="p-4 sm:p-5 bg-emerald-50/40 text-emerald-700 font-black">
+                    <td className="p-4 sm:p-5 bg-sky-50/50 text-[#007AFF] font-black">
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-1.5">
-                          <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
+                          <CheckCircle2 size={14} className="text-[#007AFF] shrink-0" />
                           <span>{t.row2_fidelipass_1}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                          <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
+                          <CheckCircle2 size={14} className="text-[#007AFF] shrink-0" />
                           <span>{t.row2_fidelipass_2}</span>
                         </div>
                       </div>
@@ -819,7 +819,7 @@ export function LandingPage({
                     <td className="p-4 sm:p-5 font-bold text-gray-800">{t.row3_title}</td>
                     <td className="p-4 sm:p-5 text-gray-400">{t.row3_paper}</td>
                     <td className="p-4 sm:p-5 text-gray-500">{t.row3_apps}</td>
-                    <td className="p-4 sm:p-5 bg-emerald-50/40 text-emerald-700 font-black">
+                    <td className="p-4 sm:p-5 bg-sky-50/50 text-[#007AFF] font-black">
                       {t.row3_fidelipass}
                     </td>
                   </tr>
@@ -827,19 +827,19 @@ export function LandingPage({
                     <td className="p-4 sm:p-5 font-bold text-gray-800">{t.row4_title}</td>
                     <td className="p-4 sm:p-5 text-gray-500">{t.row4_paper}</td>
                     <td className="p-4 sm:p-5 text-red-500 font-semibold">{t.row4_apps}</td>
-                    <td className="p-4 sm:p-5 bg-emerald-50/40 text-emerald-700 font-black">{t.row4_fidelipass}</td>
+                    <td className="p-4 sm:p-5 bg-sky-50/50 text-[#007AFF] font-black">{t.row4_fidelipass}</td>
                   </tr>
                   <tr className="hover:bg-gray-50/50 transition-colors">
                     <td className="p-4 sm:p-5 font-bold text-gray-800">{t.row5_title}</td>
                     <td className="p-4 sm:p-5 text-gray-400">{t.row5_paper}</td>
                     <td className="p-4 sm:p-5 text-gray-400">{t.row5_apps}</td>
-                    <td className="p-4 sm:p-5 bg-emerald-50/40 text-emerald-700 font-black">{t.row5_fidelipass}</td>
+                    <td className="p-4 sm:p-5 bg-sky-50/50 text-[#007AFF] font-black">{t.row5_fidelipass}</td>
                   </tr>
                   <tr className="hover:bg-gray-50/50 transition-colors">
                     <td className="p-4 sm:p-5 font-bold text-gray-800">{t.row6_title}</td>
                     <td className="p-4 sm:p-5 text-gray-400">{t.row6_paper}</td>
                     <td className="p-4 sm:p-5 text-gray-400">{t.row6_apps}</td>
-                    <td className="p-4 sm:p-5 bg-emerald-50/40 text-emerald-700 font-black">{t.row6_fidelipass}</td>
+                    <td className="p-4 sm:p-5 bg-sky-50/50 text-[#007AFF] font-black">{t.row6_fidelipass}</td>
                   </tr>
                 </tbody>
               </table>
@@ -854,7 +854,7 @@ export function LandingPage({
         <div className="max-w-[850px] mx-auto text-center">
           
           <div className="space-y-3 mb-10">
-            <span className="text-xs font-black text-emerald-700 uppercase tracking-widest bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200 shadow-2xs">
+            <span className="text-xs font-black text-[#007AFF] uppercase tracking-widest bg-sky-50 px-3.5 py-1.5 rounded-full border border-sky-200 shadow-2xs">
               {t.calc_badge}
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1D1D1F] tracking-tight">
@@ -873,7 +873,7 @@ export function LandingPage({
                 <label className="text-xs font-black text-gray-700 uppercase tracking-wide">
                   {t.calc_label_customers}
                 </label>
-                <span className="text-xl font-black text-[#1D4E3E]">{calcCustomers} {t.calc_unit_customers}</span>
+                <span className="text-xl font-black text-[#007AFF]">{calcCustomers} {t.calc_unit_customers}</span>
               </div>
               <input
                 type="range"
@@ -882,7 +882,7 @@ export function LandingPage({
                 step="50"
                 value={calcCustomers}
                 onChange={(e) => setCalcCustomers(Number(e.target.value))}
-                className="w-full accent-[#1D4E3E] cursor-pointer h-2.5 bg-gray-200 rounded-lg"
+                className="w-full accent-[#007AFF] cursor-pointer h-2.5 bg-gray-200 rounded-lg"
               />
               <div className="flex justify-between text-[11px] text-gray-400 font-bold mt-1">
                 <span>50 {t.calc_unit_customers}</span>
@@ -896,7 +896,7 @@ export function LandingPage({
                 <label className="text-xs font-black text-gray-700 uppercase tracking-wide">
                   {t.calc_label_ticket}
                 </label>
-                <span className="text-xl font-black text-[#1D4E3E]">${calcTicket.toFixed(2)} USD</span>
+                <span className="text-xl font-black text-[#007AFF]">${calcTicket.toFixed(2)} USD</span>
               </div>
               <input
                 type="range"
@@ -905,7 +905,7 @@ export function LandingPage({
                 step="0.50"
                 value={calcTicket}
                 onChange={(e) => setCalcTicket(Number(e.target.value))}
-                className="w-full accent-[#1D4E3E] cursor-pointer h-2.5 bg-gray-200 rounded-lg"
+                className="w-full accent-[#007AFF] cursor-pointer h-2.5 bg-gray-200 rounded-lg"
               />
               <div className="flex justify-between text-[11px] text-gray-400 font-bold mt-1">
                 <span>$2.00</span>
@@ -914,10 +914,10 @@ export function LandingPage({
             </div>
 
             {/* Resultado Proyectado */}
-            <div className="p-7 rounded-3xl bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-100/60 clay-card border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left shadow-sm">
+            <div className="p-7 rounded-3xl bg-gradient-to-r from-sky-50 via-blue-50 to-sky-100/60 clay-card border border-sky-200 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left shadow-sm">
               <div>
                 <p className="text-xs font-black text-gray-500 uppercase tracking-wide">{t.calc_est_extra}</p>
-                <p className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1D4E3E] leading-tight">
+                <p className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#007AFF] leading-tight">
                   +${extraRevenue.toLocaleString()} <span className="text-lg font-bold text-gray-600">{t.calc_per_month}</span>
                 </p>
                 <p className="text-xs text-gray-600 font-medium mt-1">{t.calc_basis}</p>
@@ -943,7 +943,7 @@ export function LandingPage({
         <div className="max-w-[780px] mx-auto">
           
           <div className="text-center mb-12 space-y-2">
-            <span className="text-xs font-black text-emerald-700 uppercase tracking-widest bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200 shadow-2xs">
+            <span className="text-xs font-black text-[#007AFF] uppercase tracking-widest bg-sky-50 px-3.5 py-1.5 rounded-full border border-sky-200 shadow-2xs">
               {t.faq_badge}
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-[#1D1D1F]">{t.faq_title}</h2>
@@ -963,7 +963,7 @@ export function LandingPage({
                     className="w-full p-5 text-left font-extrabold text-sm sm:text-base text-[#1D1D1F] flex items-center justify-between gap-4 cursor-pointer"
                   >
                     <span>{faq.q}</span>
-                    <span className={`w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0 text-xs font-black transition-transform ${isOpen ? 'rotate-180 bg-[#1D4E3E] text-white' : 'text-gray-400'}`}>
+                    <span className={`w-6 h-6 rounded-full bg-white flex items-center justify-center shrink-0 text-xs font-black transition-transform ${isOpen ? 'rotate-180 bg-[#007AFF] text-white' : 'text-gray-400'}`}>
                       ↓
                     </span>
                   </button>
@@ -987,7 +987,7 @@ export function LandingPage({
             {platformLogo ? (
               <img src={platformLogo} alt={platformName} className="w-full h-full object-contain" />
             ) : (
-              <Sparkles size={28} className="text-[#1D4E3E]" />
+              <Sparkles size={28} className="text-[#007AFF]" />
             )}
           </div>
 
@@ -1061,7 +1061,7 @@ export function LandingPage({
             type="button"
             onClick={() => toggleLang('es')}
             className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 ${
-              lang === 'es' ? 'bg-[#1D4E3E] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+              lang === 'es' ? 'bg-[#007AFF] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
             }`}
             title="Cambiar a Español"
           >
@@ -1071,7 +1071,7 @@ export function LandingPage({
             type="button"
             onClick={() => toggleLang('en')}
             className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 ${
-              lang === 'en' ? 'bg-[#1D4E3E] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
+              lang === 'en' ? 'bg-[#007AFF] text-white shadow-xs' : 'text-gray-600 hover:text-gray-900'
             }`}
             title="Switch to English"
           >
