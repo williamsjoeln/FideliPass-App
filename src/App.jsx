@@ -1992,7 +1992,7 @@ export default function App() {
 
         {/* ================= MERCHANT ONLY MODE ================= */}
         {viewMode === 'merchant' && (
-          <div className="flex flex-col items-center w-full">
+          <div className={`flex flex-col items-center w-full ${isNativeMobileApp() ? 'h-full' : ''}`}>
             <MerchantDashboard
               currentUser={currentUser}
               business={business}

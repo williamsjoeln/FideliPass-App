@@ -69,6 +69,14 @@ export function MerchantDashboard({
     } catch {}
   }, []);
 
+  const isNative = typeof window !== 'undefined' && Boolean(
+    window.Capacitor?.isNativePlatform?.() ||
+    window.location.protocol === 'capacitor:' ||
+    window.location.protocol === 'ionic:' ||
+    (window.location.hostname === 'localhost' && window.Capacitor) ||
+    new URLSearchParams(window.location.search).get('app') === 'true'
+  );
+
   const lang = appLang || localLang;
 
   const toggleLang = (newLang) => {
@@ -495,9 +503,9 @@ export function MerchantDashboard({
   }
 
   return (
-    <div className="w-full min-h-screen sm:min-h-[750px] sm:max-w-md lg:max-w-4xl xl:max-w-5xl mx-auto bg-slate-50 sm:clay-card sm:rounded-[32px] flex flex-col overflow-x-hidden relative text-left transition-all">
+    <div className={`w-full ${isNative ? 'fixed inset-0 h-[100dvh] max-h-[100dvh]' : 'min-h-screen sm:min-h-[750px]'} sm:max-w-md lg:max-w-4xl xl:max-w-5xl mx-auto bg-slate-50 sm:clay-card sm:rounded-[32px] flex flex-col overflow-hidden text-left z-30`}>
       {/* Top App Header with safe area for iPhone Dynamic Island / Android status bar */}
-      <header className="px-4 py-3 sm:px-6 lg:px-8 lg:py-4 pt-[max(env(safe-area-inset-top),0.85rem)] bg-white border-b border-slate-100 flex items-center justify-between sticky top-0 z-20 shadow-xs">
+      <header className="px-4 py-3 sm:px-6 lg:px-8 lg:py-4 pt-[max(env(safe-area-inset-top),0.85rem)] bg-white border-b border-slate-100 flex items-center justify-between shrink-0 z-40 shadow-xs">
         <div className="flex items-center gap-2.5 sm:gap-3">
           <div className="w-9 h-9 lg:w-11 lg:h-11 rounded-2xl bg-white text-gray-900 flex items-center justify-center font-black text-sm lg:text-base shadow-xs border border-gray-100 overflow-hidden p-1">
             {platformLogo ? (
@@ -550,8 +558,8 @@ export function MerchantDashboard({
         </div>
       </header>
 
-      {/* Main Tab Content */}
-      <div className="flex-1 p-5 pb-28 lg:p-8 lg:pb-32 overflow-y-auto">
+      {/* Main Tab Content - Scrolls strictly behind header and nav */}
+      <div className="flex-1 p-4 sm:p-5 pb-32 lg:p-8 lg:pb-36 overflow-y-auto overscroll-contain">
         {/* ================= TAB 1: HOY (DASHBOARD) ================= */}
         {activeTab === 'hoy' && !selectedCustomer && (
           <div className="space-y-4 lg:space-y-6 animate-fade-in">
@@ -2097,7 +2105,7 @@ export function MerchantDashboard({
       </div>
 
       {/* ================= BOTTOM NAVIGATION BAR (Claymorphic Navigation) ================= */}
-      <nav className="fixed sm:absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200/90 px-4 py-2 sm:py-2.5 pb-[max(env(safe-area-inset-bottom),0.75rem)] flex items-center justify-around z-30 shadow-lg">
+      <nav className={`${isNative ? 'fixed' : 'fixed sm:absolute'} bottom-0 left-0 right-0 bg-white border-t border-slate-200/90 px-4 py-2 sm:py-2.5 pb-[max(env(safe-area-inset-bottom),0.85rem)] flex items-center justify-around z-50 shadow-[0_-4px_25px_rgba(15,23,42,0.08)]`}>
         {/* Tab 1: Hoy */}
         <button
           onClick={() => {
