@@ -1028,7 +1028,7 @@ export function MerchantDashboard({
                   </div>
                   <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden shadow-inner p-0.5">
                     <div
-                      className="h-full bg-gradient-to-r from-[#24634f] to-[#173e31] transition-all duration-500 rounded-full shadow-sm"
+                      className="h-full bg-gradient-to-r from-[#007AFF] via-[#38BDF8] to-[#0284C7] transition-all duration-500 rounded-full shadow-sm"
                       style={{
                         width: `${Math.min(100, (selectedCustomer.currentStamps / business.maxStamps) * 100)}%`
                       }}

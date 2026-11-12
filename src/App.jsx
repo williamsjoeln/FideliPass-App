@@ -896,7 +896,7 @@ export default function App() {
           ownerPassword: account.password,
           maxStamps: 6,
           rewardTitle: '1 Producto Gratis',
-          accentColor: '#1D4E3E',
+          accentColor: '#007AFF',
           cardBgColor: '#1F2937',
           iconType: 'star'
         };
@@ -1523,7 +1523,13 @@ export default function App() {
         <LandingPage
           platformName={platformName}
           platformLogo={platformLogo}
-          onOpenLogin={() => setShowLoginModal(true)}
+          currentLang={appLang}
+          onToggleLang={toggleAppLang}
+          onOpenLogin={(selectedLang) => {
+            const activeLang = (selectedLang === 'en' || selectedLang === 'es') ? selectedLang : appLang;
+            toggleAppLang(activeLang);
+            setShowLoginModal(true);
+          }}
           onTryCustomerDemo={() => {
             setCurrentUser({ role: 'guest', name: 'Cliente Invitado' });
             setBusiness(INITIAL_BUSINESS);
@@ -1582,8 +1588,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 overflow-x-hidden">
-      {/* Top Global Control Bar - Claymorphic Header (hidden in native mobile apps to avoid duplicate header) */}
-      {!isNativeMobileApp() && viewMode !== 'customer' && (
+      {/* Top Global Control Bar - Claymorphic Header (only shown for SuperAdmin on web, never for cashiers) */}
+      {!isNativeMobileApp() && viewMode !== 'customer' && currentUser?.role === 'admin' && (
         <header className="bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 lg:px-10 py-3.5 lg:py-4 sticky top-0 z-40 shadow-sm print:hidden">
           <div className="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-3">
             {/* Logo & Store Title */}
@@ -1645,7 +1651,7 @@ export default function App() {
                     onClick={() => setViewMode('dual')}
                     className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                       viewMode === 'dual'
-                        ? 'clay-btn clay-btn-light text-[#1D4E3E] shadow-sm'
+                        ? 'clay-btn clay-btn-light text-[#007AFF] shadow-sm'
                         : 'text-gray-500 hover:text-gray-800'
                     }`}
                   >
@@ -1657,7 +1663,7 @@ export default function App() {
                     onClick={() => setViewMode('merchant')}
                     className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                       viewMode === 'merchant'
-                        ? 'clay-btn clay-btn-light text-[#1D4E3E] shadow-sm'
+                        ? 'clay-btn clay-btn-light text-[#007AFF] shadow-sm'
                         : 'text-gray-500 hover:text-gray-800'
                     }`}
                   >
@@ -1669,7 +1675,7 @@ export default function App() {
                     onClick={() => setViewMode('customer')}
                     className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                       viewMode === 'customer'
-                        ? 'clay-btn clay-btn-light text-[#1D4E3E] shadow-sm'
+                        ? 'clay-btn clay-btn-light text-[#007AFF] shadow-sm'
                         : 'text-gray-500 hover:text-gray-800'
                     }`}
                   >
@@ -1700,7 +1706,7 @@ export default function App() {
 
                   <button
                     onClick={() => setCalculatorOpen(true)}
-                    className="clay-btn px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-[#1D4E3E] text-xs font-black flex items-center gap-1.5 transition-colors cursor-pointer border border-emerald-200"
+                    className="clay-btn px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-[#007AFF] text-xs font-black flex items-center gap-1.5 transition-colors cursor-pointer border border-sky-200"
                   >
                     <Calculator size={14} />
                     <span className="hidden sm:inline">{appLang === 'en' ? 'ROI Calculator' : 'Calculadora de Ganancias'}</span>
@@ -1787,7 +1793,7 @@ export default function App() {
                   <span>🌱</span>
                 )}
               </div>
-              <span className="font-heading font-black text-base text-[#1D4E3E]">{platformName}</span>
+              <span className="font-heading font-black text-base text-[#007AFF]">{platformName}</span>
             </div>
 
             <div className="flex items-center gap-2">
@@ -1825,7 +1831,7 @@ export default function App() {
                     try { localStorage.setItem('fidelipass_show_admin_master', 'true'); } catch {}
                     window.location.href = '/admin';
                   }}
-                  className="clay-btn bg-[#1D4E3E] text-white px-2.5 py-1 text-[11px] font-black cursor-pointer shadow-xs hover:bg-[#153B2F] flex items-center gap-1"
+                  className="clay-btn bg-[#007AFF] text-white px-2.5 py-1 text-[11px] font-black cursor-pointer shadow-xs hover:bg-[#0062E0] flex items-center gap-1"
                   title="Volver al Panel SuperAdmin"
                 >
                   <Shield size={12} />
@@ -1868,7 +1874,7 @@ export default function App() {
             <div className="lg:col-span-7 flex flex-col items-center">
               <div className="w-full flex items-center justify-between mb-3 px-1">
                 <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-[#1D4E3E]"></span>
+                  <span className="w-3 h-3 rounded-full bg-[#007AFF]"></span>
                   <h2 className="font-heading font-bold text-gray-900 text-sm">
                     1. Celular del Cajero / Dueño (caja.fidelipassapp.com/{business.id})
                   </h2>
@@ -1942,7 +1948,7 @@ export default function App() {
                   <select
                     value={activeCustomerId}
                     onChange={(e) => setActiveCustomerId(e.target.value)}
-                    className="text-xs font-black text-[#1D4E3E] bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 focus:outline-none"
+                    className="text-xs font-black text-[#007AFF] bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 focus:outline-none"
                   >
                     {effectiveStoreCustomers.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -2029,7 +2035,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setCustomerScreen(customerScreen === 'card' ? 'register' : 'card')}
-                  className="clay-btn clay-btn-light text-xs font-black text-[#1D4E3E] px-3.5 py-2 shadow-xs cursor-pointer"
+                  className="clay-btn clay-btn-light text-xs font-black text-[#007AFF] px-3.5 py-2 shadow-xs cursor-pointer"
                 >
                   {customerScreen === 'card' ? '← Ver Pantalla de Registro' : '← Ver Tarjeta en Wallet'}
                 </button>
@@ -2041,7 +2047,7 @@ export default function App() {
                     try { localStorage.setItem('fidelipass_show_admin_master', 'true'); } catch {}
                     window.location.href = '/admin';
                   }}
-                  className="clay-btn bg-[#1D4E3E] text-white text-xs font-black px-3.5 py-2 shadow-xs cursor-pointer flex items-center gap-1.5 hover:bg-[#153B2F]"
+                  className="clay-btn bg-[#007AFF] text-white text-xs font-black px-3.5 py-2 shadow-xs cursor-pointer flex items-center gap-1.5 hover:bg-[#0062E0]"
                 >
                   <Shield size={14} />
                   <span>Volver a SuperAdmin</span>
@@ -2051,7 +2057,7 @@ export default function App() {
                   <select
                     value={activeCustomerId}
                     onChange={(e) => setActiveCustomerId(e.target.value)}
-                    className="text-xs font-black text-[#1D4E3E] bg-white px-3 py-2 rounded-2xl border border-slate-200 shadow-xs"
+                    className="text-xs font-black text-[#007AFF] bg-white px-3 py-2 rounded-2xl border border-slate-200 shadow-xs"
                   >
                     {effectiveStoreCustomers.map((c) => (
                       <option key={c.id} value={c.id}>

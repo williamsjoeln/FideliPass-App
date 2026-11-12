@@ -16,7 +16,9 @@ export function LandingPage({
   platformLogo = "/logos/fidelipass-logo.png",
   onOpenLogin,
   onTryCustomerDemo,
-  onOpenCalculator
+  onOpenCalculator,
+  currentLang,
+  onToggleLang
 }) {
   // Language State: 'es' or 'en'
   const [lang, setLang] = useState(() => {
@@ -30,14 +32,37 @@ export function LandingPage({
         if (saved === 'en' || saved === 'es') return saved;
       } catch {}
     }
+    if (currentLang === 'en' || currentLang === 'es') return currentLang;
     return 'es';
   });
 
+  // Keep internal state in sync with parent currentLang prop
+  React.useEffect(() => {
+    if (currentLang && (currentLang === 'en' || currentLang === 'es') && currentLang !== lang) {
+      setLang(currentLang);
+    }
+  }, [currentLang]);
+
   const toggleLang = (newLang) => {
     setLang(newLang);
+    if (onToggleLang) {
+      onToggleLang(newLang);
+    }
     try {
       localStorage.setItem('fidelipass_lang', newLang);
     } catch {}
+  };
+
+  const handleOpenLogin = () => {
+    if (onToggleLang) {
+      onToggleLang(lang);
+    }
+    try {
+      localStorage.setItem('fidelipass_lang', lang);
+    } catch {}
+    if (onOpenLogin) {
+      onOpenLogin(lang);
+    }
   };
 
   const t = landingTranslations[lang] || landingTranslations.es;
@@ -197,7 +222,7 @@ export function LandingPage({
             </div>
 
             <button
-              onClick={onOpenLogin}
+              onClick={handleOpenLogin}
               className="clay-btn clay-btn-primary px-3 sm:px-4 py-1.5 text-xs font-bold text-white shadow-sm flex items-center gap-1.5 cursor-pointer"
             >
               <Lock size={12} />
@@ -326,7 +351,7 @@ export function LandingPage({
                 </a>
 
                 <button
-                  onClick={onOpenLogin}
+                  onClick={handleOpenLogin}
                   className="clay-btn clay-btn-white px-6 py-4 text-sm font-extrabold text-[#007AFF] w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer border border-gray-200"
                 >
                   <Lock size={15} />
@@ -1011,7 +1036,7 @@ export function LandingPage({
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </a>
             <button
-              onClick={onOpenLogin}
+              onClick={handleOpenLogin}
               className="clay-btn clay-btn-white px-7 py-4 text-sm font-extrabold text-[#1D1D1F] w-full sm:w-auto cursor-pointer border border-gray-300 flex items-center justify-center gap-2"
             >
               <Lock size={15} />
@@ -1037,7 +1062,7 @@ export function LandingPage({
               <span>{t.foot_rights} © {new Date().getFullYear()}</span>
             </div>
             <div className="flex items-center gap-4 text-[11px]">
-              <button onClick={onOpenLogin} className="hover:text-[#1D1D1F] underline cursor-pointer">{t.foot_merchant_portal}</button>
+              <button onClick={handleOpenLogin} className="hover:text-[#1D1D1F] underline cursor-pointer">{t.foot_merchant_portal}</button>
               <a href="#experiencia" className="hover:text-[#1D1D1F] underline cursor-pointer">{t.foot_sim}</a>
               <a 
                 href={contactWhatsappUrl}

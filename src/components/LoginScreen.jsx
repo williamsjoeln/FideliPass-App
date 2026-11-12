@@ -65,7 +65,6 @@ export function LoginScreen({
   onToggleLang 
 }) {
   const [lang, setLang] = useState(() => {
-    if (currentLang === 'en' || currentLang === 'es') return currentLang;
     if (typeof window !== 'undefined') {
       try {
         const urlParams = new URLSearchParams(window.location.search);
@@ -76,6 +75,7 @@ export function LoginScreen({
         if (saved === 'en' || saved === 'es') return saved;
       } catch {}
     }
+    if (currentLang === 'en' || currentLang === 'es') return currentLang;
     return 'es';
   });
 

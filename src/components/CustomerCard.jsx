@@ -382,7 +382,7 @@ export function CustomerCard({
                 type="button"
                 onClick={() => toggleLang('es')}
                 className={`px-1.5 py-0.5 rounded-lg transition-all cursor-pointer ${
-                  lang === 'es' ? 'bg-white text-[#1D4E3E] shadow-xs' : 'text-white/70 hover:text-white'
+                  lang === 'es' ? 'bg-white text-[#007AFF] shadow-xs' : 'text-white/70 hover:text-white'
                 }`}
               >
                 ES
@@ -391,7 +391,7 @@ export function CustomerCard({
                 type="button"
                 onClick={() => toggleLang('en')}
                 className={`px-1.5 py-0.5 rounded-lg transition-all cursor-pointer ${
-                  lang === 'en' ? 'bg-white text-[#1D4E3E] shadow-xs' : 'text-white/70 hover:text-white'
+                  lang === 'en' ? 'bg-white text-[#007AFF] shadow-xs' : 'text-white/70 hover:text-white'
                 }`}
               >
                 EN

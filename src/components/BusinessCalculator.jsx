@@ -17,7 +17,7 @@ export function BusinessCalculator({ isOpen, onClose }) {
         {/* Header */}
         <div className="p-5 bg-slate-50 border-b border-slate-100 flex items-center justify-between rounded-t-[28px]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#1D4E3E] text-white flex items-center justify-center font-black text-sm shadow-sm">
+            <div className="w-10 h-10 rounded-2xl bg-[#007AFF] text-white flex items-center justify-center font-black text-sm shadow-sm">
               <DollarSign size={20} />
             </div>
             <div>
@@ -41,10 +41,10 @@ export function BusinessCalculator({ isOpen, onClose }) {
           <div>
             <div className="flex justify-between items-center text-xs font-black text-gray-700 mb-2">
               <span className="flex items-center gap-1.5">
-                <Store size={15} className="text-[#1D4E3E]" />
+                <Store size={15} className="text-[#007AFF]" />
                 <span>Locales afiliados en tu ciudadela:</span>
               </span>
-              <span className="text-base text-[#1D4E3E] font-heading font-black">{storeCount} locales</span>
+              <span className="text-base text-[#007AFF] font-heading font-black">{storeCount} locales</span>
             </div>
             <input
               type="range"
@@ -52,7 +52,7 @@ export function BusinessCalculator({ isOpen, onClose }) {
               max="150"
               value={storeCount}
               onChange={(e) => setStoreCount(Number(e.target.value))}
-              className="w-full accent-[#1D4E3E] cursor-pointer"
+              className="w-full accent-[#007AFF] cursor-pointer"
             />
             <div className="flex justify-between text-[10px] text-gray-400 font-bold mt-1">
               <span>1 local (MC Rolls)</span>
@@ -83,14 +83,14 @@ export function BusinessCalculator({ isOpen, onClose }) {
 
           {/* Revenue Projection Cards (Claymorphic) */}
           <div className="grid grid-cols-2 gap-3.5 pt-2">
-            <div className="p-4 clay-card bg-emerald-50/80 text-center">
-              <span className="text-[10px] uppercase font-black text-[#1D4E3E] tracking-wider block">
+            <div className="p-4 clay-card bg-sky-50/80 text-center">
+              <span className="text-[10px] uppercase font-black text-[#007AFF] tracking-wider block">
                 Ingreso Mensual (MRR)
               </span>
-              <div className="font-heading font-black text-3xl text-[#1D4E3E] mt-1">
+              <div className="font-heading font-black text-3xl text-[#007AFF] mt-1">
                 ${monthlyRevenue.toFixed(0)} <span className="text-xs font-bold">/ mes</span>
               </div>
-              <p className="text-[10px] text-emerald-800 font-bold mt-1">Ingreso pasivo recurrente</p>
+              <p className="text-[10px] text-sky-800 font-bold mt-1">Ingreso pasivo recurrente</p>
             </div>
 
             <div className="p-4 clay-card bg-slate-50 text-center">
