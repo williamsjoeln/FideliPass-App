@@ -376,35 +376,35 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
 
   return (
     <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md animate-fade-in text-left ${
+      className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 pt-[max(env(safe-area-inset-top),1rem)] pb-[max(env(safe-area-inset-bottom),1rem)] bg-slate-950/80 backdrop-blur-xl animate-fade-in text-left ${
         isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
       style={{ display: isOpen ? 'flex' : 'none' }}
     >
-      <div className="w-full max-w-lg clay-card bg-white overflow-hidden flex flex-col max-h-[95vh] shadow-2xl">
+      <div className="w-full max-w-lg bg-white/95 backdrop-blur-2xl rounded-[36px] overflow-hidden flex flex-col max-h-[92dvh] shadow-[0_25px_70px_rgba(0,0,0,0.35)] border border-white/60 ring-1 ring-black/5 animate-scale-up">
         
-        {/* Modal Header */}
-        <div className="p-4 px-6 bg-slate-50 border-b border-slate-100 flex items-center justify-between shrink-0 rounded-t-[28px]">
+        {/* Modal Header - Apple Glass Style */}
+        <div className="px-5 py-4 bg-slate-50/80 border-b border-slate-100/80 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl clay-btn clay-btn-orange text-white flex items-center justify-center shadow-sm">
-              <Camera size={20} />
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#007AFF] to-[#38BDF8] text-white flex items-center justify-center shadow-md shadow-sky-500/25">
+              <Camera size={20} className="stroke-[2.5]" />
             </div>
             <div>
-              <h3 className="font-heading font-black text-gray-900 text-base leading-tight">
+              <h3 className="font-heading font-black text-slate-900 text-base leading-tight tracking-tight">
                 {isEn ? 'Scan Member Pass' : 'Escanear Tarjeta de Cliente'}
               </h3>
-              <p className="text-[11px] text-gray-500 font-semibold">
-                {isEn ? 'Point at the QR code on the customer phone' : 'Apunta al código QR en el celular del cliente'}
+              <p className="text-[11px] text-slate-500 font-medium">
+                {isEn ? 'Point at Apple Wallet or Google Wallet QR' : 'Apunta al código QR en el celular del cliente'}
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={handleSafeClose}
-            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-gray-600 flex items-center justify-center transition-colors cursor-pointer shadow-2xs font-bold"
+            className="w-9 h-9 rounded-full bg-slate-200/70 hover:bg-slate-300/80 text-slate-700 flex items-center justify-center transition-colors cursor-pointer font-bold active:scale-95"
             title={isEn ? "Close" : "Cerrar"}
           >
-            <X size={17} />
+            <X size={18} />
           </button>
         </div>
 
@@ -413,19 +413,19 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
           
           {/* Success Toast Banner */}
           {scannedResult && (
-            <div className="p-4 clay-card bg-emerald-50 text-emerald-950 flex items-center gap-3.5 animate-stamp shadow-md">
-              <div className="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+            <div className="p-4 rounded-3xl bg-sky-50 border border-sky-100 text-sky-950 flex items-center gap-3.5 animate-stamp shadow-sm">
+              <div className="w-11 h-11 rounded-2xl bg-[#007AFF] text-white flex items-center justify-center shrink-0 shadow-sm shadow-sky-500/30">
                 <CheckCircle2 size={26} />
               </div>
               <div className="flex-1">
-                <h4 className="text-sm font-black text-emerald-950 flex items-center gap-1.5">
+                <h4 className="text-sm font-black text-slate-900 flex items-center gap-1.5">
                   <span>{isEn ? 'Stamp Awarded Successfully!' : '¡Sello Otorgado con Éxito!'}</span>
                   <span>🎉</span>
                 </h4>
-                <p className="text-xs text-emerald-900 font-semibold mt-0.5">
-                  {isEn ? 'Member:' : 'Cliente:'} <strong className="font-black text-emerald-950">{scannedResult.name}</strong>
+                <p className="text-xs text-slate-600 font-semibold mt-0.5">
+                  {isEn ? 'Member:' : 'Cliente:'} <strong className="font-black text-slate-900">{scannedResult.name}</strong>
                 </p>
-                <div className="mt-1 inline-flex items-center gap-1 px-3 py-0.5 clay-badge text-[11px] font-black bg-emerald-200 text-emerald-950">
+                <div className="mt-1 inline-flex items-center gap-1 px-3 py-0.5 rounded-full text-[11px] font-black bg-sky-100 text-[#007AFF]">
                   {isEn ? 'Total stamps:' : 'Total de sellos:'} {Math.min(business?.maxStamps || 8, (scannedResult.currentStamps || 1) + 1)} / {business?.maxStamps || 8}
                 </div>
               </div>
@@ -433,7 +433,7 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
           )}
 
           {/* LARGE CAMERA VIEWFINDER */}
-          <div className="relative rounded-3xl overflow-hidden bg-black aspect-square sm:aspect-[4/3] min-h-[300px] flex flex-col items-center justify-center border-4 border-slate-900 shadow-2xl group">
+          <div className="relative rounded-[28px] overflow-hidden bg-black aspect-square sm:aspect-[4/3] min-h-[290px] flex flex-col items-center justify-center border-2 border-slate-900/10 shadow-2xl group">
             
             {/* The Html5Qrcode video injects here */}
             <div id="qr-reader-viewport" className="w-full h-full" />
@@ -442,18 +442,19 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
             {!cameraActive && (
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-gray-950/95 text-white z-20">
                 <div className="w-16 h-16 rounded-3xl bg-white/10 flex items-center justify-center mb-3 border border-white/15 shadow-inner">
-                  <Camera size={32} className="text-amber-400" />
+                  <Camera size={32} className="text-[#38BDF8]" />
                 </div>
                 <h4 className="font-black text-base">{isEn ? 'Camera Paused' : 'Cámara en Pausa'}</h4>
                 <p className="text-xs text-gray-300 font-medium mt-1 mb-4 max-w-xs leading-relaxed">
                   {isEn ? 'Click below to activate lens or use manual member search.' : 'Haz clic abajo para activar el lente o usa la búsqueda rápida de clientes.'}
                 </p>
                 <button
+                  type="button"
                   onClick={() => {
                     setCameraError(null);
                     setCameraActive(true);
                   }}
-                  className="px-6 py-3 clay-btn clay-btn-orange text-white text-xs font-black shadow-lg flex items-center gap-2 cursor-pointer"
+                  className="px-6 py-3 clay-btn clay-btn-primary text-white text-xs font-black shadow-lg flex items-center gap-2 cursor-pointer active:scale-95"
                 >
                   <Camera size={16} />
                   <span>{isEn ? 'Reactivate Camera' : 'Reactivar Cámara'}</span>
@@ -461,13 +462,13 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
               </div>
             )}
 
-            {/* Active Scanning HUD Overlay */}
+            {/* Active Scanning HUD Overlay - Clean iOS Style */}
             {cameraActive && (
               <>
                 {/* Status Badge & Flashlight Button (Top Bar) */}
                 <div className="absolute top-3.5 inset-x-3.5 flex items-center justify-between z-10 pointer-events-none">
-                  <div className="bg-emerald-600/90 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full flex items-center gap-1.5 font-black shadow-md">
-                    <span className="w-2 h-2 rounded-full bg-white animate-ping"></span>
+                  <div className="bg-black/45 backdrop-blur-xl border border-white/15 text-white text-[10px] px-3.5 py-1 rounded-full flex items-center gap-1.5 font-bold shadow-lg">
+                    <span className="w-2 h-2 rounded-full bg-[#007AFF] animate-ping" />
                     <span>{isEn ? 'CAMERA ACTIVE • SCANNING' : 'LENTE ACTIVO • ESCANEANDO'}</span>
                   </div>
 
@@ -475,11 +476,12 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
                   <div className="pointer-events-auto flex items-center gap-1.5">
                     {hasTorch && (
                       <button
+                        type="button"
                         onClick={toggleTorch}
-                        className={`px-3 py-1 rounded-full text-xs font-black transition-all flex items-center gap-1.5 shadow-md cursor-pointer ${
+                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg cursor-pointer ${
                           isTorchOn 
-                            ? 'bg-amber-400 text-gray-900 ring-2 ring-amber-200' 
-                            : 'bg-black/60 backdrop-blur-md text-white hover:bg-black/80'
+                            ? 'bg-[#FF5E36] text-white shadow-orange-500/30' 
+                            : 'bg-black/45 backdrop-blur-xl border border-white/15 text-white hover:bg-black/60'
                         }`}
                         title="Encender o apagar la linterna"
                       >
@@ -490,32 +492,31 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
                   </div>
                 </div>
 
-                {/* Laser Sweeper Animation */}
-                <div className="absolute inset-x-8 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_15px_#10b981] animate-scanline z-10 pointer-events-none" />
+                {/* Subtle Modern Blue Laser Sweeper Animation */}
+                <div className="absolute inset-x-10 h-0.5 bg-gradient-to-r from-transparent via-[#007AFF] to-transparent shadow-[0_0_16px_rgba(0,122,255,0.9)] animate-scanline z-10 pointer-events-none" />
 
-                {/* Targeting Reticle Frame (4 High-Contrast Green Corner Brackets) */}
-                <div className="absolute inset-8 sm:inset-12 pointer-events-none flex flex-col justify-between z-10">
+                {/* Targeting Reticle Frame (4 Royal Blue iOS Brackets) */}
+                <div className="absolute inset-9 sm:inset-12 pointer-events-none flex flex-col justify-between z-10">
                   <div className="flex justify-between">
-                    <div className="w-10 h-10 border-t-4 border-l-4 border-emerald-400 rounded-tl-xl shadow-sm drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                    <div className="w-10 h-10 border-t-4 border-r-4 border-emerald-400 rounded-tr-xl shadow-sm drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                    <div className="w-9 h-9 border-t-[3.5px] border-l-[3.5px] border-[#007AFF] rounded-tl-2xl drop-shadow-[0_0_12px_rgba(0,122,255,0.8)]" />
+                    <div className="w-9 h-9 border-t-[3.5px] border-r-[3.5px] border-[#007AFF] rounded-tr-2xl drop-shadow-[0_0_12px_rgba(0,122,255,0.8)]" />
                   </div>
                   <div className="flex justify-between">
-                    <div className="w-10 h-10 border-b-4 border-l-4 border-emerald-400 rounded-bl-xl shadow-sm drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                    <div className="w-10 h-10 border-b-4 border-r-4 border-emerald-400 rounded-br-xl shadow-sm drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                    <div className="w-9 h-9 border-b-[3.5px] border-l-[3.5px] border-[#007AFF] rounded-bl-2xl drop-shadow-[0_0_12px_rgba(0,122,255,0.8)]" />
+                    <div className="w-9 h-9 border-b-[3.5px] border-r-[3.5px] border-[#007AFF] rounded-br-2xl drop-shadow-[0_0_12px_rgba(0,122,255,0.8)]" />
                   </div>
                 </div>
 
-                {/* Center Targeting Crosshair */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40 z-10">
-                  <div className="w-6 h-0.5 bg-white rounded-full"></div>
-                  <div className="h-6 w-0.5 bg-white rounded-full absolute"></div>
+                {/* Center Targeting Dot */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                  <div className="w-2.5 h-2.5 rounded-full bg-white/40 ring-4 ring-white/10" />
                 </div>
 
-                {/* ZOOM CONTROLS BAR (Bottom of viewfinder) */}
+                {/* ZOOM CONTROLS BAR (Segmented iOS Camera Style) */}
                 <div className="absolute bottom-3 inset-x-3 z-10 flex flex-col items-center gap-1.5">
-                  <div className="bg-black/70 backdrop-blur-md p-1.5 px-3 rounded-2xl border border-white/20 flex items-center gap-2 shadow-lg">
-                    <span className="text-[10px] uppercase font-bold text-gray-300 flex items-center gap-1">
-                      <ZoomIn size={12} className="text-emerald-400" />
+                  <div className="bg-black/55 backdrop-blur-xl p-1 px-1.5 rounded-2xl border border-white/15 flex items-center gap-1 shadow-xl">
+                    <span className="text-[10px] uppercase font-bold text-gray-300 flex items-center gap-1 px-1.5">
+                      <ZoomIn size={12} className="text-[#38BDF8]" />
                       <span>Zoom:</span>
                     </span>
 
@@ -523,11 +524,12 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
                     {[1, 1.5, 2, 2.5].map((z) => (
                       <button
                         key={z}
+                        type="button"
                         onClick={() => applyZoom(z)}
                         className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                           currentZoom === z 
-                            ? 'bg-[#FF5E36] text-white shadow-sm scale-105' 
-                            : 'bg-white/15 text-white hover:bg-white/30'
+                            ? 'bg-gradient-to-r from-[#007AFF] to-[#38BDF8] text-white shadow-md shadow-sky-500/30 scale-105' 
+                            : 'text-white/80 hover:text-white hover:bg-white/10'
                         }`}
                       >
                         {z}x
@@ -535,8 +537,8 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
                     ))}
                   </div>
                   
-                  <span className="text-[10px] text-white/80 font-medium drop-shadow bg-black/40 px-2.5 py-0.5 rounded-full">
-                    💡 Mantén a 15-20 cm o presiona 2x para agrandar el código
+                  <span className="text-[10px] text-white/90 font-medium drop-shadow bg-black/45 backdrop-blur-md px-3 py-0.5 rounded-full border border-white/10">
+                    💡 Mantén a 15–20 cm o presiona 2x para agrandar el código
                   </span>
                 </div>
               </>
@@ -556,14 +558,14 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
             </div>
           )}
 
-          {/* QUICK 1-CLICK CUSTOMER ACTION (Zero Friction for Cashier) */}
-          <div className="p-4 clay-card bg-emerald-50/80">
-            <div className="flex items-center justify-between mb-2.5">
-              <span className="text-xs font-black text-[#1D4E3E] flex items-center gap-1.5">
-                <Zap size={15} className="text-[#FF5E36] fill-current" />
+          {/* QUICK 1-CLICK CUSTOMER ACTION (Zero Friction for Cashier - Modern Apple Card Style) */}
+          <div className="p-4 rounded-3xl bg-slate-50 border border-slate-100 shadow-xs">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-black text-slate-800 flex items-center gap-1.5">
+                <Zap size={15} className="text-[#007AFF] fill-current" />
                 <span>{isEn ? 'Guest is here? Give stamp with 1 Click:' : '¿Está aquí el cliente? Sellar con 1 Clic:'}</span>
               </span>
-              <span className="clay-badge text-[10px] font-black text-emerald-900 bg-white px-2.5 py-0.5">
+              <span className="text-[10px] font-bold text-[#007AFF] bg-sky-50 border border-sky-200/80 px-2.5 py-0.5 rounded-full">
                 {isEn ? 'No scan needed' : 'Sin escaneo'}
               </span>
             </div>
@@ -572,18 +574,19 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
               {customers.slice(0, 3).map((c) => (
                 <button
                   key={c.id}
+                  type="button"
                   onClick={() => handleQuickStamp(c)}
-                  className="w-full p-3 clay-card bg-white flex items-center justify-between text-left transition-all cursor-pointer shadow-xs group"
+                  className="w-full p-3 rounded-2xl bg-white border border-slate-200/80 hover:border-sky-300 flex items-center justify-between text-left transition-all cursor-pointer shadow-xs hover:shadow-md group active:scale-[0.99]"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-2xl bg-[#1D4E3E] text-white text-xs font-black flex items-center justify-center shadow-xs">
+                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#007AFF] to-[#38BDF8] text-white text-xs font-black flex items-center justify-center shadow-xs">
                       {c.name.charAt(0)}
                     </div>
                     <div>
-                      <div className="text-xs font-black text-gray-900 group-hover:text-[#1D4E3E] leading-tight">
+                      <div className="text-xs font-black text-slate-900 group-hover:text-[#007AFF] transition-colors leading-tight">
                         {c.name}
                       </div>
-                      <div className="text-[10px] text-gray-500 font-mono font-bold">
+                      <div className="text-[10px] text-slate-500 font-mono font-semibold mt-0.5">
                         {c.id.toUpperCase()} • {c.currentStamps || 1} {isEn ? 'stamps' : 'sellos'}
                       </div>
                     </div>
@@ -597,27 +600,27 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
           </div>
 
           {/* Manual Code / ID Entry Box */}
-          <form onSubmit={handleManualSubmit} className="pt-2 border-t border-slate-100">
-            <label className="block text-xs font-black text-gray-700 mb-1.5 flex items-center justify-between">
+          <form onSubmit={handleManualSubmit} className="pt-2">
+            <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <Search size={14} className="text-gray-500" />
-                <span>{isEn ? 'Or type customer ID manually:' : 'O ingresa el ID del cliente manualmente:'}</span>
+                <Search size={14} className="text-slate-400" />
+                <span>{isEn ? 'Or type customer ID manually:' : 'O busca por ID o celular del cliente:'}</span>
               </span>
-              <span className="text-[10px] text-gray-400 font-mono font-bold">{isEn ? 'E.g. CUST-9023' : 'Ej. CUST-9023'}</span>
+              <span className="text-[10px] text-slate-400 font-mono font-bold">{isEn ? 'E.g. CUST-9023' : 'Ej. CUST-1247'}</span>
             </label>
             <div className="flex gap-2">
               <input
                 type="text"
                 value={manualCode}
                 onChange={(e) => setManualCode(e.target.value)}
-                placeholder={isEn ? "Paste or type member ID / phone..." : "Pega o escribe el ID o celular..."}
-                className="flex-1 px-3.5 py-2.5 text-xs clay-input font-mono font-bold text-gray-800"
+                placeholder={isEn ? "Paste or type member ID / phone..." : "Escribe ID o celular..."}
+                className="flex-1 px-4 py-2.5 text-xs bg-slate-50 border border-slate-200/90 rounded-2xl font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#007AFF]/30 focus:border-[#007AFF] transition-all"
               />
               <button
                 type="submit"
-                className="clay-btn clay-btn-primary px-4 py-2.5 text-white text-xs font-black flex items-center gap-1.5 cursor-pointer shadow-xs"
+                className="clay-btn clay-btn-primary px-4 py-2.5 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
               >
-                <span>{isEn ? 'Process' : 'Procesar'}</span>
+                <span>{isEn ? 'Process' : 'Sellar'}</span>
                 <ArrowRight size={14} />
               </button>
             </div>
@@ -626,16 +629,16 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
         </div>
 
         {/* Modal Footer */}
-        <div className="p-3.5 px-5 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
-          <span className="text-[11px] text-gray-500 font-medium truncate max-w-[220px]">
-            {scannedResult ? `${isEn ? 'Last:' : 'Último:'} ${scannedResult.name}` : (isEn ? 'Align QR or tap 2x' : 'Alinea el QR o haz clic en 2x')}
+        <div className="p-3.5 px-6 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between shrink-0">
+          <span className="text-[11px] text-slate-500 font-medium truncate max-w-[220px]">
+            {scannedResult ? `${isEn ? 'Last:' : 'Último:'} ${scannedResult.name}` : (isEn ? 'Align QR inside the box' : 'Alinea el código QR en el recuadro')}
           </span>
           <button
             type="button"
             onClick={handleSafeClose}
-            className="px-5 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold cursor-pointer transition-colors"
+            className="px-5 py-2 bg-slate-200/80 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold cursor-pointer transition-all active:scale-95"
           >
-            {isEn ? 'Close Scanner' : 'Cerrar Escáner'}
+            {isEn ? 'Close Scanner' : 'Cerrar'}
           </button>
         </div>
 
