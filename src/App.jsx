@@ -46,13 +46,16 @@ import { Capacitor } from '@capacitor/core';
 export function isNativeMobileApp() {
   try {
     if (typeof window === 'undefined') return false;
+    if (window.location.protocol === 'capacitor:' || window.location.protocol === 'ionic:' || window.location.origin === 'capacitor://localhost') {
+      return true;
+    }
+    if (window.webkit && window.webkit.messageHandlers) {
+      return true;
+    }
     if (Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) {
       return true;
     }
     if (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) {
-      return true;
-    }
-    if (window.location.protocol === 'capacitor:' || window.location.protocol === 'ionic:') {
       return true;
     }
     if (window.location.hostname === 'localhost' && window.Capacitor) {
