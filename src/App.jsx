@@ -46,25 +46,39 @@ import { Capacitor } from '@capacitor/core';
 export function isNativeMobileApp() {
   try {
     if (typeof window === 'undefined') return false;
+
+    // 1. Direct Capacitor Native platform check (iOS & Android)
+    if (typeof Capacitor !== 'undefined' && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) {
+      return true;
+    }
+    if (typeof window.Capacitor !== 'undefined' && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) {
+      return true;
+    }
+
+    // 2. iOS Capacitor schemes and WebKit bridge
     if (window.location.protocol === 'capacitor:' || window.location.protocol === 'ionic:' || window.location.origin === 'capacitor://localhost') {
       return true;
     }
     if (window.webkit && window.webkit.messageHandlers) {
       return true;
     }
-    if (Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) {
+
+    // 3. Android Capacitor internal server (https://localhost with no port)
+    if (window.location.hostname === 'localhost' && window.location.port === '') {
       return true;
     }
-    if (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform()) {
+
+    // 4. Android WebView check
+    if (/Android.*wv|Android.*Version\/[0-9\.]+\s+Chrome/i.test(navigator.userAgent) && !window.location.hostname.includes('fidelipassapp.com')) {
       return true;
     }
-    if (window.location.hostname === 'localhost' && window.Capacitor) {
-      return true;
-    }
+
+    // 5. Query parameters fallback
     const params = new URLSearchParams(window.location.search);
     if (params.get('app') === 'true' || params.get('caja') === 'true' || params.get('native') === 'true') {
       return true;
     }
+
     return false;
   } catch {
     return false;
