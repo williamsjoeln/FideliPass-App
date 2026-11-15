@@ -468,14 +468,18 @@ const handleGetLatestPass = async (req, res) => {
       barcodes: [
         {
           format: 'PKBarcodeFormatQR',
-          message: customerPhone,
+          message: (custSnap && custSnap.id) 
+            ? `https://fidelipassapp.com/?store=${(storeSnap && storeSnap.data && storeSnap.data().slug) || storeParam || (isMcRolls ? 'mc-rolls' : '')}&c=${custSnap.id}` 
+            : (customerPhone || 'cust-9023'),
           messageEncoding: 'iso-8859-1',
           altText: ''
         }
       ],
       barcode: {
         format: 'PKBarcodeFormatQR',
-        message: customerPhone,
+        message: (custSnap && custSnap.id) 
+            ? `https://fidelipassapp.com/?store=${(storeSnap && storeSnap.data && storeSnap.data().slug) || storeParam || (isMcRolls ? 'mc-rolls' : '')}&c=${custSnap.id}` 
+            : (customerPhone || 'cust-9023'),
         messageEncoding: 'iso-8859-1',
         altText: ''
       }
