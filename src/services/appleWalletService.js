@@ -223,10 +223,16 @@ export async function generateAppleWalletPass({ business, customer }) {
   const progressEmojis = emojis.join(' ');
 
   // Standard Apple StoreCard Pass JSON
+  const effectiveCustId = customer?.id || (businessId === 'mc-rolls' ? 'cust-9023' : null);
+  const passSerial = effectiveCustId ? `${businessId}_${effectiveCustId}` : `${businessId}_${customerPhone.replace(/\D/g, '') || '001'}`;
+  const passQrUrl = effectiveCustId 
+    ? `https://fidelipassapp.com/?store=${business?.slug || businessId}&c=${effectiveCustId}`
+    : customerPhone;
+
   const passJson = {
     formatVersion: 1,
     passTypeIdentifier: 'pass.com.fidelipassapp.loyalty',
-    serialNumber: `${businessId}_${customerPhone.replace(/\D/g, '') || '001'}`,
+    serialNumber: passSerial,
     teamIdentifier: 'H79W4YK96D',
     webServiceURL: 'https://fidelipassapp.com/api',
     authenticationToken: 'fidelipass_token_2026',
@@ -297,14 +303,14 @@ export async function generateAppleWalletPass({ business, customer }) {
     barcodes: [
       {
         format: 'PKBarcodeFormatQR',
-        message: customerPhone,
+        message: passQrUrl,
         messageEncoding: 'iso-8859-1',
         altText: ''
       }
     ],
     barcode: {
       format: 'PKBarcodeFormatQR',
-      message: customerPhone,
+      message: passQrUrl,
       messageEncoding: 'iso-8859-1',
       altText: ''
     }

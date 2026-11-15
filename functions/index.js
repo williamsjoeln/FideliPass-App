@@ -289,8 +289,10 @@ const handleGetLatestPass = async (req, res) => {
       console.warn("Could not load latest announcement:", e);
     }
 
+    let custSnap = null;
+    let effectiveCustId = customerIdParam || (serialNumber && serialNumber.includes('_') ? serialNumber.split('_')[1] : null) || (isMcRolls ? 'cust-9023' : null);
+
     try {
-      let custSnap = null;
       if (customerIdParam) {
         custSnap = await db.collection('customers').doc(customerIdParam).get();
       }
@@ -332,6 +334,7 @@ const handleGetLatestPass = async (req, res) => {
       }
 
       if (custSnap && custSnap.exists) {
+        effectiveCustId = custSnap.id;
         const c = custSnap.data();
         if (c.currentStamps !== undefined) customerStamps = Number(c.currentStamps);
         if (c.name) customerName = c.name;
@@ -350,6 +353,7 @@ const handleGetLatestPass = async (req, res) => {
       } else {
         // Auto-enroll customer in Firestore so cashier terminal immediately sees them!
         const autoCustId = customerIdParam || (serialNumber && serialNumber.includes('_') ? serialNumber.split('_')[1] : serialNumber) || `cust-${Date.now()}`;
+        effectiveCustId = autoCustId;
         customerName = nameParam || customerName || 'Williams Navarrete';
         customerPhone = phoneParam || customerPhone || '';
         customerStamps = 1;
@@ -468,8 +472,8 @@ const handleGetLatestPass = async (req, res) => {
       barcodes: [
         {
           format: 'PKBarcodeFormatQR',
-          message: (custSnap && custSnap.id) 
-            ? `https://fidelipassapp.com/?store=${(storeSnap && storeSnap.data && storeSnap.data().slug) || storeParam || (isMcRolls ? 'mc-rolls' : '')}&c=${custSnap.id}` 
+          message: effectiveCustId 
+            ? `https://fidelipassapp.com/?store=${(storeSnap && storeSnap.data && storeSnap.data().slug) || storeParam || (isMcRolls ? 'mc-rolls' : '')}&c=${effectiveCustId}` 
             : (customerPhone || 'cust-9023'),
           messageEncoding: 'iso-8859-1',
           altText: ''
@@ -477,8 +481,8 @@ const handleGetLatestPass = async (req, res) => {
       ],
       barcode: {
         format: 'PKBarcodeFormatQR',
-        message: (custSnap && custSnap.id) 
-            ? `https://fidelipassapp.com/?store=${(storeSnap && storeSnap.data && storeSnap.data().slug) || storeParam || (isMcRolls ? 'mc-rolls' : '')}&c=${custSnap.id}` 
+        message: effectiveCustId 
+            ? `https://fidelipassapp.com/?store=${(storeSnap && storeSnap.data && storeSnap.data().slug) || storeParam || (isMcRolls ? 'mc-rolls' : '')}&c=${effectiveCustId}` 
             : (customerPhone || 'cust-9023'),
         messageEncoding: 'iso-8859-1',
         altText: ''

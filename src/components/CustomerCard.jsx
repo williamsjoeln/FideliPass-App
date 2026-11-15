@@ -146,36 +146,22 @@ export function CustomerCard({
     );
   };
 
-  // Auto-sync customer to Firestore whenever displayed so cashier sees them immediately
-  useEffect(() => {
-    if (customer && customer.id && business && business.id) {
-      try {
-        syncCustomerToFirestore({
-          ...customer,
-          businessId: business.id,
-          currentStamps: stampsCount || customer.currentStamps || 1
-        });
-      } catch (e) {
-        console.warn("Auto sync customer note:", e);
-      }
-    }
-  }, [customer?.id, customer?.currentStamps, business?.id]);
-
   const handleAddToWallet = async (type) => {
-    // 1. Ensure customer is synced to Firestore with businessId before redirecting
+    // 1. Ensure customer device is recorded in Firestore without modifying stamps
     try {
-      if (customer && business) {
-        const fullCust = {
-          ...customer,
+      if (customer && customer.id && business && business.id) {
+        // Only update metadata: never overwrite existing currentStamps!
+        const updateData = {
+          id: customer.id,
           businessId: business.id,
-          currentStamps: stampsCount || customer.currentStamps || 1,
           device: type === 'apple' ? 'Apple Wallet (iPhone)' : 'Google Wallet (Android)',
-          deviceType: type
+          deviceType: type,
+          lastVisit: 'Recién'
         };
-        await syncCustomerToFirestore(fullCust);
+        await syncCustomerToFirestore(updateData);
       }
     } catch (e) {
-      console.warn("Could not sync customer before wallet add:", e);
+      console.warn("Could not sync customer device before wallet add:", e);
     }
 
     if (type === 'apple') {

@@ -763,7 +763,7 @@ export default function App() {
                     status: 'Activo',
                     device: 'Apple Wallet (iPhone)',
                     deviceType: 'apple',
-                    currentStamps: 2,
+                    currentStamps: 1,
                     totalSpent: 9.50,
                     rewardsClaimed: 0,
                     joinedDate: 'Hoy',
