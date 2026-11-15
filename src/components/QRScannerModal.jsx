@@ -297,6 +297,14 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
       }
     }
 
+    const cleanDigits = (val) => String(val || '').replace(/\D/g, '');
+    const searchDigits = cleanDigits(text);
+
+    // If scanned text is a phone number (e.g. from Apple Wallet QR)
+    if (!customerPhone && searchDigits.length >= 7) {
+      customerPhone = text;
+    }
+
     // 4. Fallback: treat text itself as customer ID
     if (!customerId) {
       customerId = text.slice(0, 30);
@@ -304,8 +312,32 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
 
     const normalizedId = customerId.trim();
 
-    // Search in current store customers (case-insensitive)
-    let matched = customers.find(c => c.id.toLowerCase() === normalizedId.toLowerCase());
+    // Multi-criteria customer search:
+    // 1. Direct ID match
+    let matched = customers.find(c => c.id && c.id.toLowerCase() === normalizedId.toLowerCase());
+
+    // 2. Phone match (vital for Apple Wallet passes which encode customerPhone in QR)
+    if (!matched && searchDigits.length >= 7) {
+      matched = customers.find(c => {
+        if (!c.phone) return false;
+        const cDigits = cleanDigits(c.phone);
+        if (cDigits.length < 7) return false;
+        return cDigits === searchDigits ||
+               cDigits.endsWith(searchDigits) ||
+               searchDigits.endsWith(cDigits) ||
+               (searchDigits.length >= 8 && cDigits.slice(-8) === searchDigits.slice(-8));
+      });
+    }
+
+    // 3. Email match
+    if (!matched && text.includes('@')) {
+      matched = customers.find(c => c.email && c.email.toLowerCase() === text.toLowerCase());
+    }
+
+    // 4. Clean ID match
+    if (!matched && searchDigits.length >= 7) {
+      matched = customers.find(c => cleanDigits(c.id).includes(searchDigits.slice(-7)));
+    }
 
     if (matched) {
       if (customerName && (matched.name.includes('Cliente (') || matched.name === 'Cliente VIP')) {
@@ -317,12 +349,15 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
       customerName = matched.name;
     } else {
       // Auto-enroll customer immediately so cashier never rejects a customer!
-      const finalName = customerName || `Cliente (${normalizedId.slice(-4).toUpperCase()})`;
+      const effectiveId = searchDigits.length >= 7 
+        ? `cust-${searchDigits.slice(-4)}`
+        : normalizedId;
+      const finalName = customerName || `Cliente (${searchDigits.length >= 4 ? searchDigits.slice(-4) : normalizedId.slice(-4).toUpperCase()})`;
       matched = {
-        id: normalizedId,
+        id: effectiveId,
         businessId: targetBusinessId,
         name: finalName,
-        email: customerEmail || `${normalizedId.toLowerCase()}@fidelipass.com`,
+        email: customerEmail || `${effectiveId.toLowerCase()}@fidelipass.com`,
         phone: customerPhone || '+593 99 000 0000',
         status: 'Recién activado',
         device: 'Apple Wallet (iPhone)',
