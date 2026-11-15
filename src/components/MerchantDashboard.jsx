@@ -354,7 +354,7 @@ export function MerchantDashboard({
 
   const handleSaveConfig = (e) => {
     e.preventDefault();
-    const stampsNum = Math.max(2, Math.min(30, Number(editMaxStamps) || 12));
+    const stampsNum = Math.max(2, Math.min(30, Number(editMaxStamps) || business.maxStamps || 8));
     onUpdateBusiness({
       ...business,
       name: editBusinessName.trim() || business.name,
