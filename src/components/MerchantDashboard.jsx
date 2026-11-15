@@ -253,11 +253,17 @@ export function MerchantDashboard({
     }
   };
 
-  // Filter customers
+  // Filter customers by name, email, or unique member code
   const filteredCustomers = customers.filter(c => {
-    const matchesSearch = c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          c.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          c.phone.includes(searchQuery);
+    const q = searchQuery.toLowerCase().trim();
+    const cleanQ = q.replace(/[^a-z0-9]/g, '');
+    const matchesSearch = !q ||
+                          c.name.toLowerCase().includes(q) || 
+                          c.email.toLowerCase().includes(q) ||
+                          (c.memberCode && c.memberCode.toLowerCase().includes(q)) ||
+                          (c.id && c.id.toLowerCase().includes(q)) ||
+                          (cleanQ.length >= 3 && (c.id || '').replace(/\D/g, '').includes(cleanQ)) ||
+                          (cleanQ.length >= 3 && (c.memberCode || '').replace(/\D/g, '').includes(cleanQ));
     if (!matchesSearch) return false;
     if (customerFilter === 'Todos') return true;
     return c.status === customerFilter;
@@ -812,7 +818,7 @@ export function MerchantDashboard({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={isEn ? "Search by name or email..." : "Busca por nombre o email..."}
+                placeholder={isEn ? "Search by name, email or code (e.g. 9023)..." : "Busca por nombre o código de socio (ej. 9023)..."}
                 className="w-full pl-11 pr-4 py-2.5 text-xs clay-input text-gray-800 placeholder-gray-400 font-semibold"
               />
             </div>
@@ -836,6 +842,9 @@ export function MerchantDashboard({
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
                         <h4 className="text-xs font-black text-gray-900 truncate">{cust.name}</h4>
+                        <span className="text-[10px] font-mono font-black text-[#007AFF] bg-sky-50 px-2 py-0.5 rounded-md border border-sky-100 shrink-0">
+                          {cust.memberCode || ('FP-' + (cust.id ? cust.id.replace(/\D/g, '') : ''))}
+                        </span>
                         <span className="clay-badge text-[9px] px-2 py-0.5 font-black bg-slate-100 text-gray-700 shrink-0">
                           {cust.status}
                         </span>
@@ -909,6 +918,9 @@ export function MerchantDashboard({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="text-sm sm:text-base font-black text-gray-900 truncate">{selectedCustomer.name}</h3>
+                    <span className="text-[11px] font-mono font-black text-[#007AFF] bg-sky-50 px-2 py-0.5 rounded-md border border-sky-100 shrink-0">
+                      {selectedCustomer.memberCode || ('FP-' + (selectedCustomer.id ? selectedCustomer.id.replace(/\D/g, '') : ''))}
+                    </span>
                     <span className="clay-badge px-2 py-0.5 text-[10px] font-black bg-sky-100 text-slate-900 shrink-0">
                       {selectedCustomer.status}
                     </span>

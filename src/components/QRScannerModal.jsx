@@ -289,92 +289,60 @@ export function QRScannerModal({ isOpen, onClose, business, customers = [], onSc
       } catch {}
     }
 
-    // 3. Try matching cust-XXXX pattern
-    if (!customerId) {
-      const match = text.match(/cust-[a-zA-Z0-9_-]+/i);
-      if (match) {
-        customerId = match[0];
-      }
+    // 3. Try matching FP-XXXX, CUST-XXXX, or raw numbers
+    let memberCodeCandidate = null;
+    const fpMatch = text.match(/(?:fp|cust)-?([a-zA-Z0-9]+)/i);
+    if (fpMatch) {
+      customerId = `cust-${fpMatch[1]}`;
+      memberCodeCandidate = `FP-${fpMatch[1]}`.toUpperCase();
     }
 
-    const cleanDigits = (val) => String(val || '').replace(/\D/g, '');
-    const searchDigits = cleanDigits(text);
+    const cleanAlnum = text.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const numDigits = text.replace(/\D/g, '');
 
-    // If scanned text is a phone number (e.g. from Apple Wallet QR)
-    if (!customerPhone && searchDigits.length >= 7) {
-      customerPhone = text;
+    // 4. Multi-criteria Unique Member Code Search (Strict Loyalty Code Matching)
+    let matched = null;
+
+    // A. Direct customer ID match
+    if (customerId) {
+      matched = customers.find(c => c.id && c.id.toLowerCase() === customerId.toLowerCase());
     }
 
-    // 4. Fallback: treat text itself as customer ID
-    if (!customerId) {
-      customerId = text.slice(0, 30);
-    }
-
-    const normalizedId = customerId.trim();
-
-    // Multi-criteria customer search:
-    // 1. Direct ID match
-    let matched = customers.find(c => c.id && c.id.toLowerCase() === normalizedId.toLowerCase());
-
-    // 2. Phone match (vital for Apple Wallet passes which encode customerPhone in QR)
-    if (!matched && searchDigits.length >= 7) {
+    // B. Direct Member Code match (e.g. FP-9023, FP9023)
+    if (!matched) {
       matched = customers.find(c => {
-        if (!c.phone) return false;
-        const cDigits = cleanDigits(c.phone);
-        if (cDigits.length < 7) return false;
-        return cDigits === searchDigits ||
-               cDigits.endsWith(searchDigits) ||
-               searchDigits.endsWith(cDigits) ||
-               (searchDigits.length >= 8 && cDigits.slice(-8) === searchDigits.slice(-8));
+        const cCode = (c.memberCode || c.id || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+        return cCode === cleanAlnum || (cleanAlnum.length >= 4 && cCode.endsWith(cleanAlnum));
       });
     }
 
-    // 3. Email match
-    if (!matched && text.includes('@')) {
-      matched = customers.find(c => c.email && c.email.toLowerCase() === text.toLowerCase());
+    // C. Exact 4-digit code (e.g. 9023 typed by cashier or in QR)
+    if (!matched && numDigits.length >= 4 && numDigits.length <= 6) {
+      matched = customers.find(c => {
+        const cDigits = (c.memberCode || c.id || '').replace(/\D/g, '');
+        return cDigits === numDigits || cDigits.endsWith(numDigits);
+      });
     }
 
-    // 4. Clean ID match
-    if (!matched && searchDigits.length >= 7) {
-      matched = customers.find(c => cleanDigits(c.id).includes(searchDigits.slice(-7)));
+    // D. Email match (fallback if user enters full email)
+    if (!matched && text.includes('@')) {
+      matched = customers.find(c => c.email && c.email.toLowerCase() === text.toLowerCase());
     }
 
     if (matched) {
       if (customerName && (matched.name.includes('Cliente (') || matched.name === 'Cliente VIP')) {
         matched.name = customerName;
       }
-      if (customerEmail && (!matched.email || matched.email.includes('@fidelipass.com') || matched.email.includes('@ejemplo.com'))) {
-        matched.email = customerEmail;
-      }
       customerName = matched.name;
     } else {
-      // Auto-enroll customer immediately so cashier never rejects a customer!
-      const effectiveId = searchDigits.length >= 7 
-        ? `cust-${searchDigits.slice(-4)}`
-        : normalizedId;
-      const finalName = customerName || `Cliente (${searchDigits.length >= 4 ? searchDigits.slice(-4) : normalizedId.slice(-4).toUpperCase()})`;
-      matched = {
-        id: effectiveId,
-        businessId: targetBusinessId,
-        name: finalName,
-        email: customerEmail || `${effectiveId.toLowerCase()}@fidelipass.com`,
-        phone: customerPhone || '+593 99 000 0000',
-        status: 'Recién activado',
-        device: 'Apple Wallet (iPhone)',
-        deviceType: 'apple',
-        currentStamps: currentStamps,
-        totalSpent: 4.50,
-        rewardsClaimed: 0,
-        joinedDate: 'Hoy',
-        lastVisit: 'Hoy, recién',
-        history: [
-          { id: 'h-' + Date.now(), type: 'stamp', date: 'Hoy', note: '🎉 Tarjeta escaneada y registrada en caja' }
-        ]
-      };
-
-      if (onAddNewCustomerFromScan) {
-        onAddNewCustomerFromScan(matched);
-      }
+      // Never create ghost/dummy accounts with phone numbers!
+      // If code is not found, inform cashier clearly so they can pick from list or register properly
+      sounds.playError?.();
+      setCameraError(isEn 
+        ? `Member code "${text}" not found. Verify code or select customer from list.` 
+        : `Código de socio "${text}" no encontrado. Verifica el código o selecciónalo de la lista.`
+      );
+      return;
     }
 
     // Success actions

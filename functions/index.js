@@ -291,6 +291,7 @@ const handleGetLatestPass = async (req, res) => {
 
     let custSnap = null;
     let effectiveCustId = customerIdParam || (serialNumber && serialNumber.includes('_') ? serialNumber.split('_')[1] : null) || (isMcRolls ? 'cust-9023' : null);
+    let effectiveMemberCode = '';
 
     try {
       if (customerIdParam) {
@@ -336,6 +337,7 @@ const handleGetLatestPass = async (req, res) => {
       if (custSnap && custSnap.exists) {
         effectiveCustId = custSnap.id;
         const c = custSnap.data();
+        if (c.memberCode) effectiveMemberCode = c.memberCode;
         if (c.currentStamps !== undefined) customerStamps = Number(c.currentStamps);
         if (c.name) customerName = c.name;
         if (c.phone) customerPhone = c.phone;
@@ -386,6 +388,11 @@ const handleGetLatestPass = async (req, res) => {
       }
     } catch (custErr) {
       console.warn("Could not load customer data:", custErr);
+    }
+
+    if (!effectiveMemberCode && effectiveCustId) {
+      const digits = effectiveCustId.replace(/\D/g, '');
+      effectiveMemberCode = digits ? `FP-${digits}` : 'FP-9023';
     }
 
     // Build Emoji Progress
@@ -453,6 +460,11 @@ const handleGetLatestPass = async (req, res) => {
         ],
         backFields: [
           {
+            key: 'memberCode',
+            label: isEn ? 'Member Code' : 'Código de Socio',
+            value: effectiveMemberCode || 'FP-9023'
+          },
+          {
             key: 'announcement_detail',
             label: isEn ? 'Latest News' : 'Última Novedad',
             value: latestAnnouncement
@@ -476,7 +488,7 @@ const handleGetLatestPass = async (req, res) => {
             ? `https://fidelipassapp.com/?store=${(storeSnap && storeSnap.data && storeSnap.data().slug) || storeParam || (isMcRolls ? 'mc-rolls' : '')}&c=${effectiveCustId}` 
             : (customerPhone || 'cust-9023'),
           messageEncoding: 'iso-8859-1',
-          altText: ''
+          altText: effectiveMemberCode || 'FP-9023'
         }
       ],
       barcode: {
@@ -485,7 +497,7 @@ const handleGetLatestPass = async (req, res) => {
             ? `https://fidelipassapp.com/?store=${(storeSnap && storeSnap.data && storeSnap.data().slug) || storeParam || (isMcRolls ? 'mc-rolls' : '')}&c=${effectiveCustId}` 
             : (customerPhone || 'cust-9023'),
         messageEncoding: 'iso-8859-1',
-        altText: ''
+        altText: effectiveMemberCode || 'FP-9023'
       }
     };
 

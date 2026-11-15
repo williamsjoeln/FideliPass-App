@@ -458,8 +458,8 @@ export function CustomerCard({
               includeMargin={true}
             />
           </div>
-          <div className="mt-2.5 inline-block px-3 py-1 clay-badge bg-slate-50 text-[11px] font-mono font-bold tracking-widest text-gray-600 uppercase">
-            ID: {customer.id.toUpperCase()}
+          <div className="mt-2.5 inline-block px-3.5 py-1 clay-badge bg-sky-50 text-[11px] font-mono font-bold tracking-widest text-[#007AFF] uppercase shadow-xs">
+            SOCIO: {customer.memberCode || ('FP-' + (customer.id ? customer.id.replace(/\D/g, '') : '9023'))}
           </div>
           <p className="text-xs font-semibold text-gray-500 mt-2">
             {isEn ? 'Show this code at counter to collect your stamps' : 'Muestra este código al cajero para recibir tus sellos'}

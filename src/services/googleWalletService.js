@@ -98,7 +98,8 @@ export async function generateGoogleWalletPassUrl({ business, customer, cardUrl 
   const cryptoKey = await getCryptoKey();
 
   const businessId = String(business?.id || 'fidelipass').replace(/[^a-zA-Z0-9_.-]/g, '_');
-  const customerRef = String(customer?.phone || customer?.id || 'demo').replace(/[^a-zA-Z0-9]/g, '');
+  const effectiveMemberCode = customer?.memberCode || ('FP-' + String(customer?.id || '9023').replace(/\D/g, ''));
+  const customerRef = String(customer?.id || effectiveMemberCode || 'cust-9023').replace(/[^a-zA-Z0-9_-]/g, '');
   const stamps = Number(customer?.stamps || 0);
   const max = Number(business?.maxStamps || business?.totalStamps || 8);
   const remaining = Math.max(0, max - stamps);
@@ -143,7 +144,7 @@ export async function generateGoogleWalletPassUrl({ business, customer, cardUrl 
     ? business.banner
     : dynamicHeroUrl;
 
-  const vipMemberCode = customerRef ? `VIP-${customerRef.slice(-4).toUpperCase()}` : 'VIP';
+  const vipMemberCode = effectiveMemberCode;
 
   const payload = {
     iss: SERVICE_ACCOUNT_EMAIL,
@@ -173,7 +174,7 @@ export async function generateGoogleWalletPassUrl({ business, customer, cardUrl 
           barcode: {
             type: 'QR_CODE',
             value: cardUrl || `https://fidelipassapp.com/?store=${businessId}&c=${customerRef}`,
-            alternateText: ' '
+            alternateText: effectiveMemberCode
           },
           loyaltyPoints: {
             balance: {

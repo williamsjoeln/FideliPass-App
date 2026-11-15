@@ -58,8 +58,10 @@ export function CustomerRegistration({ business, onRegisterSuccess }) {
     const cleanEmail = email.replace(/<[^>]*>?/gm, '').trim().slice(0, 80);
     const cleanPhone = phone.replace(/[^\d\s\-+()]/g, '').trim().slice(0, 25);
 
+    const codeNumber = Math.floor(1000 + Math.random() * 9000);
     const newCustomer = {
-      id: "cust-" + Math.floor(1000 + Math.random() * 9000),
+      id: "cust-" + codeNumber,
+      memberCode: "FP-" + codeNumber,
       businessId: business?.id || 'mc-rolls',
       name: cleanName,
       email: cleanEmail || `${cleanName.toLowerCase().replace(/[^a-z0-9]/g, '')}@fidelipass.com`,

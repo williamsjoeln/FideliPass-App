@@ -224,10 +224,11 @@ export async function generateAppleWalletPass({ business, customer }) {
 
   // Standard Apple StoreCard Pass JSON
   const effectiveCustId = customer?.id || (businessId === 'mc-rolls' ? 'cust-9023' : null);
+  const effectiveMemberCode = customer?.memberCode || ('FP-' + (effectiveCustId ? effectiveCustId.replace(/\D/g, '') : '9023'));
   const passSerial = effectiveCustId ? `${businessId}_${effectiveCustId}` : `${businessId}_${customerPhone.replace(/\D/g, '') || '001'}`;
   const passQrUrl = effectiveCustId 
     ? `https://fidelipassapp.com/?store=${business?.slug || businessId}&c=${effectiveCustId}`
-    : customerPhone;
+    : `https://fidelipassapp.com/?store=${business?.slug || businessId}&c=${effectiveMemberCode}`;
 
   const passJson = {
     formatVersion: 1,
@@ -284,6 +285,11 @@ export async function generateAppleWalletPass({ business, customer }) {
           value: `Acumula ${maxStamps} sellos mostrando este código en caja al comprar y reclama: ${reward}.`
         },
         {
+          key: 'memberCode',
+          label: 'Código de Socio',
+          value: effectiveMemberCode
+        },
+        {
           key: 'terms',
           label: 'Términos y Condiciones',
           value: '1 sello por cada compra. Válido en locales participantes.'
@@ -296,7 +302,7 @@ export async function generateAppleWalletPass({ business, customer }) {
         {
           key: 'support',
           label: 'Soporte y Contacto',
-          value: customerPhone
+          value: customerPhone || 'https://fidelipassapp.com'
         }
       ]
     },
@@ -305,14 +311,14 @@ export async function generateAppleWalletPass({ business, customer }) {
         format: 'PKBarcodeFormatQR',
         message: passQrUrl,
         messageEncoding: 'iso-8859-1',
-        altText: ''
+        altText: effectiveMemberCode
       }
     ],
     barcode: {
       format: 'PKBarcodeFormatQR',
       message: passQrUrl,
       messageEncoding: 'iso-8859-1',
-      altText: ''
+      altText: effectiveMemberCode
     }
   };
 
