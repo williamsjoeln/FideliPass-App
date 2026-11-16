@@ -205,7 +205,7 @@ export function CustomerCard({
         setWalletError(null);
         setIsGeneratingGoogleWallet(true);
         try { sounds?.playPush?.(); } catch {}
-        const cardUrl = `${typeof window !== 'undefined' ? window.location.origin : 'https://fidelipassapp.com'}/?store=${business?.id || 'mc-rolls'}&c=${customer?.id || 'demo'}`;
+        const cardUrl = `https://fidelipassapp.com/?store=${business?.id || 'mc-rolls'}&c=${customer?.id || 'demo'}`;
         const saveUrl = await generateGoogleWalletPassUrl({
           business,
           customer: {
@@ -452,7 +452,7 @@ export function CustomerCard({
         <div className="bg-white p-5 pt-4 text-center text-gray-800 rounded-b-[32px] border-t border-slate-100">
           <div className="inline-block p-4 clay-card rounded-3xl">
             <QRCodeSVG
-              value={`${typeof window !== 'undefined' ? window.location.origin : 'https://fidelipassapp.com'}/?store=${business.id || 'mc-rolls'}&c=${customer.id}`}
+              value={`https://fidelipassapp.com/?store=${business.id || 'mc-rolls'}&c=${customer.id}`}
               size={185}
               level="M"
               includeMargin={true}

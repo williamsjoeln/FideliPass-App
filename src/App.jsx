@@ -43,11 +43,30 @@ import { sendGoogleWalletPushNotification } from './services/googleWalletService
 import { sendAppleWalletPushNotification } from './services/appleWalletService';
 import { Capacitor } from '@capacitor/core';
 
+// Canonical redirect: If someone opens the legacy firebase subdomain, redirect immediately to fidelipassapp.com
+if (typeof window !== 'undefined') {
+  try {
+    const host = window.location.hostname;
+    if (host === 'fidelipass-ec.web.app' || host === 'fidelipass-ec.firebaseapp.com') {
+      const targetUrl = 'https://fidelipassapp.com' + window.location.pathname + window.location.search + window.location.hash;
+      window.location.replace(targetUrl);
+    }
+  } catch (e) {
+    console.warn("Canonical redirect note:", e);
+  }
+}
+
 export function isNativeMobileApp() {
   try {
     if (typeof window === 'undefined') return false;
 
-    // 1. Direct Capacitor Native platform check (iOS & Android)
+    // Check if explicitly running on a public web browser domain
+    const hostname = window.location.hostname || '';
+    const isPublicWeb = hostname.includes('fidelipassapp.com') ||
+                        hostname.includes('web.app') ||
+                        hostname.includes('firebaseapp.com');
+
+    // 1. Direct Capacitor Native platform check (real installed iOS & Android apps)
     if (typeof Capacitor !== 'undefined' && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()) {
       return true;
     }
@@ -55,28 +74,25 @@ export function isNativeMobileApp() {
       return true;
     }
 
-    // 2. iOS Capacitor schemes and WebKit bridge
+    // 2. iOS Capacitor schemes
     if (window.location.protocol === 'capacitor:' || window.location.protocol === 'ionic:' || window.location.origin === 'capacitor://localhost') {
-      return true;
-    }
-    if (window.webkit && window.webkit.messageHandlers) {
       return true;
     }
 
     // 3. Android Capacitor internal server (https://localhost with no port)
-    if (window.location.hostname === 'localhost' && window.location.port === '') {
+    if (window.location.hostname === 'localhost' && window.location.port === '' && window.Capacitor) {
       return true;
     }
 
-    // 4. Android WebView check
-    if (/Android.*wv|Android.*Version\/[0-9\.]+\s+Chrome/i.test(navigator.userAgent) && !window.location.hostname.includes('fidelipassapp.com')) {
-      return true;
-    }
-
-    // 5. Query parameters fallback
+    // 4. Query parameters fallback (explicitly requested by merchant/caja)
     const params = new URLSearchParams(window.location.search);
     if (params.get('app') === 'true' || params.get('caja') === 'true' || params.get('native') === 'true') {
       return true;
+    }
+
+    // Public web domains are NEVER cashier native apps unless requested via ?caja=true / ?app=true
+    if (isPublicWeb) {
+      return false;
     }
 
     return false;
@@ -1786,22 +1802,9 @@ export default function App() {
                   window.location.href = '/admin';
                   return;
                 }
-                if (currentUser?.role === 'guest') {
-                  setCurrentUser(null);
-                  setShowLoginModal(false);
-                  setViewMode('merchant');
-                  try {
-                    localStorage.removeItem('fidelipass_active_store_id');
-                    sessionStorage.removeItem('fidelipass_active_store_id');
-                  } catch {}
-                  if (typeof window !== 'undefined') {
-                    try { window.history.replaceState(null, '', '/'); } catch {}
-                    window.location.href = '/';
-                  }
-                }
               }}
-              className={`flex items-center gap-2.5 ${(currentUser?.role === 'guest' || currentUser?.role === 'admin') ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
-              title={currentUser?.role === 'admin' ? "Volver al Panel SuperAdmin" : (currentUser?.role === 'guest' ? (appLang === 'en' ? "Back to home page" : "Volver a la página principal") : undefined)}
+              className={`flex items-center gap-2.5 ${currentUser?.role === 'admin' ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+              title={currentUser?.role === 'admin' ? "Volver al Panel SuperAdmin" : undefined}
             >
               <div className="w-8 h-8 rounded-2xl bg-white text-gray-900 border border-gray-200/90 flex items-center justify-center font-black text-xs shadow-xs overflow-hidden p-1">
                 {platformLogo ? (

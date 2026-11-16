@@ -614,6 +614,14 @@ export function MerchantDashboard({
                   </button>
                   <button
                     onClick={onOpenCounterSign}
+                    className="clay-btn bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 lg:px-4 lg:py-2 text-[11px] lg:text-xs font-black cursor-pointer flex items-center gap-1.5 shadow-sm"
+                    title={isEn ? "Show QR on screen for customer to scan" : "Mostrar código QR en pantalla para que el cliente lo escanee"}
+                  >
+                    <QrCode size={13} />
+                    <span>{isEn ? '📱 Show QR' : '📱 Mostrar QR al Cliente'}</span>
+                  </button>
+                  <button
+                    onClick={onOpenCounterSign}
                     className="clay-btn clay-btn-light px-3 py-1.5 lg:px-4 lg:py-2 text-gray-700 text-[11px] lg:text-xs font-black cursor-pointer flex items-center gap-1 shadow-xs"
                   >
                     <Printer size={13} />
@@ -621,8 +629,8 @@ export function MerchantDashboard({
                   </button>
                   <button
                     onClick={() => {
-                      const origin = typeof window !== 'undefined' ? window.location.origin : 'https://fidelipassapp.com';
-                      const cleanSlug = business?.slug || (business?.name ? business.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : null) || business?.id;
+                      const origin = 'https://fidelipassapp.com';
+                      const cleanSlug = business?.slug || (business?.name ? business.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : null) || business?.id || 'mc-rolls';
                       const link = `${origin}/${cleanSlug}`;
                       navigator.clipboard.writeText(link);
                       alert(
@@ -1119,7 +1127,7 @@ export function MerchantDashboard({
                     <button
                       type="button"
                       onClick={() => {
-                        const origin = typeof window !== 'undefined' ? window.location.origin : 'https://fidelipassapp.com';
+                        const origin = 'https://fidelipassapp.com';
                         const cardLink = `${origin}/?store=${business.id}&c=${selectedCustomer.id}`;
                         const phone = (selectedCustomer.phone || '').replace(/[^0-9]/g, '');
                         const msg = encodeURIComponent(
@@ -1140,7 +1148,7 @@ export function MerchantDashboard({
                     <button
                       type="button"
                       onClick={() => {
-                        const origin = typeof window !== 'undefined' ? window.location.origin : 'https://fidelipassapp.com';
+                        const origin = 'https://fidelipassapp.com';
                         const cardLink = `${origin}/?store=${business.id}&c=${selectedCustomer.id}`;
                         navigator.clipboard.writeText(cardLink);
                         alert(

@@ -214,14 +214,28 @@ export function PrintableCounterSign({ business, onClose }) {
           </div>
 
           {/* Big QR Code Canvas (High precision vector modules) */}
-          <div className="inline-block p-4 bg-white rounded-3xl shadow-lg border border-gray-200 my-2">
-            <QRCodeCanvas
-              value={`${typeof window !== 'undefined' ? window.location.origin : 'https://fidelipassapp.com'}/${business.slug || (business.name ? business.name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-') : null) || business.id || 'mc-rolls'}`}
-              size={185}
-              level="H"
-              includeMargin={true}
-            />
-          </div>
+          {(() => {
+            const cleanSlug = business?.slug || 
+                              (business?.id && business.id !== 'mc-rolls' ? business.id : null) || 
+                              (business?.name ? business.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : null) || 
+                              business?.id || 
+                              'mc-rolls';
+            const qrRegistrationUrl = `https://fidelipassapp.com/${cleanSlug}`;
+
+            return (
+              <div className="inline-block p-4 bg-white rounded-3xl shadow-lg border border-gray-200 my-2">
+                <QRCodeCanvas
+                  value={qrRegistrationUrl}
+                  size={195}
+                  level="H"
+                  includeMargin={true}
+                />
+                <div className="mt-1 text-[11px] font-black text-[#1D4E3E] tracking-tight">
+                  fidelipassapp.com/{cleanSlug}
+                </div>
+              </div>
+            );
+          })()}
 
           <div className="mt-4">
             <h3 className="font-heading text-lg font-bold text-gray-900">
