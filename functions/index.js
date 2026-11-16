@@ -707,6 +707,11 @@ const handleGetLatestPass = async (req, res) => {
 // 4. PassKit Unregister
 const handleUnregister = async (req, res) => {
   try {
+    const authHeader = req.headers.authorization;
+    if (authHeader !== 'ApplePass fidelipass_token_2026') {
+      console.warn("🚫 [PassKit Security] Unauthorized unregister attempt blocked.");
+      return res.status(401).send({ error: 'Unauthorized Apple PassKit request' });
+    }
     const { deviceLibraryIdentifier, serialNumber } = req.params;
     const regId = `${deviceLibraryIdentifier}_${serialNumber}`;
     await db.collection('pass_registrations').doc(regId).delete();
@@ -738,6 +743,13 @@ app.get(['/pass', '/api/pass', '/api/pass.pkpass'], handleGetLatestPass);
 // 6. APNs Push Dispatcher: Triggered when cashier sends a push notification
 app.post(['/sendApplePush', '/api/sendApplePush'], async (req, res) => {
   try {
+    const authHeader = req.headers.authorization || req.headers['x-api-key'];
+    const validTokens = ['Bearer fidelipass_secure_push_token_2026', 'ApplePass fidelipass_token_2026'];
+    if (!authHeader || !validTokens.includes(authHeader)) {
+      console.warn("🚫 [Security Alert] Unauthorized attempt to trigger Apple push notification blocked.");
+      return res.status(401).json({ error: 'Unauthorized: Invalid push authorization token' });
+    }
+
     const { serialNumber, message, phone, storeId, customerId } = req.body || {};
     console.log(`🚀 [APNs Push] Dispatching Apple push for serial: ${serialNumber || 'ALL'}, phone: ${phone || ''}, storeId: ${storeId || ''}, customerId: ${customerId || ''}`);
 

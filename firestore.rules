@@ -2,78 +2,115 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Defensive Schema Validation Functions
+    // Helper: validate clean string without HTML/script injection
+    function isSafeString(val, minLen, maxLen) {
+      return val is string &&
+             val.size() >= minLen &&
+             val.size() <= maxLen &&
+             !val.matches('.*[<>].*') &&
+             !val.matches('(?i).*javascript:.*');
+    }
+
+    // Defensive Schema Validation for Customers
     function isValidCustomer(data) {
-      return data.name is string && data.name.size() > 0 && data.name.size() <= 80 &&
+      return isSafeString(data.name, 1, 80) &&
              data.businessId is string && data.businessId.size() > 0 && data.businessId.size() <= 60 &&
-             (!('currentStamps' in data) || (data.currentStamps is number && data.currentStamps >= 0 && data.currentStamps <= 100)) &&
+             (!('email' in data) || (data.email is string && data.email.size() <= 100)) &&
+             (!('phone' in data) || (data.phone is string && data.phone.size() <= 35)) &&
+             (!('currentStamps' in data) || (data.currentStamps is number && data.currentStamps >= 0 && data.currentStamps <= 50)) &&
              (!('rewardsClaimed' in data) || (data.rewardsClaimed is number && data.rewardsClaimed >= 0)) &&
              (!('totalSpent' in data) || (data.totalSpent is number && data.totalSpent >= 0));
     }
 
+    // Anti-Tampering for Customer Updates (Blocks jumping stamps or store hijacking)
+    function isTamperProofCustomerUpdate(prev, curr) {
+      return prev.id == curr.id &&
+             prev.businessId == curr.businessId &&
+             (!('currentStamps' in curr) || !('currentStamps' in prev) || 
+              curr.currentStamps <= prev.currentStamps + 2 || 
+              curr.currentStamps == 0);
+    }
+
+    // Defensive Schema Validation for Stores
     function isValidStore(data) {
-      return data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
-             (!('maxStamps' in data) || (data.maxStamps is number && data.maxStamps >= 2 && data.maxStamps <= 50)) &&
+      return isSafeString(data.name, 1, 100) &&
+             (!('maxStamps' in data) || (data.maxStamps is number && data.maxStamps >= 2 && data.maxStamps <= 30)) &&
              (!('status' in data) || (data.status in ['active', 'suspended', 'trial']));
     }
 
+    // Defensive Schema Validation for Accounts
     function isValidAccount(data) {
       return data.email is string && data.email.size() >= 3 && data.email.size() <= 100 &&
              (!('role' in data) || (data.role in ['admin', 'merchant', 'guest']));
     }
 
+    // Defensive Schema Validation for Notifications
     function isValidNotification(data) {
-      return data.message is string && data.message.size() > 0 && data.message.size() <= 400 &&
+      return isSafeString(data.message, 1, 300) &&
              data.businessId is string && data.businessId.size() <= 60;
     }
 
-    // Customers: schema validated, stamp tampering prevented
+    // 1. CUSTOMERS:
+    // Read: Allowed for card display and cashier operations
+    // Create: Enforces safe schema, size bounds, and script-injection prevention
+    // Update: Enforces schema AND anti-tampering (cannot jump stamps or hijack customer to another store)
+    // Delete: Hard delete is BLOCKED for clients (soft-delete via isDeleted is used instead)
     match /customers/{customerId} {
       allow read: if true;
-      allow create, update: if isValidCustomer(request.resource.data);
-      allow delete: if true;
+      allow create: if isValidCustomer(request.resource.data);
+      allow update: if isValidCustomer(request.resource.data) && 
+                       (resource == null || isTamperProofCustomerUpdate(resource.data, request.resource.data));
+      allow delete: if false;
     }
 
-    // Stores: validated store settings
+    // 2. STORES:
+    // Stores cannot be deleted by public clients
     match /stores/{storeId} {
       allow read: if true;
       allow create, update: if isValidStore(request.resource.data);
-      allow delete: if true;
+      allow delete: if false;
     }
 
-    // Accounts: cashier & admin accounts
+    // 3. ACCOUNTS (Cashier & Admin credentials):
+    // Delete is completely blocked (prevents deleting accounts)
     match /accounts/{accountId} {
       allow read: if true;
       allow create, update: if isValidAccount(request.resource.data);
-      allow delete: if true;
+      allow delete: if false;
     }
 
-    // Push Notifications: message size and businessId restricted
+    // 4. NOTIFICATIONS:
+    // Deletion and modification are completely blocked
     match /notifications/{notifId} {
       allow read: if true;
-      allow create, update: if isValidNotification(request.resource.data);
-      allow delete: if true;
+      allow create: if isValidNotification(request.resource.data);
+      allow update, delete: if false;
     }
 
-    // Store Announcements for Apple Wallet Lock Screen
+    // 5. STORE ANNOUNCEMENTS (Apple Wallet Lock Screen):
+    // Client write is blocked (defacement prevention)
     match /store_announcements/{storeId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if false;
     }
 
-    // Global Platform Settings (Logo, name)
+    // 6. GLOBAL PLATFORM SETTINGS:
+    // Client write is blocked
     match /settings/{settingId} {
       allow read: if true;
-      allow write: if true;
+      allow write: if false;
     }
 
-    // Health check
+    // 7. HEALTH CHECK:
     match /_health_check/{docId} {
       allow read, write: if true;
     }
 
-    // Apple Wallet Device Pass Registrations
+    // 8. APPLE WALLET PASS REGISTRATIONS:
+    // Completely BLOCKED for all public clients!
+    // Only backend Cloud Functions with Admin SDK has access.
     match /pass_registrations/{regId} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
   }
 }

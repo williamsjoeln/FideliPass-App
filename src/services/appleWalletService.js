@@ -506,7 +506,10 @@ export async function sendAppleWalletPushNotification({ serialNumber, phone, mes
   try {
     const res = await fetch('https://fidelipassapp.com/api/sendApplePush', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer fidelipass_secure_push_token_2026'
+      },
       body: JSON.stringify({ serialNumber, phone, message, storeId, customerId })
     });
     const data = await res.json();

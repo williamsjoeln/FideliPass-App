@@ -40,6 +40,9 @@ export function subscribeToStoreCustomers(storeId, onUpdate) {
           return;
         }
         const data = docSnap.data();
+        if (data.isDeleted === true || data.status === 'Eliminado') {
+          return;
+        }
         if (matchesStore(data.businessId, storeId)) {
           customers.push({ id: docSnap.id, ...data });
         }
@@ -55,12 +58,16 @@ export function subscribeToStoreCustomers(storeId, onUpdate) {
   }
 }
 
-// Delete customer from Firestore
+// Delete customer from Firestore (Secure soft-delete protected by Firestore Security Rules)
 export async function deleteCustomerFromFirestore(customerId) {
   try {
-    await deleteDoc(doc(db, 'customers', customerId));
+    await setDoc(doc(db, 'customers', customerId), { 
+      isDeleted: true, 
+      status: 'Eliminado',
+      deletedAt: Date.now()
+    }, { merge: true });
   } catch (e) {
-    console.warn("Could not delete customer from Firestore:", e.message);
+    console.warn("Could not mark customer as deleted in Firestore:", e.message);
   }
 }
 
